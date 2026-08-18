@@ -20,7 +20,6 @@
         }
 
         body {
-            /* Menerapkan Background Image Baru */
             background-color: #f8f0e6; 
             background-image: url('ChatGPT%20Image%208%20Agu%202026%2C%2013.39.44.png');
             background-size: cover;
@@ -29,23 +28,21 @@
             
             margin: 0;
             display: flex;
-            flex-direction: column; /* Ubah ke kolom agar teks berjalan ada di bawah map */
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             font-family: 'Nunito', sans-serif;
             overflow: hidden;
-            gap: 15px; /* Jarak antara peta dan teks berjalan */
+            gap: 15px;
         }
 
-        /* --- PERBAIKAN RESPONSIVE MAP --- */
         #map-container {
             position: relative;
             display: inline-block; 
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); /* Shadow dipertebal agar menonjol dari background */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); 
             border-radius: 12px;
             max-width: 98vw;
-            /* Tinggi maksimal diturunkan ke 85vh agar ada ruang untuk teks berjalan di bawahnya */
             max-height: 85vh; 
             overflow: hidden; 
         }
@@ -60,20 +57,19 @@
             border-radius: 12px;
         }
 
-        /* --- LOGO DI POJOK KIRI ATAS MAP --- */
         #map-logo {
             position: absolute;
             top: 20px;
             left: 20px;
-            width: 15%; /* Lebar responsif */
+            width: 15%; 
             min-width: 100px;
             max-width: 250px;
             z-index: 25;
-            pointer-events: none; /* Agar tidak menghalangi klik ke map */
-            filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.3)); /* Bayangan agar terbaca jelas */
+            pointer-events: none; 
+            filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.3));
         }
 
-        /* --- TEKS BERJALAN (MARQUEE) --- */
+        /* --- MARQUEE --- */
         .marquee-wrapper {
             width: 98vw;
             max-width: 1920px;
@@ -98,9 +94,7 @@
             animation: scrollText 15s linear infinite;
         }
 
-        .marquee-content span {
-            margin: 0 30px;
-        }
+        .marquee-content span { margin: 0 30px; }
 
         @keyframes scrollText {
             0% { transform: translateX(0); }
@@ -110,14 +104,9 @@
         /* --- WATER SPARKLES --- */
         .sparkle {
             position: absolute;
-            width: 4px;
-            height: 4px;
-            background-color: #ffffff;
-            border-radius: 50%;
-            box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.9);
-            pointer-events: none; 
-            z-index: 10;
-            animation: twinkle linear infinite;
+            width: 4px; height: 4px; background-color: #ffffff;
+            border-radius: 50%; box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.9);
+            pointer-events: none; z-index: 10; animation: twinkle linear infinite;
         }
 
         @keyframes twinkle {
@@ -126,95 +115,42 @@
             100% { opacity: 0; transform: scale(0.5); }
         }
 
-        /* --- PERMANENT CLICKABLE BUILDING LABELS --- */
+        /* --- CLICKABLE LABELS --- */
         .building-label {
-            position: absolute;
-            background-color: var(--white);
-            color: var(--lake-blue);
-            border: 3px solid var(--lake-blue);
-            padding: 6px 12px;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 10px;
-            z-index: 20; 
-            cursor: pointer; 
-            box-shadow: 4px 4px 0px rgba(0, 135, 153, 0.2);
-            text-transform: uppercase;
-            transform: translate(-50%, -50%);
-            animation: floatLabel 3s ease-in-out infinite;
-            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+            position: absolute; background-color: var(--white); color: var(--lake-blue);
+            border: 3px solid var(--lake-blue); padding: 6px 12px; font-family: 'Press Start 2P', cursive;
+            font-size: 10px; z-index: 20; cursor: pointer; box-shadow: 4px 4px 0px rgba(0, 135, 153, 0.2);
+            text-transform: uppercase; transform: translate(-50%, -50%);
+            animation: floatLabel 3s ease-in-out infinite; transition: 0.2s;
         }
 
         .building-label:hover {
-            background-color: var(--lake-blue);
-            color: var(--white);
-            border-color: var(--white);
+            background-color: var(--lake-blue); color: var(--white); border-color: var(--white);
             box-shadow: 4px 4px 0px rgba(255, 255, 255, 0.4);
         }
 
-        @keyframes floatLabel {
-            0%, 100% { margin-top: 0px; }
-            50% { margin-top: -8px; }
-        }
+        @keyframes floatLabel { 0%, 100% { margin-top: 0px; } 50% { margin-top: -8px; } }
 
-        /* --- AIRPLANE ANIMATION --- */
+        /* --- AIRPLANE --- */
         #airplane {
-            position: absolute;
-            z-index: 15;
-            pointer-events: none;
-            width: 24%; 
-            min-width: 150px;
-            animation: flyPlane 60s linear infinite;
+            position: absolute; z-index: 15; pointer-events: none; width: 24%; 
+            min-width: 150px; animation: flyPlane 60s linear infinite;
         }
 
-        @keyframes flyPlane {
-            0% { top: -50%; left: 120%; }
-            45% { top: 90%; left: -20%; }
-            100% { top: 90%; left: -20%; }
-        }
+        @keyframes flyPlane { 0% { top: -50%; left: 120%; } 45% { top: 90%; left: -20%; } 100% { top: 90%; left: -20%; } }
 
-        /* --- UI MODAL SYSTEM --- */
-        #modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(244, 216, 198, 0.85); backdrop-filter: blur(10px); z-index: 99;
-            opacity: 0; transition: opacity 0.3s ease;
-        }
+        /* --- MODALS --- */
+        #modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(244, 216, 198, 0.85); backdrop-filter: blur(10px); z-index: 99; opacity: 0; transition: opacity 0.3s ease; }
 
-        .babes-modal {
-            display: none; position: fixed; 
-            width: 85vw; height: 85vh; 
-            background: var(--bg-light); border: 4px solid var(--vanilla-cream);
-            border-radius: 24px; box-shadow: 0 15px 35px rgba(0, 135, 153, 0.2); 
-            padding: 20px 30px; z-index: 100; color: #4a4a4a; 
-            flex-direction: column;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-        }
+        .babes-modal { display: none; position: fixed; width: 85vw; height: 85vh; background: var(--bg-light); border: 4px solid var(--vanilla-cream); border-radius: 24px; box-shadow: 0 15px 35px rgba(0, 135, 153, 0.2); padding: 20px 30px; z-index: 100; color: #4a4a4a; flex-direction: column; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
-        .sub-modal {
-            display: none; position: fixed; top: 50%; left: 50%;
-            transform: translate(-50%, -50%); width: 400px; max-width: 90vw;
-            background: var(--white); border: 4px solid var(--lake-blue);
-            border-radius: 20px; padding: 20px; z-index: 200;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3); flex-direction: column;
-        }
+        .sub-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; max-width: 90vw; background: var(--white); border: 4px solid var(--lake-blue); border-radius: 20px; padding: 20px; z-index: 200; box-shadow: 0 20px 50px rgba(0,0,0,0.3); flex-direction: column; }
 
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--vanilla-cream); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: var(--pastel-turquoise); border-radius: 10px; }
+        ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: var(--vanilla-cream); border-radius: 10px; } ::-webkit-scrollbar-thumb { background: var(--pastel-turquoise); border-radius: 10px; }
 
-        .modal-header {
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 3px solid var(--vanilla-cream); margin-bottom: 20px; padding-bottom: 15px;
-            flex-shrink: 0;
-        }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--vanilla-cream); margin-bottom: 20px; padding-bottom: 15px; flex-shrink: 0; }
         .modal-title { font-weight: 800; color: var(--lake-blue); margin: 0; font-family: 'Press Start 2P', cursive; font-size: 16px; }
-        .close-modal {
-            background: var(--powder-pink); color: var(--white); width: 40px; height: 40px;
-            border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            font-size: 20px; font-weight: bold; cursor: pointer; transition: 0.2s ease;
-        }
+        .close-modal { background: var(--powder-pink); color: var(--white); width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 20px; font-weight: bold; cursor: pointer; transition: 0.2s ease; }
         .close-modal:hover { background: var(--lake-blue); transform: scale(1.1); }
 
         .modal-body { display: flex; gap: 20px; flex: 1; overflow: hidden; }
@@ -223,23 +159,10 @@
         .section-title { color: var(--pastel-turquoise); font-weight: 800; margin-top: 0; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; }
 
         /* --- NFT VISUALS --- */
-        .nft-large {
-            width: 100%; aspect-ratio: 1 / 1; 
-            background: var(--vanilla-cream); border: 4px solid var(--lake-blue);
-            border-radius: 16px; display: flex; justify-content: center; align-items: center;
-            color: var(--lake-blue); font-family: 'Press Start 2P', cursive; font-size: 18px;
-            margin-bottom: 15px; background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.5) 10px, rgba(255,255,255,0.5) 20px);
-        }
+        .nft-large { width: 100%; aspect-ratio: 1 / 1; background: var(--vanilla-cream); border: 4px solid var(--lake-blue); border-radius: 16px; display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--lake-blue); font-family: 'Press Start 2P', cursive; font-size: 14px; margin-bottom: 15px; background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.5) 10px, rgba(255,255,255,0.5) 20px); text-align: center; padding: 10px; box-sizing: border-box;}
         
         .item-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-        .item-square {
-            width: 100%; aspect-ratio: 1 / 1; 
-            border: 2px dashed var(--pastel-turquoise); border-radius: 12px;
-            background: rgba(152, 205, 204, 0.1); display: flex; flex-direction: column;
-            justify-content: center; align-items: center; color: var(--lake-blue);
-            font-weight: bold; font-size: 14px; cursor: pointer; transition: 0.2s;
-            text-align: center; padding: 5px; box-sizing: border-box;
-        }
+        .item-square { width: 100%; aspect-ratio: 1 / 1; border: 2px dashed var(--pastel-turquoise); border-radius: 12px; background: rgba(152, 205, 204, 0.1); display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--lake-blue); font-weight: bold; font-size: 14px; cursor: pointer; transition: 0.2s; text-align: center; padding: 5px; box-sizing: border-box; }
         .item-square:hover { background: var(--pale-marigold); border-color: var(--pale-marigold); color: var(--white); transform: translateY(-5px); }
         .item-price { color: var(--powder-pink); font-size: 12px; margin-top: 5px; }
 
@@ -266,15 +189,9 @@
         .trade-title { font-size: 14px; font-weight: 800; color: var(--lake-blue); margin-bottom: 15px; text-transform: uppercase; }
 
         /* --- ROTATE DEVICE WARNING --- */
-        #rotate-warning {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--vanilla-cream); color: var(--lake-blue); z-index: 9999;
-            flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; padding: 30px; box-sizing: border-box;
-        }
+        #rotate-warning { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--vanilla-cream); color: var(--lake-blue); z-index: 9999; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 30px; box-sizing: border-box; }
         #rotate-warning p { font-size: 16px; font-weight: 800; margin-top: 15px; max-width: 80%; }
         .rotate-icon { font-size: 80px; margin-bottom: 20px; animation: rotatePhone 2s ease-in-out infinite alternate; }
-        
         @keyframes rotatePhone { 0% { transform: rotate(0deg); } 100% { transform: rotate(-90deg); } }
 
         /* --- MOBILE RESPONSIVENESS --- */
@@ -289,12 +206,9 @@
             .trade-box { flex-direction: column; gap: 10px; }
             .sub-modal { width: 90vw; padding: 15px; }
             .building-label { font-size: 8px; padding: 4px 8px; } 
-            
-            /* Menyesuaikan logo & teks berjalan untuk HP */
             #map-logo { top: 10px; left: 10px; width: 25%; }
             .marquee-content { font-size: 10px; padding: 10px 0; }
         }
-        
         @media (max-width: 1024px) and (orientation: portrait) { #rotate-warning { display: flex; } }
     </style>
 </head>
@@ -308,16 +222,10 @@
 
     <!-- PETA UTAMA -->
     <div id="map-container">
-        <!-- LOGO MAP (Baru) -->
         <img id="map-logo" src="logo%20babes.svg" alt="Babes Logo">
-
-        <!-- GAMBAR PETA UTAMA -->
         <img id="map-image" src="map-babes.webp" alt="Babes Island Map">
-        
-        <!-- PESAWAT TERBANG MELINTAS -->
         <img id="airplane" src="plane.webp" alt="Flying Plane">
         
-        <!-- LABEL BANGUNAN PERMANEN -->
         <div class="building-label" style="left: 46%; top: 59%;" onclick="openModal('the_shop', event)">THE SHOP</div>
         <div class="building-label" style="left: 60%; top: 46%;" onclick="openModal('the_cafe', event)">THE CAFE</div>
         <div class="building-label" style="left: 77%; top: 24%;" onclick="openModal('babes_club', event)">BABES CLUB</div>
@@ -325,29 +233,20 @@
         <div class="building-label" style="left: 84%; top: 35%;" onclick="openModal('the_hut', event)">THE HUT</div>
     </div>
 
-    <!-- TEKS BERJALAN (Baru) -->
+    <!-- TEKS BERJALAN -->
     <div class="marquee-wrapper">
         <div class="marquee-content">
-            <span>BABES IN THE HOOD</span>
-            <span>BABES IN THE HOOD</span>
-            <span>BABES IN THE HOOD</span>
-            <span>BABES IN THE HOOD</span>
-            <span>BABES IN THE HOOD</span>
+            <span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span>
         </div>
-        <!-- Duplikat konten agar putaran seamless/tidak putus -->
         <div class="marquee-content">
-            <span>BABES IN THE HOOD</span>
-            <span>BABES IN THE HOOD</span>
-            <span>BABES IN THE HOOD</span>
-            <span>BABES IN THE HOOD</span>
-            <span>BABES IN THE HOOD</span>
+            <span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span>
         </div>
     </div>
 
     <!-- MAIN OVERLAY -->
     <div id="modal-overlay"></div>
 
-    <!-- 1. THE HUT (PROFILE & WARDROBE) -->
+    <!-- 1. THE HUT -->
     <div class="babes-modal" id="modal-the_hut">
         <div class="modal-header">
             <h3 class="modal-title">THE HUT // PROFILE</h3>
@@ -357,7 +256,9 @@
             <div class="col-left">
                 <div class="modal-section" style="flex: 1;">
                     <h4 class="section-title">YOUR BABE NFT</h4>
-                    <div class="nft-large">NFT IMAGE<br>(SQUARE)</div>
+                    <!-- DYNAMIC AVATAR BOX -->
+                    <div class="nft-large" id="avatar-preview">LOADING...</div>
+                    
                     <input type="text" class="input-text" value="Babes #001" placeholder="Change profile name...">
                     <button class="btn" style="margin-bottom: 30px;">SAVE NAME</button>
                     <h4 class="section-title" style="color: var(--powder-pink);">ACTIONS</h4>
@@ -373,14 +274,16 @@
                         <button class="tab-btn" onclick="switchTab('hut', 'accessories')">ACCESSORIES</button>
                         <button class="tab-btn" onclick="switchTab('hut', 'glasses')">GLASSES</button>
                     </div>
+                    
+                    <!-- DYNAMIC INVENTORY GRIDS -->
                     <div id="hut-clothes" class="tab-content hut-content" style="display: block;">
-                        <div class="item-grid"><div class="item-square">Red Bikini</div><div class="item-square">Blue Swimsuit</div><div class="item-square" style="opacity: 0.5;">Empty</div></div>
+                        <div class="item-grid" id="grid-hut-clothes"></div>
                     </div>
                     <div id="hut-accessories" class="tab-content hut-content">
-                        <div class="item-grid"><div class="item-square">Belly Piercing</div><div class="item-square">Rose Tattoo</div></div>
+                        <div class="item-grid" id="grid-hut-accessories"></div>
                     </div>
                     <div id="hut-glasses" class="tab-content hut-content">
-                        <div class="item-grid"><div class="item-square">Blue Eyes</div><div class="item-square">Retro Specs</div></div>
+                        <div class="item-grid" id="grid-hut-glasses"></div>
                     </div>
                 </div>
             </div>
@@ -394,31 +297,37 @@
             <div class="close-modal">X</div>
         </div>
         <div class="modal-body" style="flex-direction: column;">
+            <!-- DYNAMIC BALANCE -->
+            <div style="text-align: center; margin-bottom: 10px; font-weight: 800; color: var(--powder-pink); font-size: 18px;">
+                YOUR BALANCE: <span id="shop-balance">1000</span> $babes
+            </div>
+            
             <div class="tab-container" style="max-width: 600px; margin: 0 auto 20px auto;">
                 <button class="tab-btn active" onclick="switchTab('shop', 'clothes')">BIKINIS</button>
                 <button class="tab-btn" onclick="switchTab('shop', 'accessories')">TATTOOS & PIERCINGS</button>
                 <button class="tab-btn" onclick="switchTab('shop', 'glasses')">GLASSES & EYES</button>
             </div>
             <div class="modal-section" style="flex: 1; overflow-y: auto;">
+                <!-- SHOP ITEMS WITH ONCLICK BUY FUNCTION -->
                 <div id="shop-clothes" class="tab-content shop-content" style="display: block;">
                     <div class="item-grid" style="grid-template-columns: repeat(4, 1fr);">
-                        <div class="item-square"><span>Neon Bikini</span><span class="item-price">50 $babes</span></div>
-                        <div class="item-square"><span>Polka Dot</span><span class="item-price">75 $babes</span></div>
-                        <div class="item-square"><span>Vice One-Piece</span><span class="item-price">120 $babes</span></div>
-                        <div class="item-square"><span>Black Leather</span><span class="item-price">200 $babes</span></div>
+                        <div class="item-square" onclick="buyItem('Neon Bikini', 50, 'clothes')"><span>Neon Bikini</span><span class="item-price">50 $babes</span></div>
+                        <div class="item-square" onclick="buyItem('Polka Dot', 75, 'clothes')"><span>Polka Dot</span><span class="item-price">75 $babes</span></div>
+                        <div class="item-square" onclick="buyItem('Vice One-Piece', 120, 'clothes')"><span>Vice One-Piece</span><span class="item-price">120 $babes</span></div>
+                        <div class="item-square" onclick="buyItem('Black Leather', 200, 'clothes')"><span>Black Leather</span><span class="item-price">200 $babes</span></div>
                     </div>
                 </div>
                 <div id="shop-accessories" class="tab-content shop-content">
                     <div class="item-grid" style="grid-template-columns: repeat(4, 1fr);">
-                        <div class="item-square"><span>Dragon Tattoo</span><span class="item-price">100 $babes</span></div>
-                        <div class="item-square"><span>Navel Ring</span><span class="item-price">40 $babes</span></div>
+                        <div class="item-square" onclick="buyItem('Dragon Tattoo', 100, 'accessories')"><span>Dragon Tattoo</span><span class="item-price">100 $babes</span></div>
+                        <div class="item-square" onclick="buyItem('Navel Ring', 40, 'accessories')"><span>Navel Ring</span><span class="item-price">40 $babes</span></div>
                     </div>
                 </div>
                 <div id="shop-glasses" class="tab-content shop-content">
                     <div class="item-grid" style="grid-template-columns: repeat(4, 1fr);">
-                        <div class="item-square"><span>Aviators</span><span class="item-price">80 $babes</span></div>
-                        <div class="item-square"><span>Green Eyes</span><span class="item-price">300 $babes</span></div>
-                        <div class="item-square"><span>3D Glasses</span><span class="item-price">150 $babes</span></div>
+                        <div class="item-square" onclick="buyItem('Aviators', 80, 'glasses')"><span>Aviators</span><span class="item-price">80 $babes</span></div>
+                        <div class="item-square" onclick="buyItem('Green Eyes', 300, 'glasses')"><span>Green Eyes</span><span class="item-price">300 $babes</span></div>
+                        <div class="item-square" onclick="buyItem('3D Glasses', 150, 'glasses')"><span>3D Glasses</span><span class="item-price">150 $babes</span></div>
                     </div>
                 </div>
             </div>
@@ -506,8 +415,81 @@
         </div>
     </div>
 
-    <!-- SCRIPT (UI Logic & Auto-Generate Sparkles) -->
+    <!-- SCRIPT LOGIC & DUMMY SIMULATION -->
     <script>
+        // --- DUMMY GAME STATE (SIMULATION LOGIC) ---
+        let userBalance = 1000;
+        let userInventory = {
+            clothes: ['Red Bikini'],
+            accessories: ['Belly Piercing'],
+            glasses: ['Blue Eyes']
+        };
+        let equipped = {
+            clothes: 'Red Bikini',
+            accessories: 'Belly Piercing',
+            glasses: 'Blue Eyes'
+        };
+
+        // Fungsi Pembelian Item di Shop
+        function buyItem(itemName, price, category) {
+            // Cek apakah item sudah dimiliki
+            if (userInventory[category].includes(itemName)) {
+                alert(`You already own the ${itemName}! Check The Hut.`);
+                return;
+            }
+            // Cek saldo
+            if (userBalance >= price) {
+                userBalance -= price;
+                userInventory[category].push(itemName);
+                
+                // Update UI Saldo
+                document.getElementById('shop-balance').innerText = userBalance;
+                
+                // Render ulang inventory di The Hut
+                renderInventory();
+                
+                alert(`Success! You bought ${itemName} for ${price} $babes.\nIt is now in your Wardrobe.`);
+            } else {
+                alert("Transaction Failed: Not enough $babes balance!");
+            }
+        }
+
+        // Fungsi Memakai Item di The Hut
+        function equipItem(itemName, category) {
+            equipped[category] = itemName;
+            updateAvatarPreview();
+        }
+
+        // Render Inventory ke Layar The Hut
+        function renderInventory() {
+            const categories = ['clothes', 'accessories', 'glasses'];
+            categories.forEach(cat => {
+                const container = document.getElementById(`grid-hut-${cat}`);
+                container.innerHTML = ''; // Kosongkan grid
+                
+                if (userInventory[cat].length === 0) {
+                    container.innerHTML = '<div class="item-square" style="opacity: 0.5;">Empty</div>';
+                } else {
+                    userInventory[cat].forEach(item => {
+                        // Buat tombol item, jika diklik akan memicu equipItem()
+                        container.innerHTML += `<div class="item-square" onclick="equipItem('${item}', '${cat}')" style="border-color: var(--lake-blue);"><span>${item}</span><span style="font-size:10px; font-weight:normal; margin-top:5px;">(Click to Equip)</span></div>`;
+                    });
+                }
+            });
+        }
+
+        // Update Tampilan Karakter Avatar
+        function updateAvatarPreview() {
+            const avatarBox = document.getElementById('avatar-preview');
+            avatarBox.innerHTML = `YOUR BABE<br><br>
+                <span style="font-size:12px; color:var(--powder-pink); line-height: 1.8;">
+                [ ${equipped.clothes} ]<br>
+                [ ${equipped.accessories} ]<br>
+                [ ${equipped.glasses} ]
+                </span>`;
+        }
+
+        // --- UI & MODAL SYSTEM LOGIC ---
         let currentOpenModal = null;
         let closingTimers = []; 
         let overlay = null;
@@ -607,6 +589,7 @@
             });
         }
 
+        // Inisialisasi saat web dimuat
         window.onload = () => {
             overlay = document.getElementById('modal-overlay');
             const closeButtons = document.querySelectorAll('.close-modal');
@@ -614,6 +597,10 @@
             overlay.addEventListener('click', closeAllModals);
             
             generateSparkles();
+            
+            // Render dummy game state ke UI
+            renderInventory();
+            updateAvatarPreview();
         };
     </script>
 </body>
