@@ -40,9 +40,8 @@
         }
         
         #map-image { width: 100%; height: auto; display: block; pointer-events: none; }
-        #interactive-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; }
 
-        /* --- PERMANENT BUILDING LABELS (BOUNCY ANIMATION) --- */
+        /* --- PERMANENT CLICKABLE BUILDING LABELS --- */
         .building-label {
             position: absolute;
             background-color: var(--white);
@@ -52,11 +51,21 @@
             font-family: 'Press Start 2P', cursive;
             font-size: 10px;
             z-index: 20; 
-            pointer-events: none; 
+            cursor: pointer; /* Mengubah kursor menjadi bentuk tangan */
             box-shadow: 4px 4px 0px rgba(0, 135, 153, 0.2);
             text-transform: uppercase;
             transform: translate(-50%, -50%);
             animation: floatLabel 3s ease-in-out infinite;
+            /* Transisi halus untuk perubahan warna saat di-hover */
+            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+        }
+
+        /* Efek warna terbalik saat disorot mouse */
+        .building-label:hover {
+            background-color: var(--lake-blue);
+            color: var(--white);
+            border-color: var(--white);
+            box-shadow: 4px 4px 0px rgba(255, 255, 255, 0.4);
         }
 
         @keyframes floatLabel {
@@ -64,23 +73,19 @@
             50% { margin-top: -8px; }
         }
 
-        /* --- AIRPLANE ANIMATION (EVERY 1 MINUTE) --- */
+        /* --- AIRPLANE ANIMATION --- */
         #airplane {
             position: absolute;
             z-index: 15;
             pointer-events: none;
-            /* Ukuran diperbesar 3x lipat */
             width: 24%; 
             min-width: 240px;
             animation: flyPlane 60s linear infinite;
         }
 
         @keyframes flyPlane {
-            /* Start digeser jauh ke atas (top: -50%) agar lintasan melipir bagian atas pulau */
             0% { top: -50%; left: 120%; }
-            /* Pergerakan diperlambat 3x lipat (45% dari 60 detik = 27 detik waktu tempuh melintas) */
             45% { top: 90%; left: -20%; }
-            /* Sisa waktu bersembunyi di luar layar hingga genap 1 menit */
             100% { top: 90%; left: -20%; }
         }
 
@@ -218,18 +223,15 @@
         <!-- GAMBAR PETA UTAMA -->
         <img id="map-image" src="map-babes.webp" alt="Babes Island Map">
         
-        <!-- PESAWAT TERBANG MELINTAS (Diperbesar & Digeser ke Utara) -->
+        <!-- PESAWAT TERBANG MELINTAS -->
         <img id="airplane" src="plane.webp" alt="Flying Plane">
-
-        <!-- KANVAS INTERAKTIF -->
-        <canvas id="interactive-canvas"></canvas>
         
-        <!-- LABEL BANGUNAN PERMANEN -->
-        <div class="building-label" style="left: 49.3%; top: 50%;">THE SHOP</div>
-        <div class="building-label" style="left: 60%; top: 46%;">THE CAFE</div>
-        <div class="building-label" style="left: 77%; top: 24%;">BABES CLUB</div>
-        <div class="building-label" style="left: 54%; top: 64%;">GUARD TOWER</div>
-        <div class="building-label" style="left: 84%; top: 35%;">THE HUT</div>
+        <!-- LABEL BANGUNAN PERMANEN (Sekarang bisa diklik secara langsung) -->
+        <div class="building-label" style="left: 49.3%; top: 50%;" onclick="openModal('the_shop', event)">THE SHOP</div>
+        <div class="building-label" style="left: 60%; top: 46%;" onclick="openModal('the_cafe', event)">THE CAFE</div>
+        <div class="building-label" style="left: 77%; top: 24%;" onclick="openModal('babes_club', event)">BABES CLUB</div>
+        <div class="building-label" style="left: 54%; top: 64%;" onclick="openModal('guard_tower', event)">GUARD TOWER</div>
+        <div class="building-label" style="left: 84%; top: 35%;" onclick="openModal('the_hut', event)">THE HUT</div>
     </div>
 
     <!-- MAIN OVERLAY -->
@@ -394,8 +396,14 @@
         </div>
     </div>
 
-    <!-- SCRIPT -->
+    <!-- SCRIPT (Jauh Lebih Bersih & Ringan) -->
     <script>
+        // Variabel Global
+        let currentOpenModal = null;
+        let closingTimers = []; 
+        let overlay = null;
+
+        // Fungsi Tab Menu
         function switchTab(modalContext, tabName) {
             const modalEl = document.getElementById('modal-' + (modalContext === 'hut' ? 'the_hut' : 'the_shop'));
             const buttons = modalEl.querySelectorAll('.tab-btn');
@@ -408,132 +416,77 @@
             document.getElementById(modalContext + '-' + tabName).style.display = 'block';
         }
 
+        // Fungsi Sub-Modal (Negosiasi Trade)
         function openSubModal(id) { document.getElementById('modal-' + id).style.display = 'flex'; }
         function closeSubModal(id) { document.getElementById('modal-' + id).style.display = 'none'; }
 
-        window.onload = () => {
-            const canvas = document.getElementById('interactive-canvas');
-            const ctx = canvas.getContext('2d');
-            const mapImage = document.getElementById('map-image');
-
-            function resizeCanvas() {
-                canvas.width = mapImage.clientWidth;
-                canvas.height = mapImage.clientHeight;
-            }
-            setTimeout(() => { resizeCanvas(); }, 100);
-            window.addEventListener('resize', resizeCanvas);
-
-            const zones = [
-                { id: 'the_shop', points: [ {x: 882, y: 712}, {x: 1012, y: 802}, {x: 882, y: 892}, {x: 752, y: 802} ] },
-                { id: 'babes_club', points: [ {x: 1476, y: 277}, {x: 1656, y: 407}, {x: 1476, y: 537}, {x: 1296, y: 407} ] },
-                { id: 'the_cafe', points: [ {x: 1154, y: 640}, {x: 1264, y: 720}, {x: 1154, y: 800}, {x: 1044, y: 720} ] },
-                { id: 'guard_tower', points: [ {x: 1041, y: 882}, {x: 1131, y: 982}, {x: 1041, y: 1082}, {x: 951, y: 982} ] },
-                { id: 'the_hut', points: [ {x: 1607, y: 460}, {x: 1747, y: 560}, {x: 1607, y: 660}, {x: 1467, y: 560} ] }
-            ];
-
-            let hoveredZone = null;
-            let currentOpenModal = null;
-            let closingTimers = []; 
-
-            function isPointInPolygon(point, vs) {
-                const baseWidth = 1920; 
-                const baseHeight = 1369; 
-                const scaleX = baseWidth / canvas.width;
-                const scaleY = baseHeight / canvas.height;
-                let x = point.x * scaleX, y = point.y * scaleY;
+        // Fungsi Membuka Modal (Dipanggil langsung dari klik Label)
+        function openModal(zoneId, event) {
+            if (!overlay) overlay = document.getElementById('modal-overlay');
+            const modal = document.getElementById('modal-' + zoneId);
+            
+            if (modal && overlay) {
+                // Batalkan proses penutupan jika ada
+                closingTimers.forEach(clearTimeout);
+                closingTimers = [];
                 
-                let inside = false;
-                for (let i = 0, j = vs.length - 1; i < vs.length; j = i++) {
-                    let xi = vs[i].x, yi = vs[i].y;
-                    let xj = vs[j].x, yj = vs[j].y;
-                    let intersect = ((yi > y) != (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
-                    if (intersect) inside = !inside;
-                }
-                return inside;
+                // Reset semua modal
+                const modals = document.querySelectorAll('.babes-modal');
+                modals.forEach(m => { m.style.display = 'none'; m.style.opacity = '0'; });
+
+                // Tampilkan overlay
+                overlay.style.display = 'block';
+                setTimeout(() => { overlay.style.opacity = '1'; }, 10);
+                
+                // Atur posisi awal animasi dari titik kursor
+                modal.style.top = event.clientY + 'px';
+                modal.style.left = event.clientX + 'px';
+                modal.style.transform = 'translate(-50%, -50%) scale(0)';
+                modal.style.opacity = '0';
+                modal.style.display = 'flex';
+                
+                void modal.offsetWidth; // Force Reflow untuk memicu animasi
+                
+                // Besarkan ke tengah layar
+                modal.style.top = '50%';
+                modal.style.left = '50%';
+                modal.style.transform = 'translate(-50%, -50%) scale(1)';
+                modal.style.opacity = '1';
+
+                currentOpenModal = modal;
             }
+        }
 
-            const overlay = document.getElementById('modal-overlay');
-
-            function openModal(zoneId, event) {
-                const modal = document.getElementById('modal-' + zoneId);
-                if (modal && overlay) {
-                    
-                    closingTimers.forEach(clearTimeout);
-                    closingTimers = [];
-                    
-                    const modals = document.querySelectorAll('.babes-modal');
-                    modals.forEach(m => { m.style.display = 'none'; m.style.opacity = '0'; });
-
-                    overlay.style.display = 'block';
-                    setTimeout(() => { overlay.style.opacity = '1'; }, 10);
-                    
-                    modal.style.top = event.clientY + 'px';
-                    modal.style.left = event.clientX + 'px';
+        // Fungsi Menutup Semua Modal
+        function closeAllModals() {
+            if (!overlay) overlay = document.getElementById('modal-overlay');
+            
+            if (overlay) {
+                overlay.style.opacity = '0';
+                closingTimers.push(setTimeout(() => { overlay.style.display = 'none'; }, 300));
+                
+                const modals = document.querySelectorAll('.babes-modal');
+                modals.forEach(modal => {
                     modal.style.transform = 'translate(-50%, -50%) scale(0)';
                     modal.style.opacity = '0';
-                    modal.style.display = 'flex';
-                    
-                    void modal.offsetWidth;
-                    
-                    modal.style.top = '50%';
-                    modal.style.left = '50%';
-                    modal.style.transform = 'translate(-50%, -50%) scale(1)';
-                    modal.style.opacity = '1';
-
-                    currentOpenModal = modal;
-                    hoveredZone = null;
-                    canvas.style.cursor = 'default';
-                }
+                    closingTimers.push(setTimeout(() => { modal.style.display = 'none'; }, 300));
+                });
+                
+                const subModals = document.querySelectorAll('.sub-modal');
+                subModals.forEach(sub => sub.style.display = 'none');
+                
+                currentOpenModal = null;
             }
+        }
 
-            function closeAllModals() {
-                if (overlay) {
-                    overlay.style.opacity = '0';
-                    closingTimers.push(setTimeout(() => { overlay.style.display = 'none'; }, 300));
-                    
-                    const modals = document.querySelectorAll('.babes-modal');
-                    modals.forEach(modal => {
-                        modal.style.transform = 'translate(-50%, -50%) scale(0)';
-                        modal.style.opacity = '0';
-                        closingTimers.push(setTimeout(() => { modal.style.display = 'none'; }, 300));
-                    });
-                    
-                    const subModals = document.querySelectorAll('.sub-modal');
-                    subModals.forEach(sub => sub.style.display = 'none');
-                    
-                    currentOpenModal = null;
-                }
-            }
-
+        // Saat halaman selesai dimuat
+        window.onload = () => {
+            overlay = document.getElementById('modal-overlay');
+            
+            // Pasang event penutup modal di tombol X dan area luar (overlay)
             const closeButtons = document.querySelectorAll('.close-modal');
             closeButtons.forEach(button => { button.addEventListener('click', closeAllModals); });
             overlay.addEventListener('click', closeAllModals);
-
-            canvas.addEventListener('mousemove', (e) => {
-                if (currentOpenModal) return;
-                const rect = canvas.getBoundingClientRect();
-                const mousePos = { x: e.clientX - rect.left, y: e.clientY - rect.top };
-
-                let found = null;
-                for (const zone of zones) {
-                    if (isPointInPolygon(mousePos, zone.points)) { found = zone; break; }
-                }
-
-                if (found !== hoveredZone) {
-                    hoveredZone = found;
-                    canvas.style.cursor = hoveredZone ? 'pointer' : 'default';
-                }
-            });
-
-            canvas.addEventListener('click', (e) => {
-                if (hoveredZone && !currentOpenModal) { openModal(hoveredZone.id, e); }
-            });
-
-            canvas.addEventListener('mouseleave', () => {
-                if (currentOpenModal) return;
-                hoveredZone = null;
-                canvas.style.cursor = 'default';
-            });
         };
     </script>
 </body>
