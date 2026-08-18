@@ -38,6 +38,7 @@
             border-radius: 12px;
             max-width: 98vw;
             max-height: 98vh;
+            overflow: hidden; /* Mencegah elemen keluar dari border map */
         }
         
         #map-image { 
@@ -48,6 +49,25 @@
             display: block; 
             pointer-events: none; 
             border-radius: 12px;
+        }
+
+        /* --- WATER SPARKLES (BINTANG KELAP-KELIP DI AIR) --- */
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.9);
+            pointer-events: none; /* Tidak menghalangi klik */
+            z-index: 10;
+            animation: twinkle linear infinite;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1.5); }
+            100% { opacity: 0; transform: scale(0.5); }
         }
 
         /* --- PERMANENT CLICKABLE BUILDING LABELS --- */
@@ -233,7 +253,7 @@
         <!-- PESAWAT TERBANG MELINTAS -->
         <img id="airplane" src="plane.webp" alt="Flying Plane">
         
-        <!-- LABEL BANGUNAN PERMANEN (Posisi THE SHOP sudah digeser) -->
+        <!-- LABEL BANGUNAN PERMANEN -->
         <div class="building-label" style="left: 46%; top: 59%;" onclick="openModal('the_shop', event)">THE SHOP</div>
         <div class="building-label" style="left: 60%; top: 46%;" onclick="openModal('the_cafe', event)">THE CAFE</div>
         <div class="building-label" style="left: 77%; top: 24%;" onclick="openModal('babes_club', event)">BABES CLUB</div>
@@ -403,7 +423,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT (Jauh Lebih Bersih & Ringan) -->
+    <!-- SCRIPT (UI Logic & Auto-Generate Sparkles) -->
     <script>
         let currentOpenModal = null;
         let closingTimers = []; 
@@ -476,11 +496,47 @@
             }
         }
 
+        // --- SPARKLE GENERATOR (Membuat bintang air secara otomatis) ---
+        function generateSparkles() {
+            const mapContainer = document.getElementById('map-container');
+            
+            // Area persebaran kelap-kelip (x: persentase kiri, y: persentase atas, w: lebar area, h: tinggi area)
+            const waterZones = [
+                { x: 2, y: 50, w: 20, h: 45, count: 12 },   // Samudra Kiri
+                { x: 28, y: 40, w: 10, h: 35, count: 8 },   // Air Terjun
+                { x: 35, y: 85, w: 20, h: 10, count: 6 },   // Pantai Bawah (Tepi)
+                { x: 80, y: 5, w: 18, h: 15, count: 6 },    // Laut Kanan Atas
+                { x: 92, y: 65, w: 6, h: 25, count: 4 }     // Ujung Laut Kanan Bawah
+            ];
+
+            waterZones.forEach(zone => {
+                for(let i = 0; i < zone.count; i++) {
+                    let sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle';
+                    // Posisi acak di dalam area (zone)
+                    sparkle.style.left = (zone.x + (Math.random() * zone.w)) + '%';
+                    sparkle.style.top = (zone.y + (Math.random() * zone.h)) + '%';
+                    
+                    // Kecepatan & delay acak agar terlihat natural
+                    const delay = Math.random() * 5; // Delay 0 hingga 5 detik
+                    const duration = 2 + (Math.random() * 3); // Durasi 2 hingga 5 detik
+                    
+                    sparkle.style.animationDelay = delay + 's';
+                    sparkle.style.animationDuration = duration + 's';
+                    
+                    mapContainer.appendChild(sparkle);
+                }
+            });
+        }
+
         window.onload = () => {
             overlay = document.getElementById('modal-overlay');
             const closeButtons = document.querySelectorAll('.close-modal');
             closeButtons.forEach(button => { button.addEventListener('click', closeAllModals); });
             overlay.addEventListener('click', closeAllModals);
+            
+            // Jalankan fungsi generator bintang saat halaman selesai dimuat
+            generateSparkles();
         };
     </script>
 </body>
