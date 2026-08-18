@@ -30,16 +30,25 @@
             overflow: hidden;
         }
 
+        /* --- PERBAIKAN RESPONSIVE MAP --- */
         #map-container {
             position: relative;
-            width: 100%;
-            max-width: 1920px; 
+            display: inline-block; 
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); 
             border-radius: 12px;
-            overflow: hidden;
+            max-width: 98vw;
+            max-height: 98vh;
         }
         
-        #map-image { width: 100%; height: auto; display: block; pointer-events: none; }
+        #map-image { 
+            max-width: 98vw; 
+            max-height: 98vh; 
+            width: auto; 
+            height: auto; 
+            display: block; 
+            pointer-events: none; 
+            border-radius: 12px;
+        }
 
         /* --- PERMANENT CLICKABLE BUILDING LABELS --- */
         .building-label {
@@ -51,16 +60,14 @@
             font-family: 'Press Start 2P', cursive;
             font-size: 10px;
             z-index: 20; 
-            cursor: pointer; /* Mengubah kursor menjadi bentuk tangan */
+            cursor: pointer; 
             box-shadow: 4px 4px 0px rgba(0, 135, 153, 0.2);
             text-transform: uppercase;
             transform: translate(-50%, -50%);
             animation: floatLabel 3s ease-in-out infinite;
-            /* Transisi halus untuk perubahan warna saat di-hover */
             transition: background-color 0.2s, color 0.2s, border-color 0.2s;
         }
 
-        /* Efek warna terbalik saat disorot mouse */
         .building-label:hover {
             background-color: var(--lake-blue);
             color: var(--white);
@@ -79,7 +86,7 @@
             z-index: 15;
             pointer-events: none;
             width: 24%; 
-            min-width: 240px;
+            min-width: 150px;
             animation: flyPlane 60s linear infinite;
         }
 
@@ -226,8 +233,8 @@
         <!-- PESAWAT TERBANG MELINTAS -->
         <img id="airplane" src="plane.webp" alt="Flying Plane">
         
-        <!-- LABEL BANGUNAN PERMANEN (Sekarang bisa diklik secara langsung) -->
-        <div class="building-label" style="left: 49.3%; top: 50%;" onclick="openModal('the_shop', event)">THE SHOP</div>
+        <!-- LABEL BANGUNAN PERMANEN (Posisi THE SHOP sudah digeser) -->
+        <div class="building-label" style="left: 46%; top: 59%;" onclick="openModal('the_shop', event)">THE SHOP</div>
         <div class="building-label" style="left: 60%; top: 46%;" onclick="openModal('the_cafe', event)">THE CAFE</div>
         <div class="building-label" style="left: 77%; top: 24%;" onclick="openModal('babes_club', event)">BABES CLUB</div>
         <div class="building-label" style="left: 54%; top: 64%;" onclick="openModal('guard_tower', event)">GUARD TOWER</div>
@@ -398,12 +405,10 @@
 
     <!-- SCRIPT (Jauh Lebih Bersih & Ringan) -->
     <script>
-        // Variabel Global
         let currentOpenModal = null;
         let closingTimers = []; 
         let overlay = null;
 
-        // Fungsi Tab Menu
         function switchTab(modalContext, tabName) {
             const modalEl = document.getElementById('modal-' + (modalContext === 'hut' ? 'the_hut' : 'the_shop'));
             const buttons = modalEl.querySelectorAll('.tab-btn');
@@ -416,38 +421,31 @@
             document.getElementById(modalContext + '-' + tabName).style.display = 'block';
         }
 
-        // Fungsi Sub-Modal (Negosiasi Trade)
         function openSubModal(id) { document.getElementById('modal-' + id).style.display = 'flex'; }
         function closeSubModal(id) { document.getElementById('modal-' + id).style.display = 'none'; }
 
-        // Fungsi Membuka Modal (Dipanggil langsung dari klik Label)
         function openModal(zoneId, event) {
             if (!overlay) overlay = document.getElementById('modal-overlay');
             const modal = document.getElementById('modal-' + zoneId);
             
             if (modal && overlay) {
-                // Batalkan proses penutupan jika ada
                 closingTimers.forEach(clearTimeout);
                 closingTimers = [];
                 
-                // Reset semua modal
                 const modals = document.querySelectorAll('.babes-modal');
                 modals.forEach(m => { m.style.display = 'none'; m.style.opacity = '0'; });
 
-                // Tampilkan overlay
                 overlay.style.display = 'block';
                 setTimeout(() => { overlay.style.opacity = '1'; }, 10);
                 
-                // Atur posisi awal animasi dari titik kursor
                 modal.style.top = event.clientY + 'px';
                 modal.style.left = event.clientX + 'px';
                 modal.style.transform = 'translate(-50%, -50%) scale(0)';
                 modal.style.opacity = '0';
                 modal.style.display = 'flex';
                 
-                void modal.offsetWidth; // Force Reflow untuk memicu animasi
+                void modal.offsetWidth; 
                 
-                // Besarkan ke tengah layar
                 modal.style.top = '50%';
                 modal.style.left = '50%';
                 modal.style.transform = 'translate(-50%, -50%) scale(1)';
@@ -457,7 +455,6 @@
             }
         }
 
-        // Fungsi Menutup Semua Modal
         function closeAllModals() {
             if (!overlay) overlay = document.getElementById('modal-overlay');
             
@@ -479,11 +476,8 @@
             }
         }
 
-        // Saat halaman selesai dimuat
         window.onload = () => {
             overlay = document.getElementById('modal-overlay');
-            
-            // Pasang event penutup modal di tombol X dan area luar (overlay)
             const closeButtons = document.querySelectorAll('.close-modal');
             closeButtons.forEach(button => { button.addEventListener('click', closeAllModals); });
             overlay.addEventListener('click', closeAllModals);
