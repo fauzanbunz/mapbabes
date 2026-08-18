@@ -42,16 +42,48 @@
         #map-image { width: 100%; height: auto; display: block; pointer-events: none; }
         #interactive-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; }
 
-        /* --- PIXEL TOOLTIP --- */
-        #pixel-tooltip {
-            display: none; position: fixed; background-color: var(--white);
-            color: var(--lake-blue); border: 3px solid var(--lake-blue);
-            padding: 10px 15px; font-family: 'Press Start 2P', cursive;
-            font-size: 10px; z-index: 50; pointer-events: none;
+        /* --- PERMANENT BUILDING LABELS (BOUNCY ANIMATION) --- */
+        .building-label {
+            position: absolute;
+            background-color: var(--white);
+            color: var(--lake-blue);
+            border: 3px solid var(--lake-blue);
+            padding: 6px 12px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            z-index: 20; 
+            pointer-events: none; /* Agar tidak menghalangi klik ke kanvas */
             box-shadow: 4px 4px 0px rgba(0, 135, 153, 0.2);
+            text-transform: uppercase;
+            transform: translate(-50%, -50%);
+            animation: floatLabel 3s ease-in-out infinite;
         }
 
-        /* --- UI MODAL SYSTEM (FULL PAGE & ANIMATED) --- */
+        @keyframes floatLabel {
+            0%, 100% { margin-top: 0px; }
+            50% { margin-top: -8px; }
+        }
+
+        /* --- AIRPLANE ANIMATION (EVERY 1 MINUTE) --- */
+        #airplane {
+            position: absolute;
+            z-index: 15;
+            pointer-events: none;
+            width: 8%; /* Ukuran responsif mengikuti lebar container */
+            min-width: 80px;
+            animation: flyPlane 60s linear infinite;
+        }
+
+        @keyframes flyPlane {
+            /* Pesawat mulai dari luar layar kanan atas */
+            0% { top: -20%; left: 120%; }
+            /* Melintas selama kurang lebih 10 detik ke kiri bawah */
+            15% { top: 120%; left: -20%; }
+            /* Sisa 50 detik tersembunyi di luar layar (menunggu siklus 1 menit selesai) */
+            100% { top: 120%; left: -20%; }
+        }
+
+        /* --- UI MODAL SYSTEM --- */
         #modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(244, 216, 198, 0.85); backdrop-filter: blur(10px); z-index: 99;
@@ -65,14 +97,12 @@
             border-radius: 24px; box-shadow: 0 15px 35px rgba(0, 135, 153, 0.2); 
             padding: 20px 30px; z-index: 100; color: #4a4a4a; 
             flex-direction: column;
-            
             top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0);
             opacity: 0;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
 
-        /* Sub-Modal (For Trade Negotiation) */
         .sub-modal {
             display: none; position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%); width: 400px; max-width: 90vw;
@@ -99,15 +129,12 @@
         }
         .close-modal:hover { background: var(--lake-blue); transform: scale(1.1); }
 
-        /* Modal Layout */
         .modal-body { display: flex; gap: 20px; flex: 1; overflow: hidden; }
-        .col-left { flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding-right: 10px;}
-        .col-right { flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding-right: 10px;}
-
+        .col-left, .col-right { flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding-right: 10px;}
         .modal-section { background: var(--white); border-radius: 16px; padding: 20px; margin-bottom: 15px; border: 2px solid var(--vanilla-cream); }
         .section-title { color: var(--pastel-turquoise); font-weight: 800; margin-top: 0; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; }
 
-        /* --- NFT VISUALS (LARGE & SQUARE) --- */
+        /* --- NFT VISUALS --- */
         .nft-large {
             width: 100%; aspect-ratio: 1 / 1; 
             background: var(--vanilla-cream); border: 4px solid var(--lake-blue);
@@ -130,11 +157,7 @@
 
         /* --- UI COMPONENTS --- */
         .tab-container { display: flex; gap: 10px; margin-bottom: 15px; }
-        .tab-btn {
-            background: rgba(152, 205, 204, 0.3); color: var(--lake-blue); border: none;
-            padding: 12px 20px; border-radius: 10px; font-family: 'Nunito', sans-serif;
-            font-weight: 800; cursor: pointer; transition: 0.2s; flex: 1;
-        }
+        .tab-btn { background: rgba(152, 205, 204, 0.3); color: var(--lake-blue); border: none; padding: 12px 20px; border-radius: 10px; font-family: 'Nunito', sans-serif; font-weight: 800; cursor: pointer; transition: 0.2s; flex: 1; }
         .tab-btn.active { background: var(--lake-blue); color: var(--white); }
         .tab-content { display: none; }
 
@@ -146,7 +169,6 @@
         .input-text, .textarea-box { width: calc(100% - 30px); padding: 15px; border: 2px solid var(--vanilla-cream); border-radius: 10px; font-family: 'Nunito', sans-serif; font-size: 16px; margin-bottom: 15px; outline: none; }
         .textarea-box { height: 150px; resize: none; }
 
-        /* Chat & Trade Specific */
         .chat-list { height: 100%; overflow-y: auto; border: 2px solid var(--vanilla-cream); padding: 15px; border-radius: 12px; margin-bottom: 15px; flex: 1; min-height: 150px; }
         .chat-msg { margin-bottom: 12px; font-size: 15px; }
         .chat-user { font-weight: bold; color: var(--lake-blue); }
@@ -155,7 +177,7 @@
         .trade-side { flex: 1; background: #fafafa; border: 2px solid var(--vanilla-cream); padding: 20px; border-radius: 12px; text-align: center; }
         .trade-title { font-size: 14px; font-weight: 800; color: var(--lake-blue); margin-bottom: 15px; text-transform: uppercase; }
 
-        /* --- ROTATE DEVICE WARNING OVERLAY --- */
+        /* --- ROTATE DEVICE WARNING --- */
         #rotate-warning {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--vanilla-cream); color: var(--lake-blue); z-index: 9999;
@@ -165,17 +187,11 @@
         #rotate-warning p { font-size: 16px; font-weight: 800; margin-top: 15px; max-width: 80%; }
         .rotate-icon { font-size: 80px; margin-bottom: 20px; animation: rotatePhone 2s ease-in-out infinite alternate; }
         
-        @keyframes rotatePhone {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(-90deg); }
-        }
+        @keyframes rotatePhone { 0% { transform: rotate(0deg); } 100% { transform: rotate(-90deg); } }
 
         /* --- MOBILE RESPONSIVENESS --- */
         @media (max-width: 768px) {
-            .babes-modal {
-                width: 95vw; height: 90vh; padding: 15px;
-                border-width: 3px; border-radius: 16px;
-            }
+            .babes-modal { width: 95vw; height: 90vh; padding: 15px; border-width: 3px; border-radius: 16px; }
             .modal-title { font-size: 12px; }
             .modal-body { flex-direction: column; overflow-y: auto; gap: 15px; }
             .col-left, .col-right { overflow-y: visible; padding-right: 0; }
@@ -184,18 +200,14 @@
             .nft-large { width: 70%; margin: 0 auto 15px auto; }
             .trade-box { flex-direction: column; gap: 10px; }
             .sub-modal { width: 90vw; padding: 15px; }
+            .building-label { font-size: 8px; padding: 4px 8px; } /* Label lebih kecil di HP */
         }
         
-        /* Activate Rotate Warning on Portrait Devices */
-        @media (max-width: 1024px) and (orientation: portrait) {
-            #rotate-warning { display: flex; }
-        }
-
+        @media (max-width: 1024px) and (orientation: portrait) { #rotate-warning { display: flex; } }
     </style>
 </head>
 <body>
 
-    <!-- ROTATE WARNING OVERLAY (ONLY SHOWS ON PORTRAIT MOBILE) -->
     <div id="rotate-warning">
         <div class="rotate-icon">📱</div>
         <h2 class="modal-title" style="font-size: 20px;">PLEASE ROTATE</h2>
@@ -203,12 +215,22 @@
     </div>
 
     <div id="map-container">
+        <!-- GAMBAR PETA UTAMA -->
         <img id="map-image" src="map-babes.webp" alt="Babes Island Map">
-        <canvas id="interactive-canvas"></canvas>
-    </div>
+        
+        <!-- PESAWAT TERBANG MELINTAS -->
+        <img id="airplane" src="plane.webp" alt="Flying Plane">
 
-    <!-- TOOLTIP -->
-    <div id="pixel-tooltip">BUILDING NAME</div>
+        <!-- KANVAS INTERAKTIF (Hitbox Transparan) -->
+        <canvas id="interactive-canvas"></canvas>
+        
+        <!-- LABEL BANGUNAN PERMANEN (Berada di atas kanvas berdasarkan persentase peta) -->
+        <div class="building-label" style="left: 49.3%; top: 50%;">THE SHOP</div>
+        <div class="building-label" style="left: 60%; top: 46%;">THE CAFE</div>
+        <div class="building-label" style="left: 77%; top: 24%;">BABES CLUB</div>
+        <div class="building-label" style="left: 54%; top: 64%;">GUARD TOWER</div>
+        <div class="building-label" style="left: 84%; top: 35%;">THE HUT</div>
+    </div>
 
     <!-- MAIN OVERLAY -->
     <div id="modal-overlay"></div>
@@ -220,20 +242,17 @@
             <div class="close-modal">X</div>
         </div>
         <div class="modal-body">
-            <!-- Left: Profile & Actions -->
             <div class="col-left">
                 <div class="modal-section" style="flex: 1;">
                     <h4 class="section-title">YOUR BABE NFT</h4>
                     <div class="nft-large">NFT IMAGE<br>(SQUARE)</div>
                     <input type="text" class="input-text" value="Babes #001" placeholder="Change profile name...">
                     <button class="btn" style="margin-bottom: 30px;">SAVE NAME</button>
-
                     <h4 class="section-title" style="color: var(--powder-pink);">ACTIONS</h4>
                     <button class="btn btn-pink">MINT WARDROBE (Lock & Burn)</button>
                     <button class="btn btn-gold">STAKE NFT (Join Contest)</button>
                 </div>
             </div>
-            <!-- Right: Inventory Tabs -->
             <div class="col-right">
                 <div class="modal-section" style="flex: 1;">
                     <h4 class="section-title">INVENTORY</h4>
@@ -242,30 +261,15 @@
                         <button class="tab-btn" onclick="switchTab('hut', 'accessories')">ACCESSORIES</button>
                         <button class="tab-btn" onclick="switchTab('hut', 'glasses')">GLASSES</button>
                     </div>
-                    
-                    <!-- Hut Content: Clothes -->
                     <div id="hut-clothes" class="tab-content hut-content" style="display: block;">
-                        <div class="item-grid">
-                            <div class="item-square">Red Bikini</div>
-                            <div class="item-square">Blue Swimsuit</div>
-                            <div class="item-square" style="opacity: 0.5;">Empty</div>
-                        </div>
+                        <div class="item-grid"><div class="item-square">Red Bikini</div><div class="item-square">Blue Swimsuit</div><div class="item-square" style="opacity: 0.5;">Empty</div></div>
                     </div>
-                    <!-- Hut Content: Accessories -->
                     <div id="hut-accessories" class="tab-content hut-content">
-                        <div class="item-grid">
-                            <div class="item-square">Belly Piercing</div>
-                            <div class="item-square">Rose Tattoo</div>
-                        </div>
+                        <div class="item-grid"><div class="item-square">Belly Piercing</div><div class="item-square">Rose Tattoo</div></div>
                     </div>
-                    <!-- Hut Content: Glasses -->
                     <div id="hut-glasses" class="tab-content hut-content">
-                        <div class="item-grid">
-                            <div class="item-square">Blue Eyes</div>
-                            <div class="item-square">Retro Specs</div>
-                        </div>
+                        <div class="item-grid"><div class="item-square">Blue Eyes</div><div class="item-square">Retro Specs</div></div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -283,9 +287,7 @@
                 <button class="tab-btn" onclick="switchTab('shop', 'accessories')">TATTOOS & PIERCINGS</button>
                 <button class="tab-btn" onclick="switchTab('shop', 'glasses')">GLASSES & EYES</button>
             </div>
-            
             <div class="modal-section" style="flex: 1; overflow-y: auto;">
-                <!-- Shop Content: Clothes -->
                 <div id="shop-clothes" class="tab-content shop-content" style="display: block;">
                     <div class="item-grid" style="grid-template-columns: repeat(4, 1fr);">
                         <div class="item-square"><span>Neon Bikini</span><span class="item-price">50 $babes</span></div>
@@ -294,14 +296,12 @@
                         <div class="item-square"><span>Black Leather</span><span class="item-price">200 $babes</span></div>
                     </div>
                 </div>
-                <!-- Shop Content: Accessories -->
                 <div id="shop-accessories" class="tab-content shop-content">
                     <div class="item-grid" style="grid-template-columns: repeat(4, 1fr);">
                         <div class="item-square"><span>Dragon Tattoo</span><span class="item-price">100 $babes</span></div>
                         <div class="item-square"><span>Navel Ring</span><span class="item-price">40 $babes</span></div>
                     </div>
                 </div>
-                <!-- Shop Content: Glasses -->
                 <div id="shop-glasses" class="tab-content shop-content">
                     <div class="item-grid" style="grid-template-columns: repeat(4, 1fr);">
                         <div class="item-square"><span>Aviators</span><span class="item-price">80 $babes</span></div>
@@ -315,12 +315,8 @@
 
     <!-- 3. THE CAFE (CHAT & TRADE) -->
     <div class="babes-modal" id="modal-the_cafe">
-        <div class="modal-header">
-            <h3 class="modal-title">THE CAFE // SOCIAL & TRADE</h3>
-            <div class="close-modal">X</div>
-        </div>
+        <div class="modal-header"><h3 class="modal-title">THE CAFE // SOCIAL & TRADE</h3><div class="close-modal">X</div></div>
         <div class="modal-body">
-            <!-- Left: Chat -->
             <div class="col-left">
                 <div class="modal-section" style="flex: 1; display: flex; flex-direction: column;">
                     <h4 class="section-title">VIP LIVE CHAT</h4>
@@ -335,24 +331,15 @@
                     </div>
                 </div>
             </div>
-            <!-- Right: P2P Trade -->
             <div class="col-right">
                 <div class="modal-section" style="flex: 1;">
                     <h4 class="section-title">P2P ITEM TRADE STATION</h4>
                     <p style="font-size: 14px; margin-bottom: 20px;">Secure Smart Contract Escrow. Both parties must approve to finalize.</p>
-                    
                     <div class="trade-box">
-                        <div class="trade-side">
-                            <div class="trade-title">YOU PROVIDE</div>
-                            <div class="item-square" style="width: 60%; margin: 0 auto;">Select Item / Add $babes</div>
-                        </div>
+                        <div class="trade-side"><div class="trade-title">YOU PROVIDE</div><div class="item-square" style="width: 60%; margin: 0 auto;">Select Item</div></div>
                         <div style="display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: bold; color: var(--powder-pink);">⇄</div>
-                        <div class="trade-side">
-                            <div class="trade-title">THEY PROVIDE</div>
-                            <div class="item-square" style="width: 60%; margin: 0 auto; border-color: var(--powder-pink); color: var(--powder-pink);">Target Item</div>
-                        </div>
+                        <div class="trade-side"><div class="trade-title">THEY PROVIDE</div><div class="item-square" style="width: 60%; margin: 0 auto; border-color: var(--powder-pink); color: var(--powder-pink);">Target Item</div></div>
                     </div>
-                    
                     <button class="btn btn-gold" onclick="openSubModal('trade-negotiate')">NEGOTIATE & APPROVE TRANSACTION</button>
                 </div>
             </div>
@@ -372,29 +359,18 @@
 
     <!-- 4. BABES CLUB (CONTEST) -->
     <div class="babes-modal" id="modal-babes_club">
-        <div class="modal-header">
-            <h3 class="modal-title">BABES CLUB // WEEKLY CONTEST</h3>
-            <div class="close-modal">X</div>
-        </div>
+        <div class="modal-header"><h3 class="modal-title">BABES CLUB // WEEKLY CONTEST</h3><div class="close-modal">X</div></div>
         <div class="modal-body">
-            <!-- Left: Active Polling -->
             <div class="col-left" style="flex: 2;">
                 <div class="modal-section" style="flex: 1;">
                     <h4 class="section-title">ACTIVE POLLING (VOTE NOW)</h4>
                     <div style="display: flex; gap: 20px;">
-                        <div style="flex: 1; text-align: center;">
-                            <div class="nft-large" style="border-color: var(--powder-pink);">Babes #102<br>(SQUARE)</div>
-                            <button class="btn btn-pink">VOTE #102</button>
-                        </div>
+                        <div style="flex: 1; text-align: center;"><div class="nft-large" style="border-color: var(--powder-pink);">Babes #102<br>(SQUARE)</div><button class="btn btn-pink">VOTE #102</button></div>
                         <div style="display: flex; align-items: center; font-weight: 800; color: var(--lake-blue); font-size: 24px;">VS</div>
-                        <div style="flex: 1; text-align: center;">
-                            <div class="nft-large">Babes #888<br>(SQUARE)</div>
-                            <button class="btn">VOTE #888</button>
-                        </div>
+                        <div style="flex: 1; text-align: center;"><div class="nft-large">Babes #888<br>(SQUARE)</div><button class="btn">VOTE #888</button></div>
                     </div>
                 </div>
             </div>
-            <!-- Right: Previous Winner -->
             <div class="col-right">
                 <div class="modal-section" style="flex: 1; text-align: center;">
                     <h4 class="section-title">PREVIOUS WINNER</h4>
@@ -407,10 +383,7 @@
 
     <!-- 5. GUARD TOWER (SUPPORT) -->
     <div class="babes-modal" id="modal-guard_tower">
-        <div class="modal-header">
-            <h3 class="modal-title">GUARD TOWER // SUPPORT</h3>
-            <div class="close-modal">X</div>
-        </div>
+        <div class="modal-header"><h3 class="modal-title">GUARD TOWER // SUPPORT</h3><div class="close-modal">X</div></div>
         <div class="modal-body" style="justify-content: center; align-items: center;">
             <div class="modal-section" style="width: 100%; max-width: 800px;">
                 <h4 class="section-title">REPORT TO ADMIN / DEV</h4>
@@ -421,10 +394,8 @@
         </div>
     </div>
 
-
-    <!-- SCRIPT (CANVAS & LOGIC) -->
+    <!-- SCRIPT -->
     <script>
-        // --- LOGIC FOR TABS ---
         function switchTab(modalContext, tabName) {
             const modalEl = document.getElementById('modal-' + (modalContext === 'hut' ? 'the_hut' : 'the_shop'));
             const buttons = modalEl.querySelectorAll('.tab-btn');
@@ -437,19 +408,13 @@
             document.getElementById(modalContext + '-' + tabName).style.display = 'block';
         }
 
-        // --- SUB-MODAL LOGIC ---
-        function openSubModal(id) {
-            document.getElementById('modal-' + id).style.display = 'flex';
-        }
-        function closeSubModal(id) {
-            document.getElementById('modal-' + id).style.display = 'none';
-        }
+        function openSubModal(id) { document.getElementById('modal-' + id).style.display = 'flex'; }
+        function closeSubModal(id) { document.getElementById('modal-' + id).style.display = 'none'; }
 
         window.onload = () => {
             const canvas = document.getElementById('interactive-canvas');
             const ctx = canvas.getContext('2d');
             const mapImage = document.getElementById('map-image');
-            const tooltip = document.getElementById('pixel-tooltip');
 
             function resizeCanvas() {
                 canvas.width = mapImage.clientWidth;
@@ -459,11 +424,11 @@
             window.addEventListener('resize', resizeCanvas);
 
             const zones = [
-                { id: 'the_shop', name: 'THE SHOP', points: [ {x: 882, y: 712}, {x: 1012, y: 802}, {x: 882, y: 892}, {x: 752, y: 802} ] },
-                { id: 'babes_club', name: 'BABES CLUB', points: [ {x: 1476, y: 277}, {x: 1656, y: 407}, {x: 1476, y: 537}, {x: 1296, y: 407} ] },
-                { id: 'the_cafe', name: 'THE CAFE', points: [ {x: 1154, y: 640}, {x: 1264, y: 720}, {x: 1154, y: 800}, {x: 1044, y: 720} ] },
-                { id: 'guard_tower', name: 'GUARD TOWER', points: [ {x: 1041, y: 882}, {x: 1131, y: 982}, {x: 1041, y: 1082}, {x: 951, y: 982} ] },
-                { id: 'the_hut', name: 'THE HUT', points: [ {x: 1607, y: 460}, {x: 1747, y: 560}, {x: 1607, y: 660}, {x: 1467, y: 560} ] }
+                { id: 'the_shop', points: [ {x: 882, y: 712}, {x: 1012, y: 802}, {x: 882, y: 892}, {x: 752, y: 802} ] },
+                { id: 'babes_club', points: [ {x: 1476, y: 277}, {x: 1656, y: 407}, {x: 1476, y: 537}, {x: 1296, y: 407} ] },
+                { id: 'the_cafe', points: [ {x: 1154, y: 640}, {x: 1264, y: 720}, {x: 1154, y: 800}, {x: 1044, y: 720} ] },
+                { id: 'guard_tower', points: [ {x: 1041, y: 882}, {x: 1131, y: 982}, {x: 1041, y: 1082}, {x: 951, y: 982} ] },
+                { id: 'the_hut', points: [ {x: 1607, y: 460}, {x: 1747, y: 560}, {x: 1607, y: 660}, {x: 1467, y: 560} ] }
             ];
 
             let hoveredZone = null;
@@ -485,10 +450,6 @@
                     if (intersect) inside = !inside;
                 }
                 return inside;
-            }
-
-            function draw() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
             }
 
             const overlay = document.getElementById('modal-overlay');
@@ -522,8 +483,6 @@
                     currentOpenModal = modal;
                     hoveredZone = null;
                     canvas.style.cursor = 'default';
-                    tooltip.style.display = 'none';
-                    draw(); 
                 }
             }
 
@@ -557,40 +516,23 @@
 
                 let found = null;
                 for (const zone of zones) {
-                    if (isPointInPolygon(mousePos, zone.points)) {
-                        found = zone;
-                        break;
-                    }
+                    if (isPointInPolygon(mousePos, zone.points)) { found = zone; break; }
                 }
 
                 if (found !== hoveredZone) {
                     hoveredZone = found;
                     canvas.style.cursor = hoveredZone ? 'pointer' : 'default';
-                    draw();
-                }
-
-                if (hoveredZone) {
-                    tooltip.innerText = hoveredZone.name;
-                    tooltip.style.display = 'block';
-                    tooltip.style.left = (e.clientX + 15) + 'px';
-                    tooltip.style.top = (e.clientY + 15) + 'px';
-                } else {
-                    tooltip.style.display = 'none';
                 }
             });
 
             canvas.addEventListener('click', (e) => {
-                if (hoveredZone && !currentOpenModal) {
-                    openModal(hoveredZone.id, e);
-                }
+                if (hoveredZone && !currentOpenModal) { openModal(hoveredZone.id, e); }
             });
 
             canvas.addEventListener('mouseleave', () => {
                 if (currentOpenModal) return;
                 hoveredZone = null;
                 canvas.style.cursor = 'default';
-                tooltip.style.display = 'none';
-                draw();
             });
         };
     </script>
