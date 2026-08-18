@@ -52,7 +52,7 @@
             font-family: 'Press Start 2P', cursive;
             font-size: 10px;
             z-index: 20; 
-            pointer-events: none; /* Agar tidak menghalangi klik ke kanvas */
+            pointer-events: none; 
             box-shadow: 4px 4px 0px rgba(0, 135, 153, 0.2);
             text-transform: uppercase;
             transform: translate(-50%, -50%);
@@ -69,18 +69,19 @@
             position: absolute;
             z-index: 15;
             pointer-events: none;
-            width: 8%; /* Ukuran responsif mengikuti lebar container */
-            min-width: 80px;
+            /* Ukuran diperbesar 3x lipat */
+            width: 24%; 
+            min-width: 240px;
             animation: flyPlane 60s linear infinite;
         }
 
         @keyframes flyPlane {
-            /* Pesawat mulai dari luar layar kanan atas */
-            0% { top: -20%; left: 120%; }
-            /* Melintas selama kurang lebih 10 detik ke kiri bawah */
-            15% { top: 120%; left: -20%; }
-            /* Sisa 50 detik tersembunyi di luar layar (menunggu siklus 1 menit selesai) */
-            100% { top: 120%; left: -20%; }
+            /* Start digeser jauh ke atas (top: -50%) agar lintasan melipir bagian atas pulau */
+            0% { top: -50%; left: 120%; }
+            /* Pergerakan diperlambat 3x lipat (45% dari 60 detik = 27 detik waktu tempuh melintas) */
+            45% { top: 90%; left: -20%; }
+            /* Sisa waktu bersembunyi di luar layar hingga genap 1 menit */
+            100% { top: 90%; left: -20%; }
         }
 
         /* --- UI MODAL SYSTEM --- */
@@ -111,7 +112,6 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.3); flex-direction: column;
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--vanilla-cream); border-radius: 10px; }
         ::-webkit-scrollbar-thumb { background: var(--pastel-turquoise); border-radius: 10px; }
@@ -200,7 +200,7 @@
             .nft-large { width: 70%; margin: 0 auto 15px auto; }
             .trade-box { flex-direction: column; gap: 10px; }
             .sub-modal { width: 90vw; padding: 15px; }
-            .building-label { font-size: 8px; padding: 4px 8px; } /* Label lebih kecil di HP */
+            .building-label { font-size: 8px; padding: 4px 8px; } 
         }
         
         @media (max-width: 1024px) and (orientation: portrait) { #rotate-warning { display: flex; } }
@@ -218,13 +218,13 @@
         <!-- GAMBAR PETA UTAMA -->
         <img id="map-image" src="map-babes.webp" alt="Babes Island Map">
         
-        <!-- PESAWAT TERBANG MELINTAS -->
+        <!-- PESAWAT TERBANG MELINTAS (Diperbesar & Digeser ke Utara) -->
         <img id="airplane" src="plane.webp" alt="Flying Plane">
 
-        <!-- KANVAS INTERAKTIF (Hitbox Transparan) -->
+        <!-- KANVAS INTERAKTIF -->
         <canvas id="interactive-canvas"></canvas>
         
-        <!-- LABEL BANGUNAN PERMANEN (Berada di atas kanvas berdasarkan persentase peta) -->
+        <!-- LABEL BANGUNAN PERMANEN -->
         <div class="building-label" style="left: 49.3%; top: 50%;">THE SHOP</div>
         <div class="building-label" style="left: 60%; top: 46%;">THE CAFE</div>
         <div class="building-label" style="left: 77%; top: 24%;">BABES CLUB</div>
@@ -313,7 +313,7 @@
         </div>
     </div>
 
-    <!-- 3. THE CAFE (CHAT & TRADE) -->
+    <!-- 3. THE CAFE -->
     <div class="babes-modal" id="modal-the_cafe">
         <div class="modal-header"><h3 class="modal-title">THE CAFE // SOCIAL & TRADE</h3><div class="close-modal">X</div></div>
         <div class="modal-body">
@@ -357,7 +357,7 @@
         <button class="btn btn-pink" onclick="closeSubModal('trade-negotiate')">CANCEL</button>
     </div>
 
-    <!-- 4. BABES CLUB (CONTEST) -->
+    <!-- 4. BABES CLUB -->
     <div class="babes-modal" id="modal-babes_club">
         <div class="modal-header"><h3 class="modal-title">BABES CLUB // WEEKLY CONTEST</h3><div class="close-modal">X</div></div>
         <div class="modal-body">
@@ -381,7 +381,7 @@
         </div>
     </div>
 
-    <!-- 5. GUARD TOWER (SUPPORT) -->
+    <!-- 5. GUARD TOWER -->
     <div class="babes-modal" id="modal-guard_tower">
         <div class="modal-header"><h3 class="modal-title">GUARD TOWER // SUPPORT</h3><div class="close-modal">X</div></div>
         <div class="modal-body" style="justify-content: center; align-items: center;">
