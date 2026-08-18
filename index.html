@@ -20,30 +20,39 @@
         }
 
         body {
+            /* Menerapkan Background Image Baru */
             background-color: #f8f0e6; 
+            background-image: url('ChatGPT%20Image%208%20Agu%202026%2C%2013.39.44.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            
             margin: 0;
             display: flex;
+            flex-direction: column; /* Ubah ke kolom agar teks berjalan ada di bawah map */
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             font-family: 'Nunito', sans-serif;
             overflow: hidden;
+            gap: 15px; /* Jarak antara peta dan teks berjalan */
         }
 
         /* --- PERBAIKAN RESPONSIVE MAP --- */
         #map-container {
             position: relative;
             display: inline-block; 
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); 
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); /* Shadow dipertebal agar menonjol dari background */
             border-radius: 12px;
             max-width: 98vw;
-            max-height: 98vh;
-            overflow: hidden; /* Mencegah elemen keluar dari border map */
+            /* Tinggi maksimal diturunkan ke 85vh agar ada ruang untuk teks berjalan di bawahnya */
+            max-height: 85vh; 
+            overflow: hidden; 
         }
         
         #map-image { 
             max-width: 98vw; 
-            max-height: 98vh; 
+            max-height: 85vh; 
             width: auto; 
             height: auto; 
             display: block; 
@@ -51,7 +60,54 @@
             border-radius: 12px;
         }
 
-        /* --- WATER SPARKLES (BINTANG KELAP-KELIP DI AIR) --- */
+        /* --- LOGO DI POJOK KIRI ATAS MAP --- */
+        #map-logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 15%; /* Lebar responsif */
+            min-width: 100px;
+            max-width: 250px;
+            z-index: 25;
+            pointer-events: none; /* Agar tidak menghalangi klik ke map */
+            filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.3)); /* Bayangan agar terbaca jelas */
+        }
+
+        /* --- TEKS BERJALAN (MARQUEE) --- */
+        .marquee-wrapper {
+            width: 98vw;
+            max-width: 1920px;
+            background-color: var(--white);
+            border: 3px solid var(--pastel-turquoise);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .marquee-content {
+            white-space: nowrap;
+            font-family: 'Press Start 2P', cursive;
+            color: var(--pastel-turquoise);
+            font-size: 14px;
+            padding: 12px 0;
+            display: flex;
+            flex-shrink: 0;
+            min-width: 100%;
+            justify-content: space-around;
+            animation: scrollText 15s linear infinite;
+        }
+
+        .marquee-content span {
+            margin: 0 30px;
+        }
+
+        @keyframes scrollText {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* --- WATER SPARKLES --- */
         .sparkle {
             position: absolute;
             width: 4px;
@@ -59,7 +115,7 @@
             background-color: #ffffff;
             border-radius: 50%;
             box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.9);
-            pointer-events: none; /* Tidak menghalangi klik */
+            pointer-events: none; 
             z-index: 10;
             animation: twinkle linear infinite;
         }
@@ -233,6 +289,10 @@
             .trade-box { flex-direction: column; gap: 10px; }
             .sub-modal { width: 90vw; padding: 15px; }
             .building-label { font-size: 8px; padding: 4px 8px; } 
+            
+            /* Menyesuaikan logo & teks berjalan untuk HP */
+            #map-logo { top: 10px; left: 10px; width: 25%; }
+            .marquee-content { font-size: 10px; padding: 10px 0; }
         }
         
         @media (max-width: 1024px) and (orientation: portrait) { #rotate-warning { display: flex; } }
@@ -246,7 +306,11 @@
         <p>Rotate your device to landscape mode for the best experience.</p>
     </div>
 
+    <!-- PETA UTAMA -->
     <div id="map-container">
+        <!-- LOGO MAP (Baru) -->
+        <img id="map-logo" src="logo%20babes.svg" alt="Babes Logo">
+
         <!-- GAMBAR PETA UTAMA -->
         <img id="map-image" src="map-babes.webp" alt="Babes Island Map">
         
@@ -259,6 +323,25 @@
         <div class="building-label" style="left: 77%; top: 24%;" onclick="openModal('babes_club', event)">BABES CLUB</div>
         <div class="building-label" style="left: 54%; top: 64%;" onclick="openModal('guard_tower', event)">GUARD TOWER</div>
         <div class="building-label" style="left: 84%; top: 35%;" onclick="openModal('the_hut', event)">THE HUT</div>
+    </div>
+
+    <!-- TEKS BERJALAN (Baru) -->
+    <div class="marquee-wrapper">
+        <div class="marquee-content">
+            <span>BABES IN THE HOOD</span>
+            <span>BABES IN THE HOOD</span>
+            <span>BABES IN THE HOOD</span>
+            <span>BABES IN THE HOOD</span>
+            <span>BABES IN THE HOOD</span>
+        </div>
+        <!-- Duplikat konten agar putaran seamless/tidak putus -->
+        <div class="marquee-content">
+            <span>BABES IN THE HOOD</span>
+            <span>BABES IN THE HOOD</span>
+            <span>BABES IN THE HOOD</span>
+            <span>BABES IN THE HOOD</span>
+            <span>BABES IN THE HOOD</span>
+        </div>
     </div>
 
     <!-- MAIN OVERLAY -->
@@ -496,30 +579,25 @@
             }
         }
 
-        // --- SPARKLE GENERATOR (Membuat bintang air secara otomatis) ---
         function generateSparkles() {
             const mapContainer = document.getElementById('map-container');
-            
-            // Area persebaran kelap-kelip (x: persentase kiri, y: persentase atas, w: lebar area, h: tinggi area)
             const waterZones = [
-                { x: 2, y: 50, w: 20, h: 45, count: 12 },   // Samudra Kiri
-                { x: 28, y: 40, w: 10, h: 35, count: 8 },   // Air Terjun
-                { x: 35, y: 85, w: 20, h: 10, count: 6 },   // Pantai Bawah (Tepi)
-                { x: 80, y: 5, w: 18, h: 15, count: 6 },    // Laut Kanan Atas
-                { x: 92, y: 65, w: 6, h: 25, count: 4 }     // Ujung Laut Kanan Bawah
+                { x: 2, y: 50, w: 20, h: 45, count: 12 }, 
+                { x: 28, y: 40, w: 10, h: 35, count: 8 },  
+                { x: 35, y: 85, w: 20, h: 10, count: 6 },   
+                { x: 80, y: 5, w: 18, h: 15, count: 6 },    
+                { x: 92, y: 65, w: 6, h: 25, count: 4 }     
             ];
 
             waterZones.forEach(zone => {
                 for(let i = 0; i < zone.count; i++) {
                     let sparkle = document.createElement('div');
                     sparkle.className = 'sparkle';
-                    // Posisi acak di dalam area (zone)
                     sparkle.style.left = (zone.x + (Math.random() * zone.w)) + '%';
                     sparkle.style.top = (zone.y + (Math.random() * zone.h)) + '%';
                     
-                    // Kecepatan & delay acak agar terlihat natural
-                    const delay = Math.random() * 5; // Delay 0 hingga 5 detik
-                    const duration = 2 + (Math.random() * 3); // Durasi 2 hingga 5 detik
+                    const delay = Math.random() * 5; 
+                    const duration = 2 + (Math.random() * 3); 
                     
                     sparkle.style.animationDelay = delay + 's';
                     sparkle.style.animationDuration = duration + 's';
@@ -535,7 +613,6 @@
             closeButtons.forEach(button => { button.addEventListener('click', closeAllModals); });
             overlay.addEventListener('click', closeAllModals);
             
-            // Jalankan fungsi generator bintang saat halaman selesai dimuat
             generateSparkles();
         };
     </script>
