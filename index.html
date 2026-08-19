@@ -48,8 +48,6 @@
         .building-label:hover { background-color: var(--lake-blue); color: var(--white); border-color: var(--white); box-shadow: 4px 4px 0px rgba(255, 255, 255, 0.4); }
         @keyframes floatLabel { 0%, 100% { margin-top: 0px; } 50% { margin-top: -8px; } }
 
-        .lock-indicator { color: var(--powder-pink); font-size: 8px; display: block; margin-top: 2px; }
-
         #airplane { position: absolute; z-index: 15; pointer-events: none; width: 24%; min-width: 150px; animation: flyPlane 60s linear infinite; }
         @keyframes flyPlane { 0% { top: -50%; left: 120%; } 45% { top: 90%; left: -20%; } 100% { top: 90%; left: -20%; } }
 
@@ -76,7 +74,6 @@
         .item-square { width: 100%; aspect-ratio: 1 / 1; border: 2px dashed var(--pastel-turquoise); border-radius: 12px; background: rgba(152, 205, 204, 0.1); display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--lake-blue); font-weight: bold; font-size: 14px; cursor: pointer; transition: 0.2s; text-align: center; padding: 5px; box-sizing: border-box; position: relative;}
         .item-square:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .item-price { font-size: 12px; margin-top: 5px; color: var(--powder-pink); }
-        .lvl-lock { position: absolute; top: -10px; right: -10px; background: var(--powder-pink); color: var(--white); font-family: 'Press Start 2P'; font-size: 8px; padding: 5px; border-radius: 5px; border: 2px solid var(--white); }
         .rarity-badge { position: absolute; top: 5px; left: 5px; font-size: 9px; font-weight: 800; padding: 2px 5px; border-radius: 4px; color: #fff;}
 
         .tab-container { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
@@ -115,12 +112,11 @@
 
     <div id="game-toast">MESSAGE HERE</div>
 
-    <!-- PETA UTAMA -->
     <div id="map-container">
         <img id="map-frame" src="frame2.webp" alt="Map Frame">
         <div class="marquee-wrapper">
-            <div class="marquee-content"><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span></div>
-            <div class="marquee-content"><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span></div>
+            <div class="marquee-content"><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span></div>
+            <div class="marquee-content"><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span></div>
         </div>
         <img id="map-logo" src="logo%20babes.svg" alt="Babes Logo">
 
@@ -139,17 +135,15 @@
         <img id="map-image" src="map-babes.webp" alt="Babes Island Map">
         <img id="airplane" src="plane.webp" alt="Flying Plane">
         
-        <!-- BANGUNAN DENGAN INFO KUNCI LEVEL -->
-        <div class="building-label" style="left: 46%; top: 59%;" onclick="openModal('the_shop', event)">THE SHOP<br><span class="lock-indicator" id="lock-shop">LV 2+</span></div>
-        <div class="building-label" style="left: 60%; top: 46%;" onclick="openModal('the_cafe', event)">THE CAFE<br><span class="lock-indicator" id="lock-cafe">LV 3+</span></div>
-        <div class="building-label" style="left: 77%; top: 24%;" onclick="openModal('babes_club', event)">BABES CLUB<br><span class="lock-indicator" id="lock-club">LV 5+</span></div>
+        <div class="building-label" style="left: 46%; top: 59%;" onclick="openModal('the_shop', event)">THE SHOP</div>
+        <div class="building-label" style="left: 60%; top: 46%;" onclick="openModal('the_cafe', event)">THE CAFE</div>
+        <div class="building-label" style="left: 77%; top: 24%;" onclick="openModal('babes_club', event)">BABES CLUB</div>
         <div class="building-label" style="left: 54%; top: 64%;" onclick="openModal('guard_tower', event)">GUARD TOWER</div>
         <div class="building-label" style="left: 84%; top: 35%;" onclick="openModal('the_hut', event)">THE HUT</div>
     </div>
 
     <div id="modal-overlay"></div>
 
-    <!-- MODAL: DAILY QUESTS -->
     <div class="babes-modal" id="modal-quests" style="max-width: 600px;">
         <div class="modal-header"><h3 class="modal-title">DAILY MISSIONS</h3><div class="close-modal">X</div></div>
         <div class="modal-body" style="flex-direction: column; overflow-y: auto;">
@@ -159,7 +153,6 @@
         </div>
     </div>
 
-    <!-- 1. THE HUT (PLAYER HOME) -->
     <div class="babes-modal" id="modal-the_hut">
         <div class="modal-header"><h3 class="modal-title">THE HUT // PLAYER HOME</h3><div class="close-modal">X</div></div>
         <div class="modal-body">
@@ -205,9 +198,7 @@
                     </div>
                     <div id="hut-main-achievements" class="hut-main-content" style="display:none; flex:1; overflow-y:auto;">
                         <h4 class="section-title">ACHIEVEMENTS</h4>
-                        <div style="display:flex; flex-direction:column; gap:10px;" id="badge-list-container">
-                            <!-- Diisi oleh JS -->
-                        </div>
+                        <div style="display:flex; flex-direction:column; gap:10px;" id="badge-list-container"></div>
                     </div>
                 </div>
             </div>
@@ -232,18 +223,15 @@
         </div>
     </div>
 
-    <!-- 3. THE CAFE (DIROMBAK MENJADI SOCIAL HUB) -->
+    <!-- 3. THE CAFE -->
     <div class="babes-modal" id="modal-the_cafe">
         <div class="modal-header"><h3 class="modal-title">BABES CAFE // SOCIAL HUB</h3><div class="close-modal">X</div></div>
         <div class="modal-body" style="flex-direction: column;">
             <div class="tab-container" style="max-width: 600px; margin: 0 auto 10px auto;">
                 <button class="tab-btn active" onclick="switchTab(event, 'cafe', 'chat')">GLOBAL CHAT</button>
                 <button class="tab-btn" onclick="switchTab(event, 'cafe', 'trade')">TRADE ROOM</button>
-                <button class="tab-btn" style="opacity:0.5;" onclick="showToast('Friends system locked.')">FRIENDS 🔒</button>
             </div>
-
             <div class="modal-section" style="flex: 1; overflow-y: auto; display:flex; flex-direction:column;">
-                <!-- TAB CHAT -->
                 <div id="cafe-chat" class="tab-content cafe-content" style="display: block; height:100%; display:flex; flex-direction:column;">
                     <div class="chat-list" id="chat-history" style="flex:1;">
                         <div class="chat-msg"><span class="chat-user">[Babes #099] Alice:</span> Welcome to the Cafe!</div>
@@ -253,19 +241,15 @@
                         <button class="btn" onclick="sendChat()" style="width: 120px; margin-bottom: 0;">SEND</button>
                     </div>
                 </div>
-
-                <!-- TAB TRADE -->
                 <div id="cafe-trade" class="tab-content cafe-content" style="display: none; height:100%;">
                     <p style="text-align:center; font-size:14px; margin-bottom:20px;">Trade securely with other Babes in the Hood.</p>
                     <div style="display:flex; gap:20px;">
                         <div style="flex:1; background:#fafafa; border:2px solid var(--vanilla-cream); padding:20px; border-radius:12px; text-align:center;">
-                            <h4 style="color:var(--lake-blue); margin-top:0;">YOUR OFFER</h4>
-                            <div class="item-square" style="width:60%; margin:0 auto;">Select Item</div>
+                            <h4 style="color:var(--lake-blue); margin-top:0;">YOUR OFFER</h4><div class="item-square" style="width:60%; margin:0 auto;">Select Item</div>
                         </div>
                         <div style="display:flex; align-items:center; font-size:30px; font-weight:bold; color:var(--powder-pink);">⇄</div>
                         <div style="flex:1; background:#fafafa; border:2px solid var(--vanilla-cream); padding:20px; border-radius:12px; text-align:center;">
-                            <h4 style="color:var(--lake-blue); margin-top:0;">THEIR OFFER</h4>
-                            <div class="item-square" style="width:60%; margin:0 auto; border-color:var(--powder-pink); color:var(--powder-pink);">Target Item</div>
+                            <h4 style="color:var(--lake-blue); margin-top:0;">THEIR OFFER</h4><div class="item-square" style="width:60%; margin:0 auto; border-color:var(--powder-pink); color:var(--powder-pink);">Target Item</div>
                         </div>
                     </div>
                     <button class="btn btn-gold" style="margin-top:20px;" onclick="showToast('Web3 Trade integration pending.')">PROPOSE TRADE</button>
@@ -303,7 +287,7 @@
         </div>
     </div>
 
-    <!-- 5. GUARD TOWER (DIROMBAK MENJADI SAFETY CENTER) -->
+    <!-- 5. GUARD TOWER -->
     <div class="babes-modal" id="modal-guard_tower">
         <div class="modal-header"><h3 class="modal-title">GUARD TOWER // SAFETY CENTER</h3><div class="close-modal">X</div></div>
         <div class="modal-body" style="flex-direction: column;">
@@ -312,40 +296,26 @@
                 <button class="tab-btn" onclick="switchTab(event, 'guard', 'rules')">ISLAND RULES</button>
                 <button class="tab-btn" onclick="switchTab(event, 'guard', 'faq')">F.A.Q.</button>
             </div>
-            
             <div class="modal-section" style="flex: 1; overflow-y: auto;">
-                <!-- TAB SUPPORT -->
                 <div id="guard-support" class="tab-content guard-content" style="display: block;">
                     <h4 class="section-title">REPORT BUG / PLAYER / SCAM</h4>
-                    <p style="font-size: 14px;">Please describe your issue in detail. False reports will lower your reputation.</p>
                     <textarea class="textarea-box" placeholder="Write your report here..."></textarea>
                     <button class="btn btn-pink" onclick="showToast('Ticket submitted to Admins.')">SUBMIT TICKET</button>
                 </div>
-
-                <!-- TAB RULES -->
                 <div id="guard-rules" class="tab-content guard-content" style="display: none; line-height: 1.8; color: var(--lake-blue);">
                     <h4 class="section-title">ISLAND RULES</h4>
-                    <ol>
-                        <li><strong>No Harassment:</strong> Keep the Cafe chat friendly.</li>
-                        <li><strong>No Scams:</strong> Always use the official Trade Room escrow.</li>
-                        <li><strong>No Bots:</strong> Automated contest voting is strictly prohibited.</li>
-                    </ol>
-                    <p style="color:var(--powder-pink); font-size:12px;">* Violators will be locked in the Guard Tower.</p>
+                    <ol><li><strong>No Harassment:</strong> Keep the Cafe chat friendly.</li><li><strong>No Scams:</strong> Always use the official Trade Room escrow.</li></ol>
                 </div>
-
-                <!-- TAB FAQ -->
                 <div id="guard-faq" class="tab-content guard-content" style="display: none; line-height: 1.8; color: var(--lake-blue);">
                     <h4 class="section-title">FREQUENTLY ASKED QUESTIONS</h4>
                     <p><strong>Q: How do I level up?</strong><br>A: Complete Quests, vote in contests, and buy items to earn XP.</p>
-                    <p><strong>Q: Why can't I buy some items?</strong><br>A: Epic and Legendary items require higher account levels to purchase.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- JAVASCRIPT: CORE GAME LOGIC -->
+    <!-- JAVASCRIPT -->
     <script>
-        // --- 1. GAME ECONOMY DATABASE ---
         const itemDB = {
             'Red Bikini': { price: 0, rarity: 'Common', score: 5, category: 'clothes', lvl: 1 },
             'Belly Piercing': { price: 0, rarity: 'Common', score: 5, category: 'accessories', lvl: 1 },
@@ -362,7 +332,6 @@
         };
         const rarityColors = { 'Common': '#95a5a6', 'Rare': '#3498db', 'Epic': '#9b59b6', 'Legendary': '#f1c40f' };
 
-        // --- 2. LOCAL STORAGE & STATE ---
         const defaultState = {
             player: { name: "Babes #001", level: 1, xp: 0, babes: 1000, eth: 0.5, reputation: "Island Tourist" },
             inventory: { clothes: ['Red Bikini'], accessories: ['Belly Piercing'], glasses: ['Blue Eyes'] },
@@ -372,16 +341,10 @@
         };
 
         let gameState = JSON.parse(localStorage.getItem('babesGameState')) || defaultState;
-
-        // Migrasi Data Lama agar support Quests Baru
         if(!gameState.quests.outfitChanged) gameState.quests.outfitChanged = false;
         if(!gameState.quests.visitedCafe) gameState.quests.visitedCafe = false;
 
-        function saveGame() {
-            localStorage.setItem('babesGameState', JSON.stringify(gameState));
-            updateHUD(); renderInventory(); renderQuests(); updateHutProfile();
-            updateMapLocks();
-        }
+        function saveGame() { localStorage.setItem('babesGameState', JSON.stringify(gameState)); updateHUD(); renderInventory(); renderQuests(); updateHutProfile(); }
 
         let toastTimeout;
         function showToast(message) {
@@ -392,8 +355,7 @@
         }
 
         function addXP(amount) {
-            gameState.player.xp += amount;
-            let levelUp = false;
+            gameState.player.xp += amount; let levelUp = false;
             while (gameState.player.xp >= 1000) { gameState.player.level += 1; gameState.player.xp -= 1000; levelUp = true; }
             saveGame(); if(levelUp) showToast(`LEVEL UP! You are now Level ${gameState.player.level} 🎉`);
         }
@@ -406,7 +368,6 @@
             }
         }
 
-        // --- 3. RENDERING ---
         function renderShop() {
             ['clothes', 'accessories', 'glasses'].forEach(cat => {
                 const container = document.getElementById(`render-shop-${cat}`); container.innerHTML = '';
@@ -414,10 +375,9 @@
                     const item = itemDB[itemName];
                     if(item.category === cat && item.price > 0) {
                         const color = rarityColors[item.rarity];
-                        const lockHTML = item.lvl > 1 ? `<div class="lvl-lock">LV ${item.lvl}+</div>` : '';
                         container.innerHTML += `
                             <div class="item-square" style="border-color: ${color};" onclick="buyItem('${itemName}')">
-                                ${lockHTML}<div class="rarity-badge" style="background:${color};">${item.rarity}</div>
+                                <div class="rarity-badge" style="background:${color};">${item.rarity}</div>
                                 <span>${itemName}</span><span class="item-price" style="color:${color};">${item.price} $babes</span>
                             </div>`;
                     }
@@ -428,11 +388,8 @@
         function renderQuests() {
             const qList = document.getElementById('quest-list'); if(!qList) return; qList.innerHTML = '';
             const missions = [
-                { id: 'dailyClaimed', title: 'Claim Daily Reward in The Hut', xp: 10 },
-                { id: 'outfitChanged', title: 'Change your outfit in The Hut', xp: 15 },
-                { id: 'visitedCafe', title: 'Visit The Cafe (Unlock at LV 3)', xp: 10 },
-                { id: 'chatted', title: 'Talk to Babes at the Cafe', xp: 20 },
-                { id: 'itemBought', title: 'Buy one item from The Shop', xp: 25 }
+                { id: 'dailyClaimed', title: 'Claim Daily Reward in The Hut', xp: 10 }, { id: 'outfitChanged', title: 'Change your outfit in The Hut', xp: 15 },
+                { id: 'visitedCafe', title: 'Visit The Cafe', xp: 10 }, { id: 'chatted', title: 'Talk to Babes at the Cafe', xp: 20 }, { id: 'itemBought', title: 'Buy one item from The Shop', xp: 25 }
             ];
             let completedCount = 0;
             missions.forEach(m => {
@@ -446,25 +403,17 @@
         }
 
         function updateHUD() {
-            document.getElementById('hud-name-display').innerText = gameState.player.name;
-            document.getElementById('hud-babes-balance').innerText = gameState.player.babes;
-            document.getElementById('hud-eth-balance').innerText = gameState.player.eth;
-            document.getElementById('hud-level').innerText = gameState.player.level;
-            document.getElementById('hud-xp').innerText = gameState.player.xp;
-            document.getElementById('hud-xp-bar-fill').style.width = ((gameState.player.xp / 1000) * 100) + '%';
-            document.getElementById('profile-name-input').value = gameState.player.name;
-            document.getElementById('shop-balance').innerText = gameState.player.babes;
+            document.getElementById('hud-name-display').innerText = gameState.player.name; document.getElementById('hud-babes-balance').innerText = gameState.player.babes;
+            document.getElementById('hud-eth-balance').innerText = gameState.player.eth; document.getElementById('hud-level').innerText = gameState.player.level;
+            document.getElementById('hud-xp').innerText = gameState.player.xp; document.getElementById('hud-xp-bar-fill').style.width = ((gameState.player.xp / 1000) * 100) + '%';
+            document.getElementById('profile-name-input').value = gameState.player.name; document.getElementById('shop-balance').innerText = gameState.player.babes;
             if(gameState.equipped.clothes) document.getElementById('hud-avatar-box').innerHTML = `BABE<br><span style="font-size:5px; margin-top:2px;">${gameState.equipped.clothes.split(' ')[0]}</span>`;
         }
 
         function updateHutProfile() {
-            document.getElementById('hut-card-level').innerText = gameState.player.level;
-            document.getElementById('hut-card-xp').innerText = gameState.player.xp;
-            document.getElementById('stat-earned').innerText = gameState.stats.babesEarned;
-            document.getElementById('stat-items').innerText = gameState.stats.itemsOwned;
-            
-            const badgesContainer = document.getElementById('badge-list-container');
-            badgesContainer.innerHTML = '';
+            document.getElementById('hut-card-level').innerText = gameState.player.level; document.getElementById('hut-card-xp').innerText = gameState.player.xp;
+            document.getElementById('stat-earned').innerText = gameState.stats.babesEarned; document.getElementById('stat-items').innerText = gameState.stats.itemsOwned;
+            const badgesContainer = document.getElementById('badge-list-container'); badgesContainer.innerHTML = '';
             const badges = [
                 { id: 'welcome', name: 'Welcome to the Hood', desc: 'Joined Babes Island', icon: '🏝️', done: true },
                 { id: 'itemBought', name: 'First Purchase', desc: 'Buy an item at The Shop', icon: '🛍️', done: gameState.quests.itemBought },
@@ -472,20 +421,14 @@
                 { id: 'contestJoined', name: 'Contestant', desc: 'Join the Weekly Contest', icon: '✨', done: gameState.quests.contestJoined }
             ];
             badges.forEach(b => {
-                badgesContainer.innerHTML += `
-                    <div class="quest-item ${b.done ? 'quest-done' : ''}">
-                        <div><div style="font-weight:800; font-size:12px;">${b.name}</div><div style="font-size:10px; color:#aaa;">${b.desc}</div></div>
-                        <div style="font-size:16px;">${b.done ? b.icon : '🔒'}</div>
-                    </div>`;
+                badgesContainer.innerHTML += `<div class="quest-item ${b.done ? 'quest-done' : ''}"><div><div style="font-weight:800; font-size:12px;">${b.name}</div><div style="font-size:10px; color:#aaa;">${b.desc}</div></div><div style="font-size:16px;">${b.done ? b.icon : '🔒'}</div></div>`;
             });
         }
 
         function renderInventory() {
             ['clothes', 'accessories', 'glasses'].forEach(cat => {
                 const container = document.getElementById(`grid-hut-${cat}`); container.innerHTML = ''; 
-                if (gameState.inventory[cat].length === 0) {
-                    container.innerHTML = '<div class="item-square" style="opacity: 0.5;">Empty</div>';
-                } else {
+                if (gameState.inventory[cat].length === 0) { container.innerHTML = '<div class="item-square" style="opacity: 0.5;">Empty</div>'; } else {
                     gameState.inventory[cat].forEach(itemName => {
                         const item = itemDB[itemName]; const isEquipped = gameState.equipped[cat] === itemName;
                         const borderColor = isEquipped ? 'var(--pale-marigold)' : rarityColors[item.rarity];
@@ -498,32 +441,11 @@
             });
         }
 
-        // Menyembunyikan indikator LV Lock di Map jika level pemain sudah cukup
-        function updateMapLocks() {
-            const level = gameState.player.level;
-            if(level >= 2) document.getElementById('lock-shop').style.display = 'none';
-            if(level >= 3) document.getElementById('lock-cafe').style.display = 'none';
-            if(level >= 5) document.getElementById('lock-club').style.display = 'none';
-        }
-
-        // --- 4. GAME ACTIONS ---
-        function equipItem(itemName, category) {
-            gameState.equipped[category] = itemName;
-            completeQuest('outfitChanged', 15, 0); // QUEST TRIGGER
-            saveGame(); updateAvatarPreview(); calculateStyleScore(); showToast(`Equipped: ${itemName}`);
-        }
-
-        function updateAvatarPreview() {
-            document.getElementById('avatar-preview').innerHTML = `YOUR BABE<br><br>
-                <span style="font-size:12px; color:var(--powder-pink); line-height: 1.8;">
-                [ ${gameState.equipped.clothes || 'None'} ]<br>
-                [ ${gameState.equipped.accessories || 'None'} ]<br>
-                [ ${gameState.equipped.glasses || 'None'} ]</span>`;
-        }
+        function equipItem(itemName, category) { gameState.equipped[category] = itemName; completeQuest('outfitChanged', 15, 0); saveGame(); updateAvatarPreview(); calculateStyleScore(); showToast(`Equipped: ${itemName}`); }
+        function updateAvatarPreview() { document.getElementById('avatar-preview').innerHTML = `YOUR BABE<br><br><span style="font-size:12px; color:var(--powder-pink); line-height: 1.8;">[ ${gameState.equipped.clothes || 'None'} ]<br>[ ${gameState.equipped.accessories || 'None'} ]<br>[ ${gameState.equipped.glasses || 'None'} ]</span>`; }
 
         function buyItem(itemName) {
             const item = itemDB[itemName];
-            if (gameState.player.level < item.lvl) { showToast(`Requires Level ${item.lvl}! Level up first.`); return; }
             if (gameState.inventory[item.category].includes(itemName)) { showToast(`You already own ${itemName}!`); return; }
             if (gameState.player.babes >= item.price) {
                 gameState.player.babes -= item.price; gameState.inventory[item.category].push(itemName);
@@ -533,20 +455,16 @@
 
         function claimDaily() {
             if (gameState.quests.dailyClaimed) { showToast("You already claimed today!"); return; }
-            completeQuest('dailyClaimed', 10, 25);
-            document.getElementById('btn-claim-daily').innerText = "CLAIMED ✓"; document.getElementById('btn-claim-daily').style.opacity = "0.5";
+            completeQuest('dailyClaimed', 10, 25); document.getElementById('btn-claim-daily').innerText = "CLAIMED ✓"; document.getElementById('btn-claim-daily').style.opacity = "0.5";
         }
 
         function sendChat() {
             const input = document.getElementById('chat-input'); if(input.value.trim() === '') return;
             document.getElementById('chat-history').innerHTML += `<div class="chat-msg"><span class="chat-user">[${gameState.player.name}] You:</span> ${input.value}</div>`;
-            input.value = ''; completeQuest('chatted', 20, 0); // QUEST TRIGGER
+            input.value = ''; completeQuest('chatted', 20, 0); 
         }
 
-        function saveName() {
-            const inputField = document.getElementById('profile-name-input');
-            if (inputField.value.trim() !== "") { gameState.player.name = inputField.value; saveGame(); showToast("Profile name saved!"); }
-        }
+        function saveName() { const inputField = document.getElementById('profile-name-input'); if (inputField.value.trim() !== "") { gameState.player.name = inputField.value; saveGame(); showToast("Profile name saved!"); } }
 
         function calculateStyleScore() {
             const breakdown = document.getElementById('score-breakdown'); let totalScore = 0; let html = '';
@@ -558,25 +476,20 @@
                     html += `<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>${itemName} <span style="font-size:8px; color:${color};">(${rarity})</span></span><span>+${score}</span></div>`;
                 }
             });
-            if(breakdown) breakdown.innerHTML = html;
-            const tScore = document.getElementById('contest-total-score');
-            if(tScore) tScore.innerText = totalScore;
-            return totalScore;
+            if(breakdown) breakdown.innerHTML = html; const tScore = document.getElementById('contest-total-score'); if(tScore) tScore.innerText = totalScore; return totalScore;
         }
 
         function joinContest() {
             if (gameState.quests.contestJoined) { showToast("Already registered!"); return; }
             if(gameState.player.babes < 50) { showToast(`Need 50 $babes to enter!`); return; }
             gameState.player.babes -= 50; 
-            let score = calculateStyleScore();
-            completeQuest('contestJoined', 50, score * 3);
+            let score = calculateStyleScore(); completeQuest('contestJoined', 50, score * 3);
             document.getElementById('btn-join-contest').innerText = "REGISTERED ✓"; document.getElementById('btn-join-contest').style.opacity = "0.5";
             showToast(`Paid 50 fee. Scored ${score}! Won ${score * 3} $babes!`);
         }
 
         function voteContest() { completeQuest('voted', 20, 0); showToast("Vote Submitted! Thanks."); }
 
-        // --- 5. MODAL SYSTEM ---
         let currentOpenModal = null; let overlay = null;
 
         function switchTab(event, modalContext, tabName) {
@@ -594,18 +507,12 @@
         }
 
         function openModal(zoneId, event) {
-            // Cek Level Progression Lock
-            if(zoneId === 'the_shop' && gameState.player.level < 2) { showToast('🔒 Unlock The Shop at Level 2!'); return; }
-            if(zoneId === 'the_cafe' && gameState.player.level < 3) { showToast('🔒 Unlock The Cafe at Level 3!'); return; }
-            if(zoneId === 'babes_club' && gameState.player.level < 5) { showToast('🔒 Unlock Babes Club at Level 5!'); return; }
-
             if (!overlay) overlay = document.getElementById('modal-overlay');
             const modal = document.getElementById('modal-' + zoneId);
             if (modal && overlay) {
                 document.querySelectorAll('.babes-modal').forEach(m => { m.style.display = 'none'; m.style.opacity = '0'; });
                 overlay.style.display = 'block'; setTimeout(() => { overlay.style.opacity = '1'; }, 10);
                 
-                // Misi "Visit Cafe" terselesaikan saat masuk Cafe
                 if(zoneId === 'the_cafe') completeQuest('visitedCafe', 10, 0);
                 if(zoneId === 'babes_club') calculateStyleScore();
                 if(zoneId === 'quests') renderQuests();
@@ -644,15 +551,7 @@
             document.querySelectorAll('.close-modal').forEach(button => { button.addEventListener('click', closeAllModals); });
             overlay.addEventListener('click', closeAllModals);
             
-            generateSparkles();
-            renderShop();
-            updateHUD();
-            updateHutProfile();
-            renderInventory();
-            updateAvatarPreview();
-            renderQuests();
-            updateMapLocks();
-
+            generateSparkles(); renderShop(); updateHUD(); updateHutProfile(); renderInventory(); updateAvatarPreview(); renderQuests();
             if(gameState.quests.dailyClaimed) { document.getElementById('btn-claim-daily').innerText = "CLAIMED ✓"; document.getElementById('btn-claim-daily').style.opacity = "0.5"; }
             if(gameState.quests.contestJoined) { document.getElementById('btn-join-contest').innerText = "REGISTERED ✓"; document.getElementById('btn-join-contest').style.opacity = "0.5"; }
         };
