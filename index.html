@@ -34,7 +34,6 @@
             min-height: 100vh;
             font-family: 'Nunito', sans-serif;
             overflow: hidden;
-            gap: 15px;
         }
 
         #map-container {
@@ -57,27 +56,54 @@
             border-radius: 12px;
         }
 
-        /* --- FRAME MAP (BARU) --- */
+        /* --- FRAME MAP --- */
         #map-frame {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none; /* Agar klik tembus ke bangunan di bawahnya */
-            z-index: 22; /* Di atas label, di bawah HUD & Logo */
+            pointer-events: none; 
+            z-index: 22; 
             border-radius: 12px;
         }
 
+        /* --- TEKS BERJALAN (MARQUEE) DI DALAM MAP --- */
+        .marquee-wrapper { 
+            position: absolute; 
+            top: 0; 
+            left: 0;
+            width: 100%; 
+            background-color: var(--white); 
+            border-bottom: 3px solid var(--pastel-turquoise); 
+            overflow: hidden; 
+            display: flex; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2); 
+            z-index: 21; /* Di bawah frame (22) tapi di atas map */
+        }
+        .marquee-content { white-space: nowrap; font-family: 'Press Start 2P', cursive; color: var(--pastel-turquoise); font-size: 14px; padding: 12px 0; display: flex; flex-shrink: 0; min-width: 100%; justify-content: space-around; animation: scrollText 15s linear infinite; }
+        .marquee-content span { margin: 0 30px; }
+        @keyframes scrollText { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+        /* --- LOGO DI POJOK KIRI ATAS MAP --- */
         #map-logo {
-            position: absolute; top: 20px; left: 20px; width: 15%; 
-            min-width: 100px; max-width: 250px; z-index: 25;
-            pointer-events: none; filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.3));
+            position: absolute; 
+            top: 45px; /* Diturunkan agar tidak tertabrak teks berjalan */
+            left: 20px; 
+            width: 15%; 
+            min-width: 100px; 
+            max-width: 250px; 
+            z-index: 25;
+            pointer-events: none; 
+            filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.3));
         }
 
         /* --- HUD PROFILE (KANAN ATAS) --- */
         .hud-profile {
-            position: absolute; top: 20px; right: 20px; z-index: 25;
+            position: absolute; 
+            top: 45px; /* Diturunkan agar tidak tertabrak teks berjalan */
+            right: 20px; 
+            z-index: 25;
             background: rgba(255, 255, 255, 0.95); border: 3px solid var(--lake-blue);
             border-radius: 16px; padding: 10px 15px; display: flex; gap: 15px;
             align-items: center; box-shadow: 4px 4px 0px rgba(0, 135, 153, 0.2);
@@ -95,12 +121,6 @@
         .hud-name { font-weight: 800; color: var(--lake-blue); font-size: 14px; text-transform: uppercase; margin-bottom: 2px; }
         .hud-balance { font-size: 12px; color: var(--powder-pink); font-weight: 800; display: flex; align-items: center; gap: 5px;}
         .hud-balance span { color: var(--lake-blue); }
-
-        /* --- MARQUEE --- */
-        .marquee-wrapper { width: 98vw; max-width: 1920px; background-color: var(--white); border: 3px solid var(--pastel-turquoise); border-radius: 12px; overflow: hidden; display: flex; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-        .marquee-content { white-space: nowrap; font-family: 'Press Start 2P', cursive; color: var(--pastel-turquoise); font-size: 14px; padding: 12px 0; display: flex; flex-shrink: 0; min-width: 100%; justify-content: space-around; animation: scrollText 15s linear infinite; }
-        .marquee-content span { margin: 0 30px; }
-        @keyframes scrollText { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
         /* --- WATER SPARKLES --- */
         .sparkle { position: absolute; width: 4px; height: 4px; background-color: #ffffff; border-radius: 50%; box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.9); pointer-events: none; z-index: 10; animation: twinkle linear infinite; }
@@ -177,8 +197,8 @@
             .sub-modal { width: 90vw; padding: 15px; }
             .building-label { font-size: 8px; padding: 4px 8px; } 
             
-            #map-logo { top: 10px; left: 10px; width: 20%; }
-            .hud-profile { top: 10px; right: 10px; padding: 5px 10px; gap: 10px; transform: scale(0.85); transform-origin: top right; }
+            #map-logo { top: 40px; left: 10px; width: 20%; }
+            .hud-profile { top: 40px; right: 10px; padding: 5px 10px; gap: 10px; transform: scale(0.85); transform-origin: top right; }
             .marquee-content { font-size: 10px; padding: 10px 0; }
         }
         @media (max-width: 1024px) and (orientation: portrait) { #rotate-warning { display: flex; } }
@@ -194,8 +214,18 @@
 
     <!-- PETA UTAMA -->
     <div id="map-container">
-        <!-- FRAME PETA (Baru) -->
-        <img id="map-frame" src="frame.webp" alt="Map Frame">
+        <!-- FRAME PETA (Diperbarui) -->
+        <img id="map-frame" src="frame2.webp" alt="Map Frame">
+
+        <!-- TEKS BERJALAN (Sekarang berada di dalam map, nempel atas) -->
+        <div class="marquee-wrapper">
+            <div class="marquee-content">
+                <span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span>
+            </div>
+            <div class="marquee-content">
+                <span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span>
+            </div>
+        </div>
 
         <!-- LOGO MAP -->
         <img id="map-logo" src="logo%20babes.svg" alt="Babes Logo">
@@ -218,16 +248,6 @@
         <div class="building-label" style="left: 77%; top: 24%;" onclick="openModal('babes_club', event)">BABES CLUB</div>
         <div class="building-label" style="left: 54%; top: 64%;" onclick="openModal('guard_tower', event)">GUARD TOWER</div>
         <div class="building-label" style="left: 84%; top: 35%;" onclick="openModal('the_hut', event)">THE HUT</div>
-    </div>
-
-    <!-- TEKS BERJALAN -->
-    <div class="marquee-wrapper">
-        <div class="marquee-content">
-            <span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span>
-        </div>
-        <div class="marquee-content">
-            <span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span>
-        </div>
     </div>
 
     <!-- MAIN OVERLAY -->
