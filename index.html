@@ -44,7 +44,8 @@
         .sparkle { position: absolute; width: 4px; height: 4px; background-color: #ffffff; border-radius: 50%; box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.9); pointer-events: none; z-index: 10; animation: twinkle linear infinite; }
         @keyframes twinkle { 0% { opacity: 0; transform: scale(0.5); } 50% { opacity: 1; transform: scale(1.5); } 100% { opacity: 0; transform: scale(0.5); } }
 
-        .building-label { position: absolute; background-color: var(--white); color: var(--lake-blue); border: 3px solid var(--lake-blue); padding: 6px 12px; font-family: 'Press Start 2P', cursive; font-size: 10px; z-index: 20; cursor: pointer; box-shadow: 4px 4px 0px rgba(0, 135, 153, 0.2); text-transform: uppercase; transform: translate(-50%, -50%); animation: floatLabel 3s ease-in-out infinite; transition: 0.2s; }
+        /* PERBAIKAN Z-INDEX: Naikkan ke 30 agar pasti berada di atas semua frame dan elemen map lain */
+        .building-label { position: absolute; background-color: var(--white); color: var(--lake-blue); border: 3px solid var(--lake-blue); padding: 6px 12px; font-family: 'Press Start 2P', cursive; font-size: 10px; z-index: 30; cursor: pointer; box-shadow: 4px 4px 0px rgba(0, 135, 153, 0.2); text-transform: uppercase; transform: translate(-50%, -50%); animation: floatLabel 3s ease-in-out infinite; transition: 0.2s; }
         .building-label:hover { background-color: var(--lake-blue); color: var(--white); border-color: var(--white); box-shadow: 4px 4px 0px rgba(255, 255, 255, 0.4); }
         @keyframes floatLabel { 0%, 100% { margin-top: 0px; } 50% { margin-top: -8px; } }
 
@@ -55,7 +56,6 @@
 
         #modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(244, 216, 198, 0.85); backdrop-filter: blur(10px); z-index: 99; opacity: 0; transition: opacity 0.3s ease; }
         .babes-modal { display: none; position: fixed; width: 85vw; height: 85vh; background: var(--bg-light); border: 4px solid var(--vanilla-cream); border-radius: 24px; box-shadow: 0 15px 35px rgba(0, 135, 153, 0.2); padding: 20px 30px; z-index: 100; color: #4a4a4a; flex-direction: column; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .sub-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; max-width: 90vw; background: var(--white); border: 4px solid var(--lake-blue); border-radius: 20px; padding: 20px; z-index: 200; box-shadow: 0 20px 50px rgba(0,0,0,0.3); flex-direction: column; }
         
         ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: var(--vanilla-cream); border-radius: 10px; } ::-webkit-scrollbar-thumb { background: var(--pastel-turquoise); border-radius: 10px; }
         
@@ -112,6 +112,7 @@
 
     <div id="game-toast">MESSAGE HERE</div>
 
+    <!-- PETA UTAMA -->
     <div id="map-container">
         <img id="map-frame" src="frame2.webp" alt="Map Frame">
         <div class="marquee-wrapper">
@@ -135,6 +136,7 @@
         <img id="map-image" src="map-babes.webp" alt="Babes Island Map">
         <img id="airplane" src="plane.webp" alt="Flying Plane">
         
+        <!-- LABELS TANPA LOCK LEVEL -->
         <div class="building-label" style="left: 46%; top: 59%;" onclick="openModal('the_shop', event)">THE SHOP</div>
         <div class="building-label" style="left: 60%; top: 46%;" onclick="openModal('the_cafe', event)">THE CAFE</div>
         <div class="building-label" style="left: 77%; top: 24%;" onclick="openModal('babes_club', event)">BABES CLUB</div>
@@ -153,6 +155,7 @@
         </div>
     </div>
 
+    <!-- 1. THE HUT (PLAYER HOME) -->
     <div class="babes-modal" id="modal-the_hut">
         <div class="modal-header"><h3 class="modal-title">THE HUT // PLAYER HOME</h3><div class="close-modal">X</div></div>
         <div class="modal-body">
@@ -314,8 +317,9 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT -->
+    <!-- JAVASCRIPT: CORE GAME LOGIC -->
     <script>
+        // --- 1. GAME ECONOMY DATABASE ---
         const itemDB = {
             'Red Bikini': { price: 0, rarity: 'Common', score: 5, category: 'clothes', lvl: 1 },
             'Belly Piercing': { price: 0, rarity: 'Common', score: 5, category: 'accessories', lvl: 1 },
@@ -332,6 +336,8 @@
         };
         const rarityColors = { 'Common': '#95a5a6', 'Rare': '#3498db', 'Epic': '#9b59b6', 'Legendary': '#f1c40f' };
 
+        // --- 2. ROBUST LOCAL STORAGE MIGRATION ---
+        // Jika pemain punya save data lama, kita gabungkan (merge) agar tidak error TypeError.
         const defaultState = {
             player: { name: "Babes #001", level: 1, xp: 0, babes: 1000, eth: 0.5, reputation: "Island Tourist" },
             inventory: { clothes: ['Red Bikini'], accessories: ['Belly Piercing'], glasses: ['Blue Eyes'] },
@@ -340,11 +346,21 @@
             stats: { babesEarned: 1000, itemsOwned: 3 }
         };
 
-        let gameState = JSON.parse(localStorage.getItem('babesGameState')) || defaultState;
-        if(!gameState.quests.outfitChanged) gameState.quests.outfitChanged = false;
-        if(!gameState.quests.visitedCafe) gameState.quests.visitedCafe = false;
+        let savedState = JSON.parse(localStorage.getItem('babesGameState'));
+        let gameState = defaultState;
 
-        function saveGame() { localStorage.setItem('babesGameState', JSON.stringify(gameState)); updateHUD(); renderInventory(); renderQuests(); updateHutProfile(); }
+        if (savedState) {
+            gameState.player = { ...defaultState.player, ...savedState.player };
+            gameState.inventory = { ...defaultState.inventory, ...savedState.inventory };
+            gameState.equipped = { ...defaultState.equipped, ...savedState.equipped };
+            gameState.quests = { ...defaultState.quests, ...(savedState.quests || {}) };
+            gameState.stats = { ...defaultState.stats, ...(savedState.stats || {}) };
+        }
+
+        function saveGame() {
+            localStorage.setItem('babesGameState', JSON.stringify(gameState));
+            updateHUD(); renderInventory(); renderQuests(); updateHutProfile();
+        }
 
         let toastTimeout;
         function showToast(message) {
@@ -355,7 +371,8 @@
         }
 
         function addXP(amount) {
-            gameState.player.xp += amount; let levelUp = false;
+            gameState.player.xp += amount;
+            let levelUp = false;
             while (gameState.player.xp >= 1000) { gameState.player.level += 1; gameState.player.xp -= 1000; levelUp = true; }
             saveGame(); if(levelUp) showToast(`LEVEL UP! You are now Level ${gameState.player.level} 🎉`);
         }
@@ -368,6 +385,7 @@
             }
         }
 
+        // --- 3. RENDERING ---
         function renderShop() {
             ['clothes', 'accessories', 'glasses'].forEach(cat => {
                 const container = document.getElementById(`render-shop-${cat}`); container.innerHTML = '';
@@ -388,8 +406,11 @@
         function renderQuests() {
             const qList = document.getElementById('quest-list'); if(!qList) return; qList.innerHTML = '';
             const missions = [
-                { id: 'dailyClaimed', title: 'Claim Daily Reward in The Hut', xp: 10 }, { id: 'outfitChanged', title: 'Change your outfit in The Hut', xp: 15 },
-                { id: 'visitedCafe', title: 'Visit The Cafe', xp: 10 }, { id: 'chatted', title: 'Talk to Babes at the Cafe', xp: 20 }, { id: 'itemBought', title: 'Buy one item from The Shop', xp: 25 }
+                { id: 'dailyClaimed', title: 'Claim Daily Reward in The Hut', xp: 10 },
+                { id: 'outfitChanged', title: 'Change your outfit in The Hut', xp: 15 },
+                { id: 'visitedCafe', title: 'Visit The Cafe', xp: 10 },
+                { id: 'chatted', title: 'Talk to Babes at the Cafe', xp: 20 },
+                { id: 'itemBought', title: 'Buy one item from The Shop', xp: 25 }
             ];
             let completedCount = 0;
             missions.forEach(m => {
@@ -403,17 +424,25 @@
         }
 
         function updateHUD() {
-            document.getElementById('hud-name-display').innerText = gameState.player.name; document.getElementById('hud-babes-balance').innerText = gameState.player.babes;
-            document.getElementById('hud-eth-balance').innerText = gameState.player.eth; document.getElementById('hud-level').innerText = gameState.player.level;
-            document.getElementById('hud-xp').innerText = gameState.player.xp; document.getElementById('hud-xp-bar-fill').style.width = ((gameState.player.xp / 1000) * 100) + '%';
-            document.getElementById('profile-name-input').value = gameState.player.name; document.getElementById('shop-balance').innerText = gameState.player.babes;
+            document.getElementById('hud-name-display').innerText = gameState.player.name;
+            document.getElementById('hud-babes-balance').innerText = gameState.player.babes;
+            document.getElementById('hud-eth-balance').innerText = gameState.player.eth;
+            document.getElementById('hud-level').innerText = gameState.player.level;
+            document.getElementById('hud-xp').innerText = gameState.player.xp;
+            document.getElementById('hud-xp-bar-fill').style.width = ((gameState.player.xp / 1000) * 100) + '%';
+            document.getElementById('profile-name-input').value = gameState.player.name;
+            document.getElementById('shop-balance').innerText = gameState.player.babes;
             if(gameState.equipped.clothes) document.getElementById('hud-avatar-box').innerHTML = `BABE<br><span style="font-size:5px; margin-top:2px;">${gameState.equipped.clothes.split(' ')[0]}</span>`;
         }
 
         function updateHutProfile() {
-            document.getElementById('hut-card-level').innerText = gameState.player.level; document.getElementById('hut-card-xp').innerText = gameState.player.xp;
-            document.getElementById('stat-earned').innerText = gameState.stats.babesEarned; document.getElementById('stat-items').innerText = gameState.stats.itemsOwned;
-            const badgesContainer = document.getElementById('badge-list-container'); badgesContainer.innerHTML = '';
+            document.getElementById('hut-card-level').innerText = gameState.player.level;
+            document.getElementById('hut-card-xp').innerText = gameState.player.xp;
+            document.getElementById('stat-earned').innerText = gameState.stats.babesEarned;
+            document.getElementById('stat-items').innerText = gameState.stats.itemsOwned;
+            
+            const badgesContainer = document.getElementById('badge-list-container');
+            badgesContainer.innerHTML = '';
             const badges = [
                 { id: 'welcome', name: 'Welcome to the Hood', desc: 'Joined Babes Island', icon: '🏝️', done: true },
                 { id: 'itemBought', name: 'First Purchase', desc: 'Buy an item at The Shop', icon: '🛍️', done: gameState.quests.itemBought },
@@ -421,31 +450,51 @@
                 { id: 'contestJoined', name: 'Contestant', desc: 'Join the Weekly Contest', icon: '✨', done: gameState.quests.contestJoined }
             ];
             badges.forEach(b => {
-                badgesContainer.innerHTML += `<div class="quest-item ${b.done ? 'quest-done' : ''}"><div><div style="font-weight:800; font-size:12px;">${b.name}</div><div style="font-size:10px; color:#aaa;">${b.desc}</div></div><div style="font-size:16px;">${b.done ? b.icon : '🔒'}</div></div>`;
+                badgesContainer.innerHTML += `
+                    <div class="quest-item ${b.done ? 'quest-done' : ''}">
+                        <div><div style="font-weight:800; font-size:12px;">${b.name}</div><div style="font-size:10px; color:#aaa;">${b.desc}</div></div>
+                        <div style="font-size:16px;">${b.done ? b.icon : '🔒'}</div>
+                    </div>`;
             });
         }
 
         function renderInventory() {
             ['clothes', 'accessories', 'glasses'].forEach(cat => {
                 const container = document.getElementById(`grid-hut-${cat}`); container.innerHTML = ''; 
-                if (gameState.inventory[cat].length === 0) { container.innerHTML = '<div class="item-square" style="opacity: 0.5;">Empty</div>'; } else {
+                if (gameState.inventory[cat].length === 0) {
+                    container.innerHTML = '<div class="item-square" style="opacity: 0.5;">Empty</div>';
+                } else {
                     gameState.inventory[cat].forEach(itemName => {
                         const item = itemDB[itemName]; const isEquipped = gameState.equipped[cat] === itemName;
                         const borderColor = isEquipped ? 'var(--pale-marigold)' : rarityColors[item.rarity];
-                        container.innerHTML += `<div class="item-square" onclick="equipItem('${itemName}', '${cat}')" style="border-color: ${borderColor}; ${isEquipped ? 'background: rgba(241, 187, 88, 0.2);' : ''}">
+                        const bgStyle = isEquipped ? 'background: rgba(241, 187, 88, 0.2);' : '';
+                        container.innerHTML += `<div class="item-square" onclick="equipItem('${itemName}', '${cat}')" style="border-color: ${borderColor}; ${bgStyle}">
                             <div class="rarity-badge" style="background:${rarityColors[item.rarity]}; top: -5px; right: -5px; left: auto;">${item.rarity}</div>
-                            <span>${itemName}</span><span style="font-size:10px; margin-top:5px; color: ${isEquipped ? 'var(--pale-marigold)' : 'var(--lake-blue)'}">${isEquipped ? '(EQUIPPED)' : '(Equip)'}</span>
+                            <span>${itemName}</span><span style="font-size:10px; font-weight:normal; margin-top:5px; color: ${isEquipped ? 'var(--pale-marigold)' : 'var(--lake-blue)'}">${isEquipped ? '(EQUIPPED)' : '(Equip)'}</span>
                         </div>`;
                     });
                 }
             });
         }
 
-        function equipItem(itemName, category) { gameState.equipped[category] = itemName; completeQuest('outfitChanged', 15, 0); saveGame(); updateAvatarPreview(); calculateStyleScore(); showToast(`Equipped: ${itemName}`); }
-        function updateAvatarPreview() { document.getElementById('avatar-preview').innerHTML = `YOUR BABE<br><br><span style="font-size:12px; color:var(--powder-pink); line-height: 1.8;">[ ${gameState.equipped.clothes || 'None'} ]<br>[ ${gameState.equipped.accessories || 'None'} ]<br>[ ${gameState.equipped.glasses || 'None'} ]</span>`; }
+        // --- 4. GAME ACTIONS ---
+        function equipItem(itemName, category) {
+            gameState.equipped[category] = itemName;
+            completeQuest('outfitChanged', 15, 0); 
+            saveGame(); updateAvatarPreview(); calculateStyleScore(); showToast(`Equipped: ${itemName}`);
+        }
+
+        function updateAvatarPreview() {
+            document.getElementById('avatar-preview').innerHTML = `YOUR BABE<br><br>
+                <span style="font-size:12px; color:var(--powder-pink); line-height: 1.8;">
+                [ ${gameState.equipped.clothes || 'None'} ]<br>
+                [ ${gameState.equipped.accessories || 'None'} ]<br>
+                [ ${gameState.equipped.glasses || 'None'} ]</span>`;
+        }
 
         function buyItem(itemName) {
             const item = itemDB[itemName];
+            // No Level Restriction anymore!
             if (gameState.inventory[item.category].includes(itemName)) { showToast(`You already own ${itemName}!`); return; }
             if (gameState.player.babes >= item.price) {
                 gameState.player.babes -= item.price; gameState.inventory[item.category].push(itemName);
@@ -455,7 +504,8 @@
 
         function claimDaily() {
             if (gameState.quests.dailyClaimed) { showToast("You already claimed today!"); return; }
-            completeQuest('dailyClaimed', 10, 25); document.getElementById('btn-claim-daily').innerText = "CLAIMED ✓"; document.getElementById('btn-claim-daily').style.opacity = "0.5";
+            completeQuest('dailyClaimed', 10, 25);
+            document.getElementById('btn-claim-daily').innerText = "CLAIMED ✓"; document.getElementById('btn-claim-daily').style.opacity = "0.5";
         }
 
         function sendChat() {
@@ -464,7 +514,10 @@
             input.value = ''; completeQuest('chatted', 20, 0); 
         }
 
-        function saveName() { const inputField = document.getElementById('profile-name-input'); if (inputField.value.trim() !== "") { gameState.player.name = inputField.value; saveGame(); showToast("Profile name saved!"); } }
+        function saveName() {
+            const inputField = document.getElementById('profile-name-input');
+            if (inputField.value.trim() !== "") { gameState.player.name = inputField.value; saveGame(); showToast("Profile name saved!"); }
+        }
 
         function calculateStyleScore() {
             const breakdown = document.getElementById('score-breakdown'); let totalScore = 0; let html = '';
@@ -476,20 +529,25 @@
                     html += `<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>${itemName} <span style="font-size:8px; color:${color};">(${rarity})</span></span><span>+${score}</span></div>`;
                 }
             });
-            if(breakdown) breakdown.innerHTML = html; const tScore = document.getElementById('contest-total-score'); if(tScore) tScore.innerText = totalScore; return totalScore;
+            if(breakdown) breakdown.innerHTML = html;
+            const tScore = document.getElementById('contest-total-score');
+            if(tScore) tScore.innerText = totalScore;
+            return totalScore;
         }
 
         function joinContest() {
             if (gameState.quests.contestJoined) { showToast("Already registered!"); return; }
             if(gameState.player.babes < 50) { showToast(`Need 50 $babes to enter!`); return; }
             gameState.player.babes -= 50; 
-            let score = calculateStyleScore(); completeQuest('contestJoined', 50, score * 3);
+            let score = calculateStyleScore();
+            completeQuest('contestJoined', 50, score * 3);
             document.getElementById('btn-join-contest').innerText = "REGISTERED ✓"; document.getElementById('btn-join-contest').style.opacity = "0.5";
             showToast(`Paid 50 fee. Scored ${score}! Won ${score * 3} $babes!`);
         }
 
         function voteContest() { completeQuest('voted', 20, 0); showToast("Vote Submitted! Thanks."); }
 
+        // --- 5. MODAL SYSTEM ---
         let currentOpenModal = null; let overlay = null;
 
         function switchTab(event, modalContext, tabName) {
@@ -551,7 +609,14 @@
             document.querySelectorAll('.close-modal').forEach(button => { button.addEventListener('click', closeAllModals); });
             overlay.addEventListener('click', closeAllModals);
             
-            generateSparkles(); renderShop(); updateHUD(); updateHutProfile(); renderInventory(); updateAvatarPreview(); renderQuests();
+            generateSparkles();
+            renderShop();
+            updateHUD();
+            updateHutProfile();
+            renderInventory();
+            updateAvatarPreview();
+            renderQuests();
+
             if(gameState.quests.dailyClaimed) { document.getElementById('btn-claim-daily').innerText = "CLAIMED ✓"; document.getElementById('btn-claim-daily').style.opacity = "0.5"; }
             if(gameState.quests.contestJoined) { document.getElementById('btn-join-contest').innerText = "REGISTERED ✓"; document.getElementById('btn-join-contest').style.opacity = "0.5"; }
         };
