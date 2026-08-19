@@ -10,31 +10,15 @@
     <style>
         /* --- COLOR PALETTE --- */
         :root {
-            --powder-pink: #ECA6A6;
-            --pastel-turquoise: #98CDCC;
-            --vanilla-cream: #F4D8C6;
-            --lake-blue: #008799;
-            --pale-marigold: #F1BB58;
-            --white: #FFFFFF;
-            --bg-light: #fdfaf6;
+            --powder-pink: #ECA6A6; --pastel-turquoise: #98CDCC; --vanilla-cream: #F4D8C6;
+            --lake-blue: #008799; --pale-marigold: #F1BB58; --white: #FFFFFF; --bg-light: #fdfaf6;
+            --rarity-common: #95a5a6; --rarity-rare: #3498db; --rarity-epic: #9b59b6; --rarity-legendary: #f1c40f;
         }
 
-        body {
-            background-color: #f8f0e6; 
-            background-image: url('ChatGPT%20Image%208%20Agu%202026%2C%2013.39.44.png');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; font-family: 'Nunito', sans-serif; overflow: hidden;
-        }
+        body { background-color: #f8f0e6; background-image: url('ChatGPT%20Image%208%20Agu%202026%2C%2013.39.44.png'); background-size: cover; background-position: center; background-attachment: fixed; margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; font-family: 'Nunito', sans-serif; overflow: hidden; }
 
-        #map-container {
-            position: relative; display: inline-block; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); 
-            border-radius: 12px; max-width: 98vw; max-height: 85vh; overflow: hidden; 
-        }
-        
+        #map-container { position: relative; display: inline-block; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); border-radius: 12px; max-width: 98vw; max-height: 85vh; overflow: hidden; }
         #map-image { max-width: 98vw; max-height: 85vh; width: auto; height: auto; display: block; pointer-events: none; border-radius: 12px; }
-
         #map-frame { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 22; border-radius: 12px; }
 
         .marquee-wrapper { position: absolute; top: 0; left: 0; width: 100%; background-color: var(--white); border-bottom: 3px solid var(--pastel-turquoise); overflow: hidden; display: flex; box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 21; }
@@ -45,26 +29,17 @@
         #map-logo { position: absolute; top: 45px; left: 20px; width: 15%; min-width: 100px; max-width: 250px; z-index: 25; pointer-events: none; filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.3)); }
 
         /* --- HUD PROFILE --- */
-        .hud-profile {
-            position: absolute; top: 45px; right: 20px; z-index: 25;
-            background: rgba(255, 255, 255, 0.95); border: 3px solid var(--lake-blue);
-            border-radius: 16px; padding: 10px 15px; display: flex; gap: 15px;
-            align-items: center; box-shadow: 4px 4px 0px rgba(0, 135, 153, 0.2); backdrop-filter: blur(5px);
-        }
-        .hud-avatar {
-            width: 50px; height: 50px; background: var(--vanilla-cream); border: 2px solid var(--lake-blue); border-radius: 10px;
-            display: flex; justify-content: center; align-items: center; font-family: 'Press Start 2P', cursive; font-size: 8px;
-            color: var(--lake-blue); text-align: center; line-height: 1.5; background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,0.5) 5px, rgba(255,255,255,0.5) 10px);
-        }
+        .hud-profile { position: absolute; top: 45px; right: 20px; z-index: 25; background: rgba(255, 255, 255, 0.95); border: 3px solid var(--lake-blue); border-radius: 16px; padding: 10px 15px; display: flex; gap: 15px; align-items: center; box-shadow: 4px 4px 0px rgba(0, 135, 153, 0.2); backdrop-filter: blur(5px); }
+        .hud-avatar { width: 50px; height: 50px; background: var(--vanilla-cream); border: 2px solid var(--lake-blue); border-radius: 10px; display: flex; justify-content: center; align-items: center; font-family: 'Press Start 2P', cursive; font-size: 8px; color: var(--lake-blue); text-align: center; line-height: 1.5; background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,0.5) 5px, rgba(255,255,255,0.5) 10px); }
         .hud-info { display: flex; flex-direction: column; gap: 4px; min-width: 120px; }
         .hud-name { font-weight: 800; color: var(--lake-blue); font-size: 14px; text-transform: uppercase; margin-bottom: 2px; }
-        
         .hud-xp-container { font-size: 10px; color: var(--lake-blue); font-weight: 800; display: flex; justify-content: space-between; }
         .hud-xp-bar-bg { width: 100%; height: 6px; background: var(--vanilla-cream); border-radius: 3px; overflow: hidden; margin-bottom: 2px; }
         .hud-xp-bar-fill { height: 100%; width: 0%; background: var(--pastel-turquoise); transition: width 0.3s ease; }
-        
         .hud-balance { font-size: 12px; color: var(--powder-pink); font-weight: 800; display: flex; align-items: center; gap: 5px;}
-        .hud-balance span { color: var(--lake-blue); }
+        
+        .hud-quests { position: absolute; top: 140px; right: 20px; z-index: 25; background: var(--pale-marigold); border: 3px solid var(--white); color: var(--white); font-family: 'Press Start 2P', cursive; font-size: 10px; border-radius: 12px; padding: 10px 15px; cursor: pointer; box-shadow: 4px 4px 0px rgba(0,0,0,0.2); transition: 0.2s; }
+        .hud-quests:hover { transform: scale(1.05); background: #e0a53e; }
 
         .sparkle { position: absolute; width: 4px; height: 4px; background-color: #ffffff; border-radius: 50%; box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.9); pointer-events: none; z-index: 10; animation: twinkle linear infinite; }
         @keyframes twinkle { 0% { opacity: 0; transform: scale(0.5); } 50% { opacity: 1; transform: scale(1.5); } 100% { opacity: 0; transform: scale(0.5); } }
@@ -73,20 +48,13 @@
         .building-label:hover { background-color: var(--lake-blue); color: var(--white); border-color: var(--white); box-shadow: 4px 4px 0px rgba(255, 255, 255, 0.4); }
         @keyframes floatLabel { 0%, 100% { margin-top: 0px; } 50% { margin-top: -8px; } }
 
+        .lock-indicator { color: var(--powder-pink); font-size: 8px; display: block; margin-top: 2px; }
+
         #airplane { position: absolute; z-index: 15; pointer-events: none; width: 24%; min-width: 150px; animation: flyPlane 60s linear infinite; }
         @keyframes flyPlane { 0% { top: -50%; left: 120%; } 45% { top: 90%; left: -20%; } 100% { top: 90%; left: -20%; } }
 
-        /* --- TOAST NOTIFICATION --- */
-        #game-toast {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
-            background: var(--lake-blue); color: var(--white); font-family: 'Press Start 2P', cursive;
-            font-size: 10px; padding: 15px 20px; border: 3px solid var(--pastel-turquoise);
-            border-radius: 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); z-index: 9999;
-            opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-align: center; line-height: 1.5; pointer-events: none;
-        }
+        #game-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--lake-blue); color: var(--white); font-family: 'Press Start 2P', cursive; font-size: 10px; padding: 15px 20px; border: 3px solid var(--pastel-turquoise); border-radius: 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); z-index: 9999; opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-align: center; line-height: 1.5; pointer-events: none; }
 
-        /* --- MODALS --- */
         #modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(244, 216, 198, 0.85); backdrop-filter: blur(10px); z-index: 99; opacity: 0; transition: opacity 0.3s ease; }
         .babes-modal { display: none; position: fixed; width: 85vw; height: 85vh; background: var(--bg-light); border: 4px solid var(--vanilla-cream); border-radius: 24px; box-shadow: 0 15px 35px rgba(0, 135, 153, 0.2); padding: 20px 30px; z-index: 100; color: #4a4a4a; flex-direction: column; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .sub-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; max-width: 90vw; background: var(--white); border: 4px solid var(--lake-blue); border-radius: 20px; padding: 20px; z-index: 200; box-shadow: 0 20px 50px rgba(0,0,0,0.3); flex-direction: column; }
@@ -105,12 +73,14 @@
 
         .nft-large { width: 100%; aspect-ratio: 1 / 1; background: var(--vanilla-cream); border: 4px solid var(--lake-blue); border-radius: 16px; display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--lake-blue); font-family: 'Press Start 2P', cursive; font-size: 14px; margin-bottom: 15px; background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.5) 10px, rgba(255,255,255,0.5) 20px); text-align: center; padding: 10px; box-sizing: border-box;}
         .item-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-        .item-square { width: 100%; aspect-ratio: 1 / 1; border: 2px dashed var(--pastel-turquoise); border-radius: 12px; background: rgba(152, 205, 204, 0.1); display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--lake-blue); font-weight: bold; font-size: 14px; cursor: pointer; transition: 0.2s; text-align: center; padding: 5px; box-sizing: border-box; }
-        .item-square:hover { background: var(--pale-marigold); border-color: var(--pale-marigold); color: var(--white); transform: translateY(-5px); }
-        .item-price { color: var(--powder-pink); font-size: 12px; margin-top: 5px; }
+        .item-square { width: 100%; aspect-ratio: 1 / 1; border: 2px dashed var(--pastel-turquoise); border-radius: 12px; background: rgba(152, 205, 204, 0.1); display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--lake-blue); font-weight: bold; font-size: 14px; cursor: pointer; transition: 0.2s; text-align: center; padding: 5px; box-sizing: border-box; position: relative;}
+        .item-square:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .item-price { font-size: 12px; margin-top: 5px; color: var(--powder-pink); }
+        .lvl-lock { position: absolute; top: -10px; right: -10px; background: var(--powder-pink); color: var(--white); font-family: 'Press Start 2P'; font-size: 8px; padding: 5px; border-radius: 5px; border: 2px solid var(--white); }
+        .rarity-badge { position: absolute; top: 5px; left: 5px; font-size: 9px; font-weight: 800; padding: 2px 5px; border-radius: 4px; color: #fff;}
 
-        .tab-container { display: flex; gap: 10px; margin-bottom: 15px; }
-        .tab-btn { background: rgba(152, 205, 204, 0.3); color: var(--lake-blue); border: none; padding: 12px 20px; border-radius: 10px; font-family: 'Nunito', sans-serif; font-weight: 800; cursor: pointer; transition: 0.2s; flex: 1; }
+        .tab-container { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+        .tab-btn { background: rgba(152, 205, 204, 0.3); color: var(--lake-blue); border: none; padding: 12px 20px; border-radius: 10px; font-family: 'Nunito', sans-serif; font-weight: 800; cursor: pointer; transition: 0.2s; flex: 1; text-align: center; }
         .tab-btn.active { background: var(--lake-blue); color: var(--white); }
         .tab-content { display: none; }
 
@@ -125,124 +95,120 @@
         .chat-list { height: 100%; overflow-y: auto; border: 2px solid var(--vanilla-cream); padding: 15px; border-radius: 12px; margin-bottom: 15px; flex: 1; min-height: 150px; }
         .chat-msg { margin-bottom: 12px; font-size: 15px; }
         .chat-user { font-weight: bold; color: var(--lake-blue); }
-        .trade-box { display: flex; gap: 20px; margin-bottom: 20px; }
-        .trade-side { flex: 1; background: #fafafa; border: 2px solid var(--vanilla-cream); padding: 20px; border-radius: 12px; text-align: center; }
-        .trade-title { font-size: 14px; font-weight: 800; color: var(--lake-blue); margin-bottom: 15px; text-transform: uppercase; }
-
-        #rotate-warning { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--vanilla-cream); color: var(--lake-blue); z-index: 9999; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 30px; box-sizing: border-box; }
-        #rotate-warning p { font-size: 16px; font-weight: 800; margin-top: 15px; max-width: 80%; }
-        .rotate-icon { font-size: 80px; margin-bottom: 20px; animation: rotatePhone 2s ease-in-out infinite alternate; }
-        @keyframes rotatePhone { 0% { transform: rotate(0deg); } 100% { transform: rotate(-90deg); } }
+        
+        .quest-item { background: #fafafa; border: 2px solid var(--vanilla-cream); padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .quest-done { border-color: var(--pastel-turquoise); background: rgba(152, 205, 204, 0.1); }
+        .quest-done-text { color: var(--pastel-turquoise); font-weight: bold; font-family: 'Press Start 2P'; font-size: 10px; }
 
         @media (max-width: 768px) {
             .babes-modal { width: 95vw; height: 90vh; padding: 15px; border-width: 3px; border-radius: 16px; }
-            .modal-title { font-size: 12px; }
             .modal-body { flex-direction: column; overflow-y: auto; gap: 15px; }
             .col-left, .col-right { overflow-y: visible; padding-right: 0; }
             .item-grid { grid-template-columns: repeat(2, 1fr) !important; }
-            .tab-btn { padding: 8px 10px; font-size: 10px; }
-            .nft-large { width: 70%; margin: 0 auto 15px auto; }
-            .trade-box { flex-direction: column; gap: 10px; }
-            .sub-modal { width: 90vw; padding: 15px; }
-            .building-label { font-size: 8px; padding: 4px 8px; } 
-            
             #map-logo { top: 40px; left: 10px; width: 20%; }
-            .hud-profile { top: 40px; right: 10px; padding: 5px 10px; gap: 10px; transform: scale(0.85); transform-origin: top right; }
-            .marquee-content { font-size: 10px; padding: 10px 0; }
+            .hud-profile { top: 40px; right: 10px; transform: scale(0.85); transform-origin: top right; }
+            .hud-quests { top: 120px; right: 10px; transform: scale(0.85); transform-origin: top right; }
         }
-        @media (max-width: 1024px) and (orientation: portrait) { #rotate-warning { display: flex; } }
     </style>
 </head>
 <body>
 
-    <div id="rotate-warning">
-        <div class="rotate-icon">📱</div>
-        <h2 class="modal-title" style="font-size: 20px;">PLEASE ROTATE</h2>
-        <p>Rotate your device to landscape mode for the best experience.</p>
-    </div>
-
-    <!-- TOAST NOTIFICATION -->
     <div id="game-toast">MESSAGE HERE</div>
 
     <!-- PETA UTAMA -->
     <div id="map-container">
         <img id="map-frame" src="frame2.webp" alt="Map Frame">
-
         <div class="marquee-wrapper">
-            <div class="marquee-content">
-                <span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span>
-            </div>
-            <div class="marquee-content">
-                <span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span>
-            </div>
+            <div class="marquee-content"><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span></div>
+            <div class="marquee-content"><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span><span>BABES IN THE HOOD</span></div>
         </div>
-
         <img id="map-logo" src="logo%20babes.svg" alt="Babes Logo">
 
-        <!-- HUD PROFILE -->
         <div class="hud-profile">
             <div class="hud-avatar" id="hud-avatar-box">BABE</div>
             <div class="hud-info">
                 <div class="hud-name" id="hud-name-display">Babes #001</div>
-                
-                <div class="hud-xp-container">
-                    <span>LV. <span id="hud-level">1</span></span>
-                    <span><span id="hud-xp">0</span>/1000 XP</span>
-                </div>
-                <div class="hud-xp-bar-bg">
-                    <div id="hud-xp-bar-fill" class="hud-xp-bar-fill"></div>
-                </div>
-
+                <div class="hud-xp-container"><span>LV. <span id="hud-level">1</span></span><span><span id="hud-xp">0</span>/1000 XP</span></div>
+                <div class="hud-xp-bar-bg"><div id="hud-xp-bar-fill" class="hud-xp-bar-fill"></div></div>
                 <div class="hud-balance">🪙 <span id="hud-babes-balance">1000</span> $babes</div>
-                <div class="hud-balance">♦ <span id="hud-eth-balance">0.5</span> ETH</div>
             </div>
         </div>
+
+        <div class="hud-quests" onclick="openModal('quests', event)">📋 QUESTS (<span id="quest-count">0</span>/5)</div>
 
         <img id="map-image" src="map-babes.webp" alt="Babes Island Map">
         <img id="airplane" src="plane.webp" alt="Flying Plane">
         
-        <div class="building-label" style="left: 46%; top: 59%;" onclick="openModal('the_shop', event)">THE SHOP</div>
-        <div class="building-label" style="left: 60%; top: 46%;" onclick="openModal('the_cafe', event)">THE CAFE</div>
-        <div class="building-label" style="left: 77%; top: 24%;" onclick="openModal('babes_club', event)">BABES CLUB</div>
+        <!-- BANGUNAN DENGAN INFO KUNCI LEVEL -->
+        <div class="building-label" style="left: 46%; top: 59%;" onclick="openModal('the_shop', event)">THE SHOP<br><span class="lock-indicator" id="lock-shop">LV 2+</span></div>
+        <div class="building-label" style="left: 60%; top: 46%;" onclick="openModal('the_cafe', event)">THE CAFE<br><span class="lock-indicator" id="lock-cafe">LV 3+</span></div>
+        <div class="building-label" style="left: 77%; top: 24%;" onclick="openModal('babes_club', event)">BABES CLUB<br><span class="lock-indicator" id="lock-club">LV 5+</span></div>
         <div class="building-label" style="left: 54%; top: 64%;" onclick="openModal('guard_tower', event)">GUARD TOWER</div>
         <div class="building-label" style="left: 84%; top: 35%;" onclick="openModal('the_hut', event)">THE HUT</div>
     </div>
 
-    <!-- MAIN OVERLAY -->
     <div id="modal-overlay"></div>
 
-    <!-- 1. THE HUT -->
-    <div class="babes-modal" id="modal-the_hut">
-        <div class="modal-header">
-            <h3 class="modal-title">THE HUT // PROFILE</h3>
-            <div class="close-modal">X</div>
+    <!-- MODAL: DAILY QUESTS -->
+    <div class="babes-modal" id="modal-quests" style="max-width: 600px;">
+        <div class="modal-header"><h3 class="modal-title">DAILY MISSIONS</h3><div class="close-modal">X</div></div>
+        <div class="modal-body" style="flex-direction: column; overflow-y: auto;">
+            <p style="font-size: 14px; margin-top: 0;">Complete activities to earn XP and progress your level.</p>
+            <div id="quest-list"></div>
+            <button class="btn btn-pink" onclick="closeAllModals()" style="margin-top: 20px;">BACK TO MAP</button>
         </div>
-        <div class="modal-body">
-            <div class="col-left">
-                <div class="modal-section" style="flex: 1;">
-                    <h4 class="section-title">YOUR BABE NFT</h4>
-                    <div class="nft-large" id="avatar-preview">LOADING...</div>
-                    <input type="text" id="profile-name-input" class="input-text" placeholder="Change profile name...">
-                    <button class="btn" onclick="saveName()" style="margin-bottom: 20px;">SAVE NAME</button>
-                    
-                    <h4 class="section-title" style="color: var(--powder-pink);">DAILY REWARD</h4>
-                    <button class="btn btn-gold" onclick="claimDaily()" style="margin-bottom: 20px;">CLAIM +25 $babes & +10 XP</button>
+    </div>
 
-                    <h4 class="section-title" style="color: var(--powder-pink);">ACTIONS</h4>
-                    <button class="btn btn-pink" onclick="showToast('Minting locked in prototype mode.')">MINT WARDROBE (Lock & Burn)</button>
+    <!-- 1. THE HUT (PLAYER HOME) -->
+    <div class="babes-modal" id="modal-the_hut">
+        <div class="modal-header"><h3 class="modal-title">THE HUT // PLAYER HOME</h3><div class="close-modal">X</div></div>
+        <div class="modal-body">
+            <div class="col-left" style="flex: 0.8;">
+                <div class="modal-section" style="flex: 1;">
+                    <h4 class="section-title">PLAYER CARD</h4>
+                    <div class="nft-large" id="avatar-preview">LOADING...</div>
+                    <div style="display: flex; gap: 5px; margin-bottom: 15px;">
+                        <input type="text" id="profile-name-input" class="input-text" style="margin-bottom:0;" placeholder="Name...">
+                        <button class="btn btn-pink" onclick="saveName()" style="width: auto; margin-bottom:0; padding: 10px;">SAVE</button>
+                    </div>
+                    <div style="font-size: 13px; line-height: 2; color: var(--lake-blue); background: rgba(152, 205, 204, 0.1); padding: 15px; border-radius: 12px; margin-bottom: 20px;">
+                        <div><strong>LEVEL:</strong> <span id="hut-card-level">1</span></div>
+                        <div><strong>XP:</strong> <span id="hut-card-xp">0</span> / 1000</div>
+                        <div><strong>REP:</strong> <span id="hut-card-rep">Island Tourist</span></div>
+                    </div>
+                    <button class="btn btn-gold" id="btn-claim-daily" onclick="claimDaily()">CLAIM DAILY REWARD</button>
                 </div>
             </div>
-            <div class="col-right">
-                <div class="modal-section" style="flex: 1;">
-                    <h4 class="section-title">INVENTORY</h4>
+            <div class="col-right" style="flex: 1.2;" id="hut-right-panel">
+                <div class="modal-section" style="flex: 1; display:flex; flex-direction:column;">
                     <div class="tab-container">
-                        <button class="tab-btn active" onclick="switchTab(event, 'hut', 'clothes')">CLOTHES</button>
-                        <button class="tab-btn" onclick="switchTab(event, 'hut', 'accessories')">ACCESSORIES</button>
-                        <button class="tab-btn" onclick="switchTab(event, 'hut', 'glasses')">GLASSES</button>
+                        <button class="tab-btn active" onclick="switchMainTab(event, 'wardrobe')">WARDROBE</button>
+                        <button class="tab-btn" onclick="switchMainTab(event, 'stats')">STATS</button>
+                        <button class="tab-btn" onclick="switchMainTab(event, 'achievements')">BADGES</button>
                     </div>
-                    <div id="hut-clothes" class="tab-content hut-content" style="display: block;"><div class="item-grid" id="grid-hut-clothes"></div></div>
-                    <div id="hut-accessories" class="tab-content hut-content"><div class="item-grid" id="grid-hut-accessories"></div></div>
-                    <div id="hut-glasses" class="tab-content hut-content"><div class="item-grid" id="grid-hut-glasses"></div></div>
+                    <div id="hut-main-wardrobe" class="hut-main-content" style="display:block; flex:1; overflow-y:auto;">
+                        <div class="tab-container" style="margin-bottom:10px;">
+                            <button class="tab-btn active" style="font-size:10px; padding:10px;" onclick="switchTab(event, 'hut', 'clothes')">CLOTHES</button>
+                            <button class="tab-btn" style="font-size:10px; padding:10px;" onclick="switchTab(event, 'hut', 'accessories')">ACCESSORIES</button>
+                            <button class="tab-btn" style="font-size:10px; padding:10px;" onclick="switchTab(event, 'hut', 'glasses')">GLASSES</button>
+                        </div>
+                        <div id="hut-clothes" class="tab-content hut-content" style="display: block;"><div class="item-grid" id="grid-hut-clothes"></div></div>
+                        <div id="hut-accessories" class="tab-content hut-content"><div class="item-grid" id="grid-hut-accessories"></div></div>
+                        <div id="hut-glasses" class="tab-content hut-content"><div class="item-grid" id="grid-hut-glasses"></div></div>
+                    </div>
+                    <div id="hut-main-stats" class="hut-main-content" style="display:none; flex:1; overflow-y:auto;">
+                        <h4 class="section-title">LIFETIME STATS</h4>
+                        <ul style="list-style:none; padding:0; margin:0; font-size:14px; line-height:2.8; color:var(--lake-blue); font-weight:800;">
+                            <li style="display:flex; justify-content:space-between; border-bottom:2px dashed var(--vanilla-cream);"><span>$BABES Earned:</span> <span id="stat-earned" style="color:var(--powder-pink);">1000</span></li>
+                            <li style="display:flex; justify-content:space-between; border-bottom:2px dashed var(--vanilla-cream);"><span>Items Owned:</span> <span id="stat-items" style="color:var(--powder-pink);">3</span></li>
+                        </ul>
+                    </div>
+                    <div id="hut-main-achievements" class="hut-main-content" style="display:none; flex:1; overflow-y:auto;">
+                        <h4 class="section-title">ACHIEVEMENTS</h4>
+                        <div style="display:flex; flex-direction:column; gap:10px;" id="badge-list-container">
+                            <!-- Diisi oleh JS -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -252,399 +218,422 @@
     <div class="babes-modal" id="modal-the_shop">
         <div class="modal-header"><h3 class="modal-title">THE SHOP // MARKETPLACE</h3><div class="close-modal">X</div></div>
         <div class="modal-body" style="flex-direction: column;">
-            <div style="text-align: center; margin-bottom: 10px; font-weight: 800; color: var(--powder-pink); font-size: 18px;">
-                YOUR BALANCE: <span id="shop-balance">1000</span> $babes
-            </div>
+            <div style="text-align: center; margin-bottom: 10px; font-weight: 800; color: var(--powder-pink); font-size: 18px;">YOUR BALANCE: <span id="shop-balance">1000</span> $babes</div>
             <div class="tab-container" style="max-width: 600px; margin: 0 auto 20px auto;">
                 <button class="tab-btn active" onclick="switchTab(event, 'shop', 'clothes')">BIKINIS</button>
-                <button class="tab-btn" onclick="switchTab(event, 'shop', 'accessories')">TATTOOS & PIERCINGS</button>
-                <button class="tab-btn" onclick="switchTab(event, 'shop', 'glasses')">GLASSES & EYES</button>
+                <button class="tab-btn" onclick="switchTab(event, 'shop', 'accessories')">TATTOOS</button>
+                <button class="tab-btn" onclick="switchTab(event, 'shop', 'glasses')">GLASSES</button>
             </div>
             <div class="modal-section" style="flex: 1; overflow-y: auto;">
-                <div id="shop-clothes" class="tab-content shop-content" style="display: block;">
-                    <div class="item-grid" style="grid-template-columns: repeat(4, 1fr);">
-                        <div class="item-square" onclick="buyItem('Neon Bikini', 50, 'clothes')"><span>Neon Bikini</span><span class="item-price">50 $babes</span></div>
-                        <div class="item-square" onclick="buyItem('Polka Dot', 75, 'clothes')"><span>Polka Dot</span><span class="item-price">75 $babes</span></div>
-                        <div class="item-square" onclick="buyItem('Vice One-Piece', 120, 'clothes')"><span>Vice One-Piece</span><span class="item-price">120 $babes</span></div>
-                        <div class="item-square" onclick="buyItem('Black Leather', 200, 'clothes')"><span>Black Leather</span><span class="item-price">200 $babes</span></div>
-                    </div>
-                </div>
-                <div id="shop-accessories" class="tab-content shop-content">
-                    <div class="item-grid" style="grid-template-columns: repeat(4, 1fr);">
-                        <div class="item-square" onclick="buyItem('Dragon Tattoo', 100, 'accessories')"><span>Dragon Tattoo</span><span class="item-price">100 $babes</span></div>
-                        <div class="item-square" onclick="buyItem('Navel Ring', 40, 'accessories')"><span>Navel Ring</span><span class="item-price">40 $babes</span></div>
-                    </div>
-                </div>
-                <div id="shop-glasses" class="tab-content shop-content">
-                    <div class="item-grid" style="grid-template-columns: repeat(4, 1fr);">
-                        <div class="item-square" onclick="buyItem('Aviators', 80, 'glasses')"><span>Aviators</span><span class="item-price">80 $babes</span></div>
-                        <div class="item-square" onclick="buyItem('Green Eyes', 300, 'glasses')"><span>Green Eyes</span><span class="item-price">300 $babes</span></div>
-                        <div class="item-square" onclick="buyItem('3D Glasses', 150, 'glasses')"><span>3D Glasses</span><span class="item-price">150 $babes</span></div>
-                    </div>
-                </div>
+                <div id="shop-clothes" class="tab-content shop-content" style="display: block;"><div class="item-grid" id="render-shop-clothes"></div></div>
+                <div id="shop-accessories" class="tab-content shop-content"><div class="item-grid" id="render-shop-accessories"></div></div>
+                <div id="shop-glasses" class="tab-content shop-content"><div class="item-grid" id="render-shop-glasses"></div></div>
             </div>
         </div>
     </div>
 
-    <!-- 3. THE CAFE -->
+    <!-- 3. THE CAFE (DIROMBAK MENJADI SOCIAL HUB) -->
     <div class="babes-modal" id="modal-the_cafe">
-        <div class="modal-header"><h3 class="modal-title">THE CAFE // SOCIAL & TRADE</h3><div class="close-modal">X</div></div>
-        <div class="modal-body">
-            <div class="col-left">
-                <div class="modal-section" style="flex: 1; display: flex; flex-direction: column;">
-                    <h4 class="section-title">VIP LIVE CHAT</h4>
-                    <div class="chat-list">
-                        <div class="chat-msg"><span class="chat-user">[Babes #099] Alice:</span> WTB Neon Bikini! Dm offers.</div>
-                        <div class="chat-msg"><span class="chat-user">[Babes #412] Bob:</span> I have a Dragon Tattoo, looking for Aviators.</div>
-                        <div class="chat-msg"><span class="chat-user">[<span class="hud-name-sync">Babes #001</span>] You:</span> Let's trade!</div>
+        <div class="modal-header"><h3 class="modal-title">BABES CAFE // SOCIAL HUB</h3><div class="close-modal">X</div></div>
+        <div class="modal-body" style="flex-direction: column;">
+            <div class="tab-container" style="max-width: 600px; margin: 0 auto 10px auto;">
+                <button class="tab-btn active" onclick="switchTab(event, 'cafe', 'chat')">GLOBAL CHAT</button>
+                <button class="tab-btn" onclick="switchTab(event, 'cafe', 'trade')">TRADE ROOM</button>
+                <button class="tab-btn" style="opacity:0.5;" onclick="showToast('Friends system locked.')">FRIENDS 🔒</button>
+            </div>
+
+            <div class="modal-section" style="flex: 1; overflow-y: auto; display:flex; flex-direction:column;">
+                <!-- TAB CHAT -->
+                <div id="cafe-chat" class="tab-content cafe-content" style="display: block; height:100%; display:flex; flex-direction:column;">
+                    <div class="chat-list" id="chat-history" style="flex:1;">
+                        <div class="chat-msg"><span class="chat-user">[Babes #099] Alice:</span> Welcome to the Cafe!</div>
                     </div>
-                    <div style="display: flex; gap: 10px; margin-top: auto;">
-                        <input type="text" class="input-text" style="margin-bottom: 0;" placeholder="Type message...">
-                        <button class="btn" onclick="showToast('Feature locked until Level 3!')" style="width: 120px; margin-bottom: 0;">SEND</button>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="chat-input" class="input-text" style="margin-bottom: 0;" placeholder="Say hello to finish a quest...">
+                        <button class="btn" onclick="sendChat()" style="width: 120px; margin-bottom: 0;">SEND</button>
                     </div>
                 </div>
-            </div>
-            <div class="col-right">
-                <div class="modal-section" style="flex: 1;">
-                    <h4 class="section-title">P2P ITEM TRADE STATION</h4>
-                    <p style="font-size: 14px; margin-bottom: 20px;">Secure Smart Contract Escrow. Both parties must approve to finalize.</p>
-                    <div class="trade-box">
-                        <div class="trade-side">
-                            <div class="trade-title">YOU PROVIDE</div>
-                            <!-- KOTAK SELECT ITEM YANG BISA DIKLIK -->
-                            <div class="item-square" id="trade-provide-box" onclick="openInventorySelect()" style="width: 60%; margin: 0 auto; background: var(--pale-marigold); color: var(--white); border-color: var(--pale-marigold);">
-                                <span>Select Item</span>
-                            </div>
+
+                <!-- TAB TRADE -->
+                <div id="cafe-trade" class="tab-content cafe-content" style="display: none; height:100%;">
+                    <p style="text-align:center; font-size:14px; margin-bottom:20px;">Trade securely with other Babes in the Hood.</p>
+                    <div style="display:flex; gap:20px;">
+                        <div style="flex:1; background:#fafafa; border:2px solid var(--vanilla-cream); padding:20px; border-radius:12px; text-align:center;">
+                            <h4 style="color:var(--lake-blue); margin-top:0;">YOUR OFFER</h4>
+                            <div class="item-square" style="width:60%; margin:0 auto;">Select Item</div>
                         </div>
-                        <div style="display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: bold; color: var(--powder-pink);">⇄</div>
-                        <div class="trade-side">
-                            <div class="trade-title">THEY PROVIDE</div>
-                            <div class="item-square" style="width: 60%; margin: 0 auto; border-color: var(--powder-pink); color: var(--powder-pink);">Target Item</div>
+                        <div style="display:flex; align-items:center; font-size:30px; font-weight:bold; color:var(--powder-pink);">⇄</div>
+                        <div style="flex:1; background:#fafafa; border:2px solid var(--vanilla-cream); padding:20px; border-radius:12px; text-align:center;">
+                            <h4 style="color:var(--lake-blue); margin-top:0;">THEIR OFFER</h4>
+                            <div class="item-square" style="width:60%; margin:0 auto; border-color:var(--powder-pink); color:var(--powder-pink);">Target Item</div>
                         </div>
                     </div>
-                    <button class="btn btn-gold" onclick="openSubModal('trade-negotiate')">NEGOTIATE & APPROVE TRANSACTION</button>
+                    <button class="btn btn-gold" style="margin-top:20px;" onclick="showToast('Web3 Trade integration pending.')">PROPOSE TRADE</button>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- SUB-MODAL: INVENTORY SELECTION UNTUK TRADE -->
-    <div id="modal-inventory-select" class="sub-modal">
-        <h3 style="color: var(--lake-blue); font-family: 'Press Start 2P', cursive; font-size: 12px; margin-top: 0; text-align: center;">SELECT ITEM TO TRADE</h3>
-        <p style="text-align: center; font-size: 12px; margin-bottom: 15px;">Choose an item from your inventory to offer.</p>
-        
-        <div id="trade-inventory-list" style="max-height: 200px; overflow-y: auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px;">
-            <!-- Inventory items dynamically rendered here -->
-        </div>
-        
-        <button class="btn btn-pink" onclick="closeSubModal('inventory-select')">CANCEL</button>
-    </div>
-
-    <!-- SUB-MODAL FOR CAFE NEGOTIATION -->
-    <div id="modal-trade-negotiate" class="sub-modal">
-        <h3 style="color: var(--lake-blue); font-family: 'Press Start 2P', cursive; font-size: 12px; margin-top: 0; text-align: center;">NEGOTIATION</h3>
-        <p style="text-align: center; font-size: 14px; margin-bottom: 20px;">Add $babes or Items to sweeten the deal.</p>
-        <input type="number" class="input-text" placeholder="Add $babes amount...">
-        <hr style="width: 100%; border: 1px dashed var(--vanilla-cream); margin: 20px 0;">
-        <button class="btn btn-gold" onclick="showToast('Trade Escrow Initiated')">APPROVE TRADE (Sign TX)</button>
-        <button class="btn btn-pink" onclick="closeSubModal('trade-negotiate')">CANCEL</button>
     </div>
 
     <!-- 4. BABES CLUB -->
     <div class="babes-modal" id="modal-babes_club">
-        <div class="modal-header"><h3 class="modal-title">BABES CLUB // WEEKLY CONTEST</h3><div class="close-modal">X</div></div>
+        <div class="modal-header"><h3 class="modal-title">BABES CLUB // CONTEST</h3><div class="close-modal">X</div></div>
         <div class="modal-body">
-            <div class="col-left" style="flex: 2;">
+            <div class="col-left" style="flex: 1.2;">
                 <div class="modal-section" style="flex: 1;">
-                    <h4 class="section-title">ACTIVE POLLING (VOTE NOW)</h4>
+                    <h4 class="section-title">COMMUNITY VOTE</h4>
                     <div style="display: flex; gap: 20px;">
-                        <div style="flex: 1; text-align: center;"><div class="nft-large" style="border-color: var(--powder-pink);">Babes #102<br>(SQUARE)</div><button class="btn btn-pink" onclick="voteContest()">VOTE #102</button></div>
-                        <div style="display: flex; align-items: center; font-weight: 800; color: var(--lake-blue); font-size: 24px;">VS</div>
-                        <div style="flex: 1; text-align: center;"><div class="nft-large">Babes #888<br>(SQUARE)</div><button class="btn" onclick="voteContest()">VOTE #888</button></div>
+                        <div style="flex: 1; text-align: center;"><div class="nft-large" style="border-color: var(--powder-pink); padding: 30px 10px;">Babes #102</div><button class="btn btn-pink" style="padding: 10px; font-size:12px;" onclick="voteContest()">VOTE #102</button></div>
+                        <div style="flex: 1; text-align: center;"><div class="nft-large" style="padding: 30px 10px;">Babes #888</div><button class="btn" style="padding: 10px; font-size:12px;" onclick="voteContest()">VOTE #888</button></div>
                     </div>
                 </div>
             </div>
-            <div class="col-right">
+            <div class="col-right" style="flex: 0.8;">
                 <div class="modal-section" style="flex: 1; text-align: center;">
-                    <h4 class="section-title">PREVIOUS WINNER</h4>
-                    <div class="nft-large" style="border-color: var(--pale-marigold); background: rgba(241, 187, 88, 0.1);">👑 Babes #505<br>(SQUARE)</div>
-                    <p style="font-weight: 800; color: var(--pale-marigold);">REWARD WON: 500 $babes</p>
+                    <h4 class="section-title" style="color:var(--powder-pink);">THIS WEEK'S THEME</h4>
+                    <h3 style="font-family:'Press Start 2P'; color:var(--lake-blue); font-size:14px; margin-top:0;">SUMMER PARTY</h3>
+                    <div style="background: rgba(152, 205, 204, 0.1); padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 2px dashed var(--pastel-turquoise); text-align:left;">
+                        <p style="font-weight: 800; color: var(--lake-blue); margin: 0 0 10px 0; font-size: 12px; text-align:center;">STYLE SCORE (60%)</p>
+                        <div id="score-breakdown" style="font-size:12px; line-height:2; color:var(--lake-blue); font-weight:bold;"></div>
+                        <hr style="border: 1px dashed var(--pastel-turquoise); margin: 10px 0;">
+                        <div style="display:flex; justify-content:space-between; font-weight:800; font-size:14px; color:var(--powder-pink);"><span>TOTAL SCORE:</span> <span id="contest-total-score">0</span></div>
+                    </div>
+                    <button class="btn btn-gold" id="btn-join-contest" onclick="joinContest()">PAY 50 $BABES TO JOIN</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 5. GUARD TOWER -->
+    <!-- 5. GUARD TOWER (DIROMBAK MENJADI SAFETY CENTER) -->
     <div class="babes-modal" id="modal-guard_tower">
-        <div class="modal-header"><h3 class="modal-title">GUARD TOWER // SUPPORT</h3><div class="close-modal">X</div></div>
-        <div class="modal-body" style="justify-content: center; align-items: center;">
-            <div class="modal-section" style="width: 100%; max-width: 800px;">
-                <h4 class="section-title">REPORT TO ADMIN / DEV</h4>
-                <p style="font-size: 16px;">Having issues with the island facilities? Leave a message below.</p>
-                <textarea class="textarea-box" placeholder="Describe your issue here..."></textarea>
-                <button class="btn" onclick="showToast('Report submitted! Thank you.')" style="padding: 20px;">SUBMIT REPORT</button>
+        <div class="modal-header"><h3 class="modal-title">GUARD TOWER // SAFETY CENTER</h3><div class="close-modal">X</div></div>
+        <div class="modal-body" style="flex-direction: column;">
+            <div class="tab-container" style="max-width: 600px; margin: 0 auto 10px auto;">
+                <button class="tab-btn active" onclick="switchTab(event, 'guard', 'support')">SUPPORT TICKET</button>
+                <button class="tab-btn" onclick="switchTab(event, 'guard', 'rules')">ISLAND RULES</button>
+                <button class="tab-btn" onclick="switchTab(event, 'guard', 'faq')">F.A.Q.</button>
+            </div>
+            
+            <div class="modal-section" style="flex: 1; overflow-y: auto;">
+                <!-- TAB SUPPORT -->
+                <div id="guard-support" class="tab-content guard-content" style="display: block;">
+                    <h4 class="section-title">REPORT BUG / PLAYER / SCAM</h4>
+                    <p style="font-size: 14px;">Please describe your issue in detail. False reports will lower your reputation.</p>
+                    <textarea class="textarea-box" placeholder="Write your report here..."></textarea>
+                    <button class="btn btn-pink" onclick="showToast('Ticket submitted to Admins.')">SUBMIT TICKET</button>
+                </div>
+
+                <!-- TAB RULES -->
+                <div id="guard-rules" class="tab-content guard-content" style="display: none; line-height: 1.8; color: var(--lake-blue);">
+                    <h4 class="section-title">ISLAND RULES</h4>
+                    <ol>
+                        <li><strong>No Harassment:</strong> Keep the Cafe chat friendly.</li>
+                        <li><strong>No Scams:</strong> Always use the official Trade Room escrow.</li>
+                        <li><strong>No Bots:</strong> Automated contest voting is strictly prohibited.</li>
+                    </ol>
+                    <p style="color:var(--powder-pink); font-size:12px;">* Violators will be locked in the Guard Tower.</p>
+                </div>
+
+                <!-- TAB FAQ -->
+                <div id="guard-faq" class="tab-content guard-content" style="display: none; line-height: 1.8; color: var(--lake-blue);">
+                    <h4 class="section-title">FREQUENTLY ASKED QUESTIONS</h4>
+                    <p><strong>Q: How do I level up?</strong><br>A: Complete Quests, vote in contests, and buy items to earn XP.</p>
+                    <p><strong>Q: Why can't I buy some items?</strong><br>A: Epic and Legendary items require higher account levels to purchase.</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- JAVASCRIPT: CORE GAME LOGIC & STATE MANAGEMENT -->
+    <!-- JAVASCRIPT: CORE GAME LOGIC -->
     <script>
-        // --- 1. LOCAL STORAGE SYSTEM ---
+        // --- 1. GAME ECONOMY DATABASE ---
+        const itemDB = {
+            'Red Bikini': { price: 0, rarity: 'Common', score: 5, category: 'clothes', lvl: 1 },
+            'Belly Piercing': { price: 0, rarity: 'Common', score: 5, category: 'accessories', lvl: 1 },
+            'Blue Eyes': { price: 0, rarity: 'Common', score: 5, category: 'glasses', lvl: 1 },
+            'Neon Bikini': { price: 50, rarity: 'Common', score: 10, category: 'clothes', lvl: 1 },
+            'Polka Dot': { price: 200, rarity: 'Rare', score: 25, category: 'clothes', lvl: 1 },
+            'Vice One-Piece': { price: 500, rarity: 'Epic', score: 50, category: 'clothes', lvl: 3 },
+            'Black Leather': { price: 1500, rarity: 'Legendary', score: 100, category: 'clothes', lvl: 5 },
+            'Navel Ring': { price: 50, rarity: 'Common', score: 10, category: 'accessories', lvl: 1 },
+            'Dragon Tattoo': { price: 500, rarity: 'Epic', score: 50, category: 'accessories', lvl: 2 },
+            'Aviators': { price: 200, rarity: 'Rare', score: 25, category: 'glasses', lvl: 1 },
+            '3D Glasses': { price: 500, rarity: 'Epic', score: 50, category: 'glasses', lvl: 3 },
+            'Green Eyes': { price: 1500, rarity: 'Legendary', score: 100, category: 'glasses', lvl: 5 }
+        };
+        const rarityColors = { 'Common': '#95a5a6', 'Rare': '#3498db', 'Epic': '#9b59b6', 'Legendary': '#f1c40f' };
+
+        // --- 2. LOCAL STORAGE & STATE ---
         const defaultState = {
-            player: { name: "Babes #001", level: 1, xp: 0, babes: 1000, eth: 0.5 },
+            player: { name: "Babes #001", level: 1, xp: 0, babes: 1000, eth: 0.5, reputation: "Island Tourist" },
             inventory: { clothes: ['Red Bikini'], accessories: ['Belly Piercing'], glasses: ['Blue Eyes'] },
             equipped: { clothes: 'Red Bikini', accessories: 'Belly Piercing', glasses: 'Blue Eyes' },
-            flags: { dailyClaimed: false } 
+            quests: { dailyClaimed: false, chatted: false, itemBought: false, voted: false, contestJoined: false, outfitChanged: false, visitedCafe: false },
+            stats: { babesEarned: 1000, itemsOwned: 3 }
         };
 
         let gameState = JSON.parse(localStorage.getItem('babesGameState')) || defaultState;
 
+        // Migrasi Data Lama agar support Quests Baru
+        if(!gameState.quests.outfitChanged) gameState.quests.outfitChanged = false;
+        if(!gameState.quests.visitedCafe) gameState.quests.visitedCafe = false;
+
         function saveGame() {
             localStorage.setItem('babesGameState', JSON.stringify(gameState));
-            updateHUD();
-            renderInventory();
+            updateHUD(); renderInventory(); renderQuests(); updateHutProfile();
+            updateMapLocks();
         }
 
-        // --- 2. TOAST NOTIFICATION SYSTEM ---
         let toastTimeout;
         function showToast(message) {
             const toast = document.getElementById('game-toast');
-            toast.innerHTML = message;
-            toast.style.transform = 'translateX(-50%) translateY(0)';
-            toast.style.opacity = '1';
-            
+            toast.innerHTML = message; toast.style.transform = 'translateX(-50%) translateY(0)'; toast.style.opacity = '1';
             clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => {
-                toast.style.transform = 'translateX(-50%) translateY(100px)';
-                toast.style.opacity = '0';
-            }, 3000);
+            toastTimeout = setTimeout(() => { toast.style.transform = 'translateX(-50%) translateY(100px)'; toast.style.opacity = '0'; }, 3000);
         }
 
-        // --- 3. PROGRESSION SYSTEM (XP & ECONOMY) ---
         function addXP(amount) {
             gameState.player.xp += amount;
             let levelUp = false;
-            while (gameState.player.xp >= 1000) {
-                gameState.player.level += 1;
-                gameState.player.xp -= 1000;
-                levelUp = true;
-            }
-            saveGame();
-            if(levelUp) showToast(`LEVEL UP! You are now Level ${gameState.player.level} 🎉`);
+            while (gameState.player.xp >= 1000) { gameState.player.level += 1; gameState.player.xp -= 1000; levelUp = true; }
+            saveGame(); if(levelUp) showToast(`LEVEL UP! You are now Level ${gameState.player.level} 🎉`);
         }
 
-        function claimDaily() {
-            if (gameState.flags.dailyClaimed) {
-                showToast("You already claimed your daily reward!");
-                return;
-            }
-            gameState.player.babes += 25;
-            addXP(10);
-            gameState.flags.dailyClaimed = true; 
-            saveGame();
-            showToast("Daily Reward Claimed: +25 $babes, +10 XP");
-        }
-
-        function voteContest() {
-            showToast("Vote Submitted! +10 XP");
-            addXP(10);
-        }
-
-        // --- 4. THE HUT LOGIC ---
-        function saveName() {
-            const inputField = document.getElementById('profile-name-input');
-            if (inputField.value.trim() !== "") {
-                gameState.player.name = inputField.value;
-                saveGame();
-                showToast("Profile name saved!");
+        function completeQuest(questId, xpReward, babesReward) {
+            if (!gameState.quests[questId]) {
+                gameState.quests[questId] = true; gameState.player.babes += babesReward;
+                if(babesReward > 0) gameState.stats.babesEarned += babesReward;
+                addXP(xpReward); showToast(`QUEST DONE! +${xpReward} XP, +${babesReward} $babes`); saveGame();
             }
         }
 
-        function equipItem(itemName, category) {
-            gameState.equipped[category] = itemName;
-            saveGame();
-            updateAvatarPreview();
-            showToast(`Equipped: ${itemName}`);
-        }
-
-        // --- 5. THE SHOP LOGIC ---
-        function buyItem(itemName, price, category) {
-            if (gameState.inventory[category].includes(itemName)) {
-                showToast(`You already own ${itemName}!`);
-                return;
-            }
-            if (gameState.player.babes >= price) {
-                gameState.player.babes -= price;
-                gameState.inventory[category].push(itemName);
-                
-                addXP(20);
-                saveGame();
-                showToast(`Purchased ${itemName} for ${price} $babes!`);
-            } else {
-                showToast("Not enough $babes!");
-            }
-        }
-
-        // --- 6. THE CAFE (TRADE SYSTEM LOGIC) ---
-        let currentTradeOffer = null;
-
-        function openInventorySelect() {
-            const container = document.getElementById('trade-inventory-list');
-            container.innerHTML = '';
-            let hasItems = false;
-
-            // Membaca semua item di inventory pemain
+        // --- 3. RENDERING ---
+        function renderShop() {
             ['clothes', 'accessories', 'glasses'].forEach(cat => {
-                gameState.inventory[cat].forEach(item => {
-                    hasItems = true;
-                    // Buat tombol untuk setiap item
-                    container.innerHTML += `<div class="item-square" onclick="selectTradeItem('${item}')" style="border-color: var(--lake-blue); cursor: pointer;">
-                        <span>${item}</span>
-                    </div>`;
+                const container = document.getElementById(`render-shop-${cat}`); container.innerHTML = '';
+                Object.keys(itemDB).forEach(itemName => {
+                    const item = itemDB[itemName];
+                    if(item.category === cat && item.price > 0) {
+                        const color = rarityColors[item.rarity];
+                        const lockHTML = item.lvl > 1 ? `<div class="lvl-lock">LV ${item.lvl}+</div>` : '';
+                        container.innerHTML += `
+                            <div class="item-square" style="border-color: ${color};" onclick="buyItem('${itemName}')">
+                                ${lockHTML}<div class="rarity-badge" style="background:${color};">${item.rarity}</div>
+                                <span>${itemName}</span><span class="item-price" style="color:${color};">${item.price} $babes</span>
+                            </div>`;
+                    }
                 });
             });
-
-            if (!hasItems) {
-                container.innerHTML = '<p style="grid-column: span 2; text-align: center; font-size: 12px;">Your inventory is empty.</p>';
-            }
-
-            openSubModal('inventory-select');
         }
 
-        function selectTradeItem(itemName) {
-            currentTradeOffer = itemName;
-            // Update UI kotak kuning di The Cafe
-            const provideBox = document.getElementById('trade-provide-box');
-            provideBox.innerHTML = `<span>${itemName}</span><span style="font-size:10px; font-weight:normal; margin-top:5px;">(Click to change)</span>`;
-            
-            // Ubah warna kotak menandakan item sudah terpilih
-            provideBox.style.background = 'rgba(152, 205, 204, 0.1)';
-            provideBox.style.color = 'var(--lake-blue)';
-            provideBox.style.borderColor = 'var(--lake-blue)';
-            
-            closeSubModal('inventory-select');
-            showToast(`Item selected: ${itemName}`);
+        function renderQuests() {
+            const qList = document.getElementById('quest-list'); if(!qList) return; qList.innerHTML = '';
+            const missions = [
+                { id: 'dailyClaimed', title: 'Claim Daily Reward in The Hut', xp: 10 },
+                { id: 'outfitChanged', title: 'Change your outfit in The Hut', xp: 15 },
+                { id: 'visitedCafe', title: 'Visit The Cafe (Unlock at LV 3)', xp: 10 },
+                { id: 'chatted', title: 'Talk to Babes at the Cafe', xp: 20 },
+                { id: 'itemBought', title: 'Buy one item from The Shop', xp: 25 }
+            ];
+            let completedCount = 0;
+            missions.forEach(m => {
+                const isDone = gameState.quests[m.id]; if(isDone) completedCount++;
+                qList.innerHTML += `<div class="quest-item ${isDone ? 'quest-done' : ''}">
+                        <div><div style="font-weight: 800; font-size: 14px; margin-bottom: 5px;">${m.title}</div><div style="font-size: 12px; color: var(--powder-pink);">Reward: +${m.xp} XP</div></div>
+                        ${isDone ? '<div class="quest-done-text">✓ DONE</div>' : '<div style="color: #ccc;">□</div>'}
+                    </div>`;
+            });
+            document.getElementById('quest-count').innerText = completedCount;
         }
 
-        // --- 7. RENDER DATA KE UI ---
         function updateHUD() {
             document.getElementById('hud-name-display').innerText = gameState.player.name;
             document.getElementById('hud-babes-balance').innerText = gameState.player.babes;
             document.getElementById('hud-eth-balance').innerText = gameState.player.eth;
-            
             document.getElementById('hud-level').innerText = gameState.player.level;
             document.getElementById('hud-xp').innerText = gameState.player.xp;
-            
-            const xpPercent = (gameState.player.xp / 1000) * 100;
-            document.getElementById('hud-xp-bar-fill').style.width = xpPercent + '%';
-
+            document.getElementById('hud-xp-bar-fill').style.width = ((gameState.player.xp / 1000) * 100) + '%';
             document.getElementById('profile-name-input').value = gameState.player.name;
             document.getElementById('shop-balance').innerText = gameState.player.babes;
-            
-            const chatSyncs = document.querySelectorAll('.hud-name-sync');
-            chatSyncs.forEach(el => el.innerText = gameState.player.name);
+            if(gameState.equipped.clothes) document.getElementById('hud-avatar-box').innerHTML = `BABE<br><span style="font-size:5px; margin-top:2px;">${gameState.equipped.clothes.split(' ')[0]}</span>`;
+        }
 
-            document.getElementById('hud-avatar-box').innerHTML = `BABE<br><span style="font-size:5px; margin-top:2px;">${gameState.equipped.clothes.split(' ')[0]}</span>`;
+        function updateHutProfile() {
+            document.getElementById('hut-card-level').innerText = gameState.player.level;
+            document.getElementById('hut-card-xp').innerText = gameState.player.xp;
+            document.getElementById('stat-earned').innerText = gameState.stats.babesEarned;
+            document.getElementById('stat-items').innerText = gameState.stats.itemsOwned;
+            
+            const badgesContainer = document.getElementById('badge-list-container');
+            badgesContainer.innerHTML = '';
+            const badges = [
+                { id: 'welcome', name: 'Welcome to the Hood', desc: 'Joined Babes Island', icon: '🏝️', done: true },
+                { id: 'itemBought', name: 'First Purchase', desc: 'Buy an item at The Shop', icon: '🛍️', done: gameState.quests.itemBought },
+                { id: 'visitedCafe', name: 'Cafe Regular', desc: 'Visit the Cafe', icon: '☕', done: gameState.quests.visitedCafe },
+                { id: 'contestJoined', name: 'Contestant', desc: 'Join the Weekly Contest', icon: '✨', done: gameState.quests.contestJoined }
+            ];
+            badges.forEach(b => {
+                badgesContainer.innerHTML += `
+                    <div class="quest-item ${b.done ? 'quest-done' : ''}">
+                        <div><div style="font-weight:800; font-size:12px;">${b.name}</div><div style="font-size:10px; color:#aaa;">${b.desc}</div></div>
+                        <div style="font-size:16px;">${b.done ? b.icon : '🔒'}</div>
+                    </div>`;
+            });
         }
 
         function renderInventory() {
-            const categories = ['clothes', 'accessories', 'glasses'];
-            categories.forEach(cat => {
-                const container = document.getElementById(`grid-hut-${cat}`);
-                container.innerHTML = ''; 
+            ['clothes', 'accessories', 'glasses'].forEach(cat => {
+                const container = document.getElementById(`grid-hut-${cat}`); container.innerHTML = ''; 
                 if (gameState.inventory[cat].length === 0) {
                     container.innerHTML = '<div class="item-square" style="opacity: 0.5;">Empty</div>';
                 } else {
-                    gameState.inventory[cat].forEach(item => {
-                        const isEquipped = gameState.equipped[cat] === item;
-                        const borderColor = isEquipped ? 'var(--pale-marigold)' : 'var(--lake-blue)';
-                        const bgStyle = isEquipped ? 'background: rgba(241, 187, 88, 0.2);' : '';
-                        
-                        container.innerHTML += `<div class="item-square" onclick="equipItem('${item}', '${cat}')" style="border-color: ${borderColor}; ${bgStyle}">
-                            <span>${item}</span>
-                            <span style="font-size:10px; font-weight:normal; margin-top:5px;">${isEquipped ? '(EQUIPPED)' : '(Click to Equip)'}</span>
+                    gameState.inventory[cat].forEach(itemName => {
+                        const item = itemDB[itemName]; const isEquipped = gameState.equipped[cat] === itemName;
+                        const borderColor = isEquipped ? 'var(--pale-marigold)' : rarityColors[item.rarity];
+                        container.innerHTML += `<div class="item-square" onclick="equipItem('${itemName}', '${cat}')" style="border-color: ${borderColor}; ${isEquipped ? 'background: rgba(241, 187, 88, 0.2);' : ''}">
+                            <div class="rarity-badge" style="background:${rarityColors[item.rarity]}; top: -5px; right: -5px; left: auto;">${item.rarity}</div>
+                            <span>${itemName}</span><span style="font-size:10px; margin-top:5px; color: ${isEquipped ? 'var(--pale-marigold)' : 'var(--lake-blue)'}">${isEquipped ? '(EQUIPPED)' : '(Equip)'}</span>
                         </div>`;
                     });
                 }
             });
         }
 
-        function updateAvatarPreview() {
-            const avatarBox = document.getElementById('avatar-preview');
-            avatarBox.innerHTML = `YOUR BABE<br><br>
-                <span style="font-size:12px; color:var(--powder-pink); line-height: 1.8;">
-                [ ${gameState.equipped.clothes} ]<br>
-                [ ${gameState.equipped.accessories} ]<br>
-                [ ${gameState.equipped.glasses} ]
-                </span>`;
+        // Menyembunyikan indikator LV Lock di Map jika level pemain sudah cukup
+        function updateMapLocks() {
+            const level = gameState.player.level;
+            if(level >= 2) document.getElementById('lock-shop').style.display = 'none';
+            if(level >= 3) document.getElementById('lock-cafe').style.display = 'none';
+            if(level >= 5) document.getElementById('lock-club').style.display = 'none';
         }
 
+        // --- 4. GAME ACTIONS ---
+        function equipItem(itemName, category) {
+            gameState.equipped[category] = itemName;
+            completeQuest('outfitChanged', 15, 0); // QUEST TRIGGER
+            saveGame(); updateAvatarPreview(); calculateStyleScore(); showToast(`Equipped: ${itemName}`);
+        }
 
-        // --- UI & MODAL EVENT LOGIC ---
-        let currentOpenModal = null; let closingTimers = []; let overlay = null;
+        function updateAvatarPreview() {
+            document.getElementById('avatar-preview').innerHTML = `YOUR BABE<br><br>
+                <span style="font-size:12px; color:var(--powder-pink); line-height: 1.8;">
+                [ ${gameState.equipped.clothes || 'None'} ]<br>
+                [ ${gameState.equipped.accessories || 'None'} ]<br>
+                [ ${gameState.equipped.glasses || 'None'} ]</span>`;
+        }
+
+        function buyItem(itemName) {
+            const item = itemDB[itemName];
+            if (gameState.player.level < item.lvl) { showToast(`Requires Level ${item.lvl}! Level up first.`); return; }
+            if (gameState.inventory[item.category].includes(itemName)) { showToast(`You already own ${itemName}!`); return; }
+            if (gameState.player.babes >= item.price) {
+                gameState.player.babes -= item.price; gameState.inventory[item.category].push(itemName);
+                gameState.stats.itemsOwned++; completeQuest('itemBought', 25, 0); saveGame(); showToast(`Purchased ${item.rarity} ${itemName}!`);
+            } else { showToast("Not enough $babes!"); }
+        }
+
+        function claimDaily() {
+            if (gameState.quests.dailyClaimed) { showToast("You already claimed today!"); return; }
+            completeQuest('dailyClaimed', 10, 25);
+            document.getElementById('btn-claim-daily').innerText = "CLAIMED ✓"; document.getElementById('btn-claim-daily').style.opacity = "0.5";
+        }
+
+        function sendChat() {
+            const input = document.getElementById('chat-input'); if(input.value.trim() === '') return;
+            document.getElementById('chat-history').innerHTML += `<div class="chat-msg"><span class="chat-user">[${gameState.player.name}] You:</span> ${input.value}</div>`;
+            input.value = ''; completeQuest('chatted', 20, 0); // QUEST TRIGGER
+        }
+
+        function saveName() {
+            const inputField = document.getElementById('profile-name-input');
+            if (inputField.value.trim() !== "") { gameState.player.name = inputField.value; saveGame(); showToast("Profile name saved!"); }
+        }
+
+        function calculateStyleScore() {
+            const breakdown = document.getElementById('score-breakdown'); let totalScore = 0; let html = '';
+            ['clothes', 'accessories', 'glasses'].forEach(cat => {
+                const itemName = gameState.equipped[cat];
+                if(itemName && itemDB[itemName]) {
+                    const score = itemDB[itemName].score; const rarity = itemDB[itemName].rarity; const color = rarityColors[rarity];
+                    totalScore += score;
+                    html += `<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>${itemName} <span style="font-size:8px; color:${color};">(${rarity})</span></span><span>+${score}</span></div>`;
+                }
+            });
+            if(breakdown) breakdown.innerHTML = html;
+            const tScore = document.getElementById('contest-total-score');
+            if(tScore) tScore.innerText = totalScore;
+            return totalScore;
+        }
+
+        function joinContest() {
+            if (gameState.quests.contestJoined) { showToast("Already registered!"); return; }
+            if(gameState.player.babes < 50) { showToast(`Need 50 $babes to enter!`); return; }
+            gameState.player.babes -= 50; 
+            let score = calculateStyleScore();
+            completeQuest('contestJoined', 50, score * 3);
+            document.getElementById('btn-join-contest').innerText = "REGISTERED ✓"; document.getElementById('btn-join-contest').style.opacity = "0.5";
+            showToast(`Paid 50 fee. Scored ${score}! Won ${score * 3} $babes!`);
+        }
+
+        function voteContest() { completeQuest('voted', 20, 0); showToast("Vote Submitted! Thanks."); }
+
+        // --- 5. MODAL SYSTEM ---
+        let currentOpenModal = null; let overlay = null;
 
         function switchTab(event, modalContext, tabName) {
-            const modalEl = document.getElementById('modal-' + (modalContext === 'hut' ? 'the_hut' : 'the_shop'));
-            const buttons = modalEl.querySelectorAll('.tab-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            event.currentTarget.classList.add('active'); 
-            
-            const contents = modalEl.querySelectorAll('.' + modalContext + '-content');
-            contents.forEach(content => content.style.display = 'none');
+            const modalEl = document.getElementById('modal-' + (['hut', 'shop', 'cafe', 'guard'].includes(modalContext) ? modalContext : 'the_' + modalContext));
+            if(!modalEl) return;
+            modalEl.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active')); event.currentTarget.classList.add('active'); 
+            modalEl.querySelectorAll('.' + modalContext + '-content').forEach(content => content.style.display = 'none');
             document.getElementById(modalContext + '-' + tabName).style.display = 'block';
         }
-
-        function openSubModal(id) { document.getElementById('modal-' + id).style.display = 'flex'; }
-        function closeSubModal(id) { document.getElementById('modal-' + id).style.display = 'none'; }
+        function switchMainTab(event, tabName) {
+            const container = document.getElementById('hut-right-panel');
+            container.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active')); event.currentTarget.classList.add('active');
+            container.querySelectorAll('.hut-main-content').forEach(content => content.style.display = 'none');
+            document.getElementById('hut-main-' + tabName).style.display = 'block';
+        }
 
         function openModal(zoneId, event) {
+            // Cek Level Progression Lock
+            if(zoneId === 'the_shop' && gameState.player.level < 2) { showToast('🔒 Unlock The Shop at Level 2!'); return; }
+            if(zoneId === 'the_cafe' && gameState.player.level < 3) { showToast('🔒 Unlock The Cafe at Level 3!'); return; }
+            if(zoneId === 'babes_club' && gameState.player.level < 5) { showToast('🔒 Unlock Babes Club at Level 5!'); return; }
+
             if (!overlay) overlay = document.getElementById('modal-overlay');
             const modal = document.getElementById('modal-' + zoneId);
             if (modal && overlay) {
-                closingTimers.forEach(clearTimeout); closingTimers = [];
-                const modals = document.querySelectorAll('.babes-modal');
-                modals.forEach(m => { m.style.display = 'none'; m.style.opacity = '0'; });
-
-                overlay.style.display = 'block';
-                setTimeout(() => { overlay.style.opacity = '1'; }, 10);
+                document.querySelectorAll('.babes-modal').forEach(m => { m.style.display = 'none'; m.style.opacity = '0'; });
+                overlay.style.display = 'block'; setTimeout(() => { overlay.style.opacity = '1'; }, 10);
                 
-                modal.style.top = event.clientY + 'px'; modal.style.left = event.clientX + 'px';
+                // Misi "Visit Cafe" terselesaikan saat masuk Cafe
+                if(zoneId === 'the_cafe') completeQuest('visitedCafe', 10, 0);
+                if(zoneId === 'babes_club') calculateStyleScore();
+                if(zoneId === 'quests') renderQuests();
+
+                modal.style.top = event ? event.clientY + 'px' : '50%';  modal.style.left = event ? event.clientX + 'px' : '50%';
                 modal.style.transform = 'translate(-50%, -50%) scale(0)'; modal.style.opacity = '0'; modal.style.display = 'flex';
                 void modal.offsetWidth; 
-                modal.style.top = '50%'; modal.style.left = '50%';
-                modal.style.transform = 'translate(-50%, -50%) scale(1)'; modal.style.opacity = '1';
+                modal.style.top = '50%'; modal.style.left = '50%'; modal.style.transform = 'translate(-50%, -50%) scale(1)'; modal.style.opacity = '1';
                 currentOpenModal = modal;
             }
         }
-
         function closeAllModals() {
             if (!overlay) overlay = document.getElementById('modal-overlay');
             if (overlay) {
-                overlay.style.opacity = '0'; closingTimers.push(setTimeout(() => { overlay.style.display = 'none'; }, 300));
-                const modals = document.querySelectorAll('.babes-modal');
-                modals.forEach(modal => {
-                    modal.style.transform = 'translate(-50%, -50%) scale(0)'; modal.style.opacity = '0';
-                    closingTimers.push(setTimeout(() => { modal.style.display = 'none'; }, 300));
-                });
-                const subModals = document.querySelectorAll('.sub-modal');
-                subModals.forEach(sub => sub.style.display = 'none');
+                overlay.style.opacity = '0'; setTimeout(() => { overlay.style.display = 'none'; }, 300);
+                document.querySelectorAll('.babes-modal').forEach(modal => { modal.style.transform = 'translate(-50%, -50%) scale(0)'; modal.style.opacity = '0'; setTimeout(() => { modal.style.display = 'none'; }, 300); });
                 currentOpenModal = null;
             }
         }
 
         function generateSparkles() {
             const mapContainer = document.getElementById('map-container');
-            const waterZones = [
-                { x: 2, y: 50, w: 20, h: 45, count: 12 }, { x: 28, y: 40, w: 10, h: 35, count: 8 },  
-                { x: 35, y: 85, w: 20, h: 10, count: 6 }, { x: 80, y: 5, w: 18, h: 15, count: 6 },    
-                { x: 92, y: 65, w: 6, h: 25, count: 4 }     
-            ];
+            const waterZones = [{ x: 2, y: 50, w: 20, h: 45, count: 12 }, { x: 28, y: 40, w: 10, h: 35, count: 8 }, { x: 35, y: 85, w: 20, h: 10, count: 6 }, { x: 80, y: 5, w: 18, h: 15, count: 6 }, { x: 92, y: 65, w: 6, h: 25, count: 4 }];
             waterZones.forEach(zone => {
-                for(let i = 0; i < zone.count; i++) {
+                for(let i=0; i<zone.count; i++) {
                     let sparkle = document.createElement('div'); sparkle.className = 'sparkle';
                     sparkle.style.left = (zone.x + (Math.random() * zone.w)) + '%'; sparkle.style.top = (zone.y + (Math.random() * zone.h)) + '%';
-                    const delay = Math.random() * 5; const duration = 2 + (Math.random() * 3); 
-                    sparkle.style.animationDelay = delay + 's'; sparkle.style.animationDuration = duration + 's';
+                    sparkle.style.animationDelay = (Math.random() * 5) + 's'; sparkle.style.animationDuration = (2 + (Math.random() * 3)) + 's';
                     mapContainer.appendChild(sparkle);
                 }
             });
@@ -652,14 +641,20 @@
 
         window.onload = () => {
             overlay = document.getElementById('modal-overlay');
-            const closeButtons = document.querySelectorAll('.close-modal');
-            closeButtons.forEach(button => { button.addEventListener('click', closeAllModals); });
+            document.querySelectorAll('.close-modal').forEach(button => { button.addEventListener('click', closeAllModals); });
             overlay.addEventListener('click', closeAllModals);
             
             generateSparkles();
+            renderShop();
             updateHUD();
+            updateHutProfile();
             renderInventory();
             updateAvatarPreview();
+            renderQuests();
+            updateMapLocks();
+
+            if(gameState.quests.dailyClaimed) { document.getElementById('btn-claim-daily').innerText = "CLAIMED ✓"; document.getElementById('btn-claim-daily').style.opacity = "0.5"; }
+            if(gameState.quests.contestJoined) { document.getElementById('btn-join-contest').innerText = "REGISTERED ✓"; document.getElementById('btn-join-contest').style.opacity = "0.5"; }
         };
     </script>
 </body>
