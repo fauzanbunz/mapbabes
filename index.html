@@ -57,6 +57,18 @@
             border-radius: 12px;
         }
 
+        /* --- FRAME MAP (BARU) --- */
+        #map-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Agar klik tembus ke bangunan di bawahnya */
+            z-index: 22; /* Di atas label, di bawah HUD & Logo */
+            border-radius: 12px;
+        }
+
         #map-logo {
             position: absolute; top: 20px; left: 20px; width: 15%; 
             min-width: 100px; max-width: 250px; z-index: 25;
@@ -182,6 +194,9 @@
 
     <!-- PETA UTAMA -->
     <div id="map-container">
+        <!-- FRAME PETA (Baru) -->
+        <img id="map-frame" src="frame.webp" alt="Map Frame">
+
         <!-- LOGO MAP -->
         <img id="map-logo" src="logo%20babes.svg" alt="Babes Logo">
 
@@ -229,7 +244,6 @@
                 <div class="modal-section" style="flex: 1;">
                     <h4 class="section-title">YOUR BABE NFT</h4>
                     <div class="nft-large" id="avatar-preview">LOADING...</div>
-                    <!-- INPUT UBAH NAMA -->
                     <input type="text" id="profile-name-input" class="input-text" value="Babes #001" placeholder="Change profile name...">
                     <button class="btn" onclick="saveName()" style="margin-bottom: 30px;">SAVE NAME</button>
                     
@@ -388,15 +402,12 @@
             document.getElementById('hud-babes-balance').innerText = userBalance;
             document.getElementById('hud-eth-balance').innerText = userEth;
             
-            // Mengubah nama juga di panel chat The Cafe
             const chatSyncs = document.querySelectorAll('.hud-name-sync');
             chatSyncs.forEach(el => el.innerText = userName);
 
-            // Teks avatar mini di HUD
             document.getElementById('hud-avatar-box').innerHTML = `BABE<br><span style="font-size:5px; margin-top:2px;">${equipped.clothes.split(' ')[0]}</span>`;
         }
 
-        // Simpan Nama dari The Hut
         function saveName() {
             const inputField = document.getElementById('profile-name-input');
             if (inputField.value.trim() !== "") {
@@ -416,7 +427,7 @@
                 userInventory[category].push(itemName);
                 
                 document.getElementById('shop-balance').innerText = userBalance;
-                updateHUD(); // Sinkronkan ke map luar
+                updateHUD();
                 renderInventory();
                 alert(`Success! You bought ${itemName} for ${price} $babes.\nIt is now in your Wardrobe.`);
             } else {
@@ -427,7 +438,7 @@
         function equipItem(itemName, category) {
             equipped[category] = itemName;
             updateAvatarPreview();
-            updateHUD(); // Sinkronkan ke map luar
+            updateHUD(); 
         }
 
         function renderInventory() {
