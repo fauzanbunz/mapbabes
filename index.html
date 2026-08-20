@@ -56,6 +56,8 @@
         #modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(244, 216, 198, 0.85); backdrop-filter: blur(10px); z-index: 99; opacity: 0; transition: opacity 0.3s ease; }
         .babes-modal { display: none; position: fixed; width: 85vw; height: 85vh; background: var(--bg-light); border: 4px solid var(--vanilla-cream); border-radius: 24px; box-shadow: 0 15px 35px rgba(0, 135, 153, 0.2); padding: 20px 30px; z-index: 100; color: #4a4a4a; flex-direction: column; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         
+        .sub-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; max-width: 90vw; background: var(--white); border: 4px solid var(--lake-blue); border-radius: 20px; padding: 20px; z-index: 200; box-shadow: 0 20px 50px rgba(0,0,0,0.3); flex-direction: column; }
+        
         ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: var(--vanilla-cream); border-radius: 10px; } ::-webkit-scrollbar-thumb { background: var(--pastel-turquoise); border-radius: 10px; }
         
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--vanilla-cream); margin-bottom: 20px; padding-bottom: 15px; flex-shrink: 0; }
@@ -109,10 +111,6 @@
 </head>
 <body>
 
-    <div id="rotate-warning" style="display:none;">
-        <!-- Disabled warning temporarily for testing -->
-    </div>
-
     <div id="game-toast">MESSAGE HERE</div>
 
     <!-- PETA UTAMA -->
@@ -148,6 +146,19 @@
 
     <div id="modal-overlay"></div>
 
+    <!-- MODAL: SUB-MENU TRADE ITEM SELECTION (BARU) -->
+    <div id="modal-inventory-select" class="sub-modal" style="z-index: 999;">
+        <h3 style="color: var(--lake-blue); font-family: 'Press Start 2P', cursive; font-size: 12px; margin-top: 0; text-align: center;">SELECT ITEM TO TRADE</h3>
+        <p style="text-align: center; font-size: 12px; margin-bottom: 15px;">Choose an item from your inventory to offer.</p>
+        
+        <div id="trade-inventory-list" style="max-height: 250px; overflow-y: auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; padding-right: 5px;">
+            <!-- Diisi otomatis oleh JavaScript -->
+        </div>
+        
+        <button class="btn btn-pink" onclick="closeSubModal('inventory-select')">CANCEL</button>
+    </div>
+
+    <!-- MODAL: DAILY QUESTS -->
     <div class="babes-modal" id="modal-quests" style="max-width: 600px;">
         <div class="modal-header"><h3 class="modal-title">DAILY MISSIONS</h3><div class="close-modal">X</div></div>
         <div class="modal-body" style="flex-direction: column; overflow-y: auto;">
@@ -246,15 +257,24 @@
                         <button class="btn" onclick="sendChat()" style="width: 120px; margin-bottom: 0;">SEND</button>
                     </div>
                 </div>
+
+                <!-- TRADE ROOM -->
                 <div id="cafe-trade" class="tab-content cafe-content" style="display: none; height:100%;">
                     <p style="text-align:center; font-size:14px; margin-bottom:20px;">Trade securely with other Babes in the Hood.</p>
                     <div style="display:flex; gap:20px;">
                         <div style="flex:1; background:#fafafa; border:2px solid var(--vanilla-cream); padding:20px; border-radius:12px; text-align:center;">
-                            <h4 style="color:var(--lake-blue); margin-top:0;">YOUR OFFER</h4><div class="item-square" style="width:60%; margin:0 auto;">Select Item</div>
+                            <h4 style="color:var(--lake-blue); margin-top:0;">YOUR OFFER</h4>
+                            
+                            <!-- KOTAK SELECT ITEM (INTERAKTIF) -->
+                            <div class="item-square" id="trade-provide-box" onclick="openInventorySelect()" style="width:60%; margin:0 auto; background: var(--pale-marigold); color: var(--white); border-color: var(--pale-marigold);">
+                                <span>Select Item</span>
+                            </div>
+
                         </div>
                         <div style="display:flex; align-items:center; font-size:30px; font-weight:bold; color:var(--powder-pink);">⇄</div>
                         <div style="flex:1; background:#fafafa; border:2px solid var(--vanilla-cream); padding:20px; border-radius:12px; text-align:center;">
-                            <h4 style="color:var(--lake-blue); margin-top:0;">THEIR OFFER</h4><div class="item-square" style="width:60%; margin:0 auto; border-color:var(--powder-pink); color:var(--powder-pink);">Target Item</div>
+                            <h4 style="color:var(--lake-blue); margin-top:0;">THEIR OFFER</h4>
+                            <div class="item-square" style="width:60%; margin:0 auto; border-color:var(--powder-pink); color:var(--powder-pink);">Target Item</div>
                         </div>
                     </div>
                     <button class="btn btn-gold" style="margin-top:20px;" onclick="showToast('Web3 Trade integration pending.')">PROPOSE TRADE</button>
@@ -547,32 +567,68 @@
 
         function voteContest() { completeQuest('voted', 20, 0); showToast("Vote Submitted! Thanks."); }
 
+        // --- CAFE TRADE INVENTORY SELECTION LOGIC ---
+        function openInventorySelect() {
+            const container = document.getElementById('trade-inventory-list');
+            container.innerHTML = '';
+            let hasItems = false;
+
+            // Baca semua item di inventory dan jadikan tombol yang bisa di-klik
+            ['clothes', 'accessories', 'glasses'].forEach(cat => {
+                gameState.inventory[cat].forEach(itemName => {
+                    hasItems = true;
+                    const item = itemDB[itemName];
+                    const color = rarityColors[item.rarity];
+                    container.innerHTML += `
+                        <div class="item-square" onclick="selectTradeItem('${itemName}')" style="border-color: ${color}; cursor: pointer; padding: 15px;">
+                            <span style="font-size: 12px; font-weight: 800;">${itemName}</span>
+                            <span style="font-size: 9px; color: ${color}; margin-top: 5px;">${item.rarity}</span>
+                        </div>`;
+                });
+            });
+
+            if (!hasItems) {
+                container.innerHTML = '<p style="grid-column: span 2; text-align: center; font-size: 12px;">Your inventory is empty.</p>';
+            }
+
+            openSubModal('inventory-select');
+        }
+
+        function selectTradeItem(itemName) {
+            const provideBox = document.getElementById('trade-provide-box');
+            const item = itemDB[itemName];
+            
+            // Ubah UI Kotak Offer
+            provideBox.innerHTML = `<span style="font-size: 16px;">${itemName}</span><span style="font-size:10px; font-weight:normal; margin-top:5px;">(Click to change)</span>`;
+            provideBox.style.background = 'rgba(152, 205, 204, 0.1)';
+            provideBox.style.color = 'var(--lake-blue)';
+            provideBox.style.borderColor = rarityColors[item.rarity];
+            
+            closeSubModal('inventory-select');
+            showToast(`Item selected: ${itemName}`);
+        }
+
         // --- 5. MODAL SYSTEM ---
         let currentOpenModal = null; let overlay = null;
 
-        // FUNGSI SWITCH TAB DIPERBAIKI (BUG TAB TIDAK BISA DIKLIK)
         function switchTab(event, modalContext, tabName) {
-            // Mencari modal paling dekat dengan tombol yang diklik
             const modalEl = event.currentTarget.closest('.babes-modal');
             if(!modalEl) return;
-            
-            // Hanya menonaktifkan tombol di dalam grup tab yang sama
             const tabContainer = event.currentTarget.closest('.tab-container');
             tabContainer.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active')); 
             event.currentTarget.classList.add('active'); 
-            
-            // Menyembunyikan semua konten terkait konteks (shop, hut, guard, dll)
             modalEl.querySelectorAll('.' + modalContext + '-content').forEach(content => content.style.display = 'none');
-            // Menampilkan tab yang dipilih
             document.getElementById(modalContext + '-' + tabName).style.display = 'block';
         }
-
         function switchMainTab(event, tabName) {
             const container = document.getElementById('hut-right-panel');
             container.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active')); event.currentTarget.classList.add('active');
             container.querySelectorAll('.hut-main-content').forEach(content => content.style.display = 'none');
             document.getElementById('hut-main-' + tabName).style.display = 'block';
         }
+
+        function openSubModal(id) { document.getElementById('modal-' + id).style.display = 'flex'; }
+        function closeSubModal(id) { document.getElementById('modal-' + id).style.display = 'none'; }
 
         function openModal(zoneId, event) {
             if (!overlay) overlay = document.getElementById('modal-overlay');
@@ -597,6 +653,7 @@
             if (overlay) {
                 overlay.style.opacity = '0'; setTimeout(() => { overlay.style.display = 'none'; }, 300);
                 document.querySelectorAll('.babes-modal').forEach(modal => { modal.style.transform = 'translate(-50%, -50%) scale(0)'; modal.style.opacity = '0'; setTimeout(() => { modal.style.display = 'none'; }, 300); });
+                document.querySelectorAll('.sub-modal').forEach(sub => { sub.style.display = 'none'; });
                 currentOpenModal = null;
             }
         }
@@ -620,6 +677,7 @@
             overlay.addEventListener('click', closeAllModals);
             
             generateSparkles(); renderShop(); updateHUD(); updateHutProfile(); renderInventory(); updateAvatarPreview(); renderQuests();
+
             if(gameState.quests.dailyClaimed) { document.getElementById('btn-claim-daily').innerText = "CLAIMED ✓"; document.getElementById('btn-claim-daily').style.opacity = "0.5"; }
             if(gameState.quests.contestJoined) { document.getElementById('btn-join-contest').innerText = "REGISTERED ✓"; document.getElementById('btn-join-contest').style.opacity = "0.5"; }
         };
