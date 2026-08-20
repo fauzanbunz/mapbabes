@@ -44,7 +44,6 @@
         .sparkle { position: absolute; width: 4px; height: 4px; background-color: #ffffff; border-radius: 50%; box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.9); pointer-events: none; z-index: 10; animation: twinkle linear infinite; }
         @keyframes twinkle { 0% { opacity: 0; transform: scale(0.5); } 50% { opacity: 1; transform: scale(1.5); } 100% { opacity: 0; transform: scale(0.5); } }
 
-        /* PERBAIKAN Z-INDEX: Naikkan ke 30 agar pasti berada di atas semua frame dan elemen map lain */
         .building-label { position: absolute; background-color: var(--white); color: var(--lake-blue); border: 3px solid var(--lake-blue); padding: 6px 12px; font-family: 'Press Start 2P', cursive; font-size: 10px; z-index: 30; cursor: pointer; box-shadow: 4px 4px 0px rgba(0, 135, 153, 0.2); text-transform: uppercase; transform: translate(-50%, -50%); animation: floatLabel 3s ease-in-out infinite; transition: 0.2s; }
         .building-label:hover { background-color: var(--lake-blue); color: var(--white); border-color: var(--white); box-shadow: 4px 4px 0px rgba(255, 255, 255, 0.4); }
         @keyframes floatLabel { 0%, 100% { margin-top: 0px; } 50% { margin-top: -8px; } }
@@ -110,6 +109,10 @@
 </head>
 <body>
 
+    <div id="rotate-warning" style="display:none;">
+        <!-- Disabled warning temporarily for testing -->
+    </div>
+
     <div id="game-toast">MESSAGE HERE</div>
 
     <!-- PETA UTAMA -->
@@ -136,7 +139,6 @@
         <img id="map-image" src="map-babes.webp" alt="Babes Island Map">
         <img id="airplane" src="plane.webp" alt="Flying Plane">
         
-        <!-- LABELS TANPA LOCK LEVEL -->
         <div class="building-label" style="left: 46%; top: 59%;" onclick="openModal('the_shop', event)">THE SHOP</div>
         <div class="building-label" style="left: 60%; top: 46%;" onclick="openModal('the_cafe', event)">THE CAFE</div>
         <div class="building-label" style="left: 77%; top: 24%;" onclick="openModal('babes_club', event)">BABES CLUB</div>
@@ -326,18 +328,17 @@
             'Blue Eyes': { price: 0, rarity: 'Common', score: 5, category: 'glasses', lvl: 1 },
             'Neon Bikini': { price: 50, rarity: 'Common', score: 10, category: 'clothes', lvl: 1 },
             'Polka Dot': { price: 200, rarity: 'Rare', score: 25, category: 'clothes', lvl: 1 },
-            'Vice One-Piece': { price: 500, rarity: 'Epic', score: 50, category: 'clothes', lvl: 3 },
-            'Black Leather': { price: 1500, rarity: 'Legendary', score: 100, category: 'clothes', lvl: 5 },
+            'Vice One-Piece': { price: 500, rarity: 'Epic', score: 50, category: 'clothes', lvl: 1 },
+            'Black Leather': { price: 1500, rarity: 'Legendary', score: 100, category: 'clothes', lvl: 1 },
             'Navel Ring': { price: 50, rarity: 'Common', score: 10, category: 'accessories', lvl: 1 },
-            'Dragon Tattoo': { price: 500, rarity: 'Epic', score: 50, category: 'accessories', lvl: 2 },
+            'Dragon Tattoo': { price: 500, rarity: 'Epic', score: 50, category: 'accessories', lvl: 1 },
             'Aviators': { price: 200, rarity: 'Rare', score: 25, category: 'glasses', lvl: 1 },
-            '3D Glasses': { price: 500, rarity: 'Epic', score: 50, category: 'glasses', lvl: 3 },
-            'Green Eyes': { price: 1500, rarity: 'Legendary', score: 100, category: 'glasses', lvl: 5 }
+            '3D Glasses': { price: 500, rarity: 'Epic', score: 50, category: 'glasses', lvl: 1 },
+            'Green Eyes': { price: 1500, rarity: 'Legendary', score: 100, category: 'glasses', lvl: 1 }
         };
         const rarityColors = { 'Common': '#95a5a6', 'Rare': '#3498db', 'Epic': '#9b59b6', 'Legendary': '#f1c40f' };
 
         // --- 2. ROBUST LOCAL STORAGE MIGRATION ---
-        // Jika pemain punya save data lama, kita gabungkan (merge) agar tidak error TypeError.
         const defaultState = {
             player: { name: "Babes #001", level: 1, xp: 0, babes: 1000, eth: 0.5, reputation: "Island Tourist" },
             inventory: { clothes: ['Red Bikini'], accessories: ['Belly Piercing'], glasses: ['Blue Eyes'] },
@@ -494,7 +495,6 @@
 
         function buyItem(itemName) {
             const item = itemDB[itemName];
-            // No Level Restriction anymore!
             if (gameState.inventory[item.category].includes(itemName)) { showToast(`You already own ${itemName}!`); return; }
             if (gameState.player.babes >= item.price) {
                 gameState.player.babes -= item.price; gameState.inventory[item.category].push(itemName);
@@ -550,13 +550,23 @@
         // --- 5. MODAL SYSTEM ---
         let currentOpenModal = null; let overlay = null;
 
+        // FUNGSI SWITCH TAB DIPERBAIKI (BUG TAB TIDAK BISA DIKLIK)
         function switchTab(event, modalContext, tabName) {
-            const modalEl = document.getElementById('modal-' + (['hut', 'shop', 'cafe', 'guard'].includes(modalContext) ? modalContext : 'the_' + modalContext));
+            // Mencari modal paling dekat dengan tombol yang diklik
+            const modalEl = event.currentTarget.closest('.babes-modal');
             if(!modalEl) return;
-            modalEl.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active')); event.currentTarget.classList.add('active'); 
+            
+            // Hanya menonaktifkan tombol di dalam grup tab yang sama
+            const tabContainer = event.currentTarget.closest('.tab-container');
+            tabContainer.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active')); 
+            event.currentTarget.classList.add('active'); 
+            
+            // Menyembunyikan semua konten terkait konteks (shop, hut, guard, dll)
             modalEl.querySelectorAll('.' + modalContext + '-content').forEach(content => content.style.display = 'none');
+            // Menampilkan tab yang dipilih
             document.getElementById(modalContext + '-' + tabName).style.display = 'block';
         }
+
         function switchMainTab(event, tabName) {
             const container = document.getElementById('hut-right-panel');
             container.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active')); event.currentTarget.classList.add('active');
@@ -609,14 +619,7 @@
             document.querySelectorAll('.close-modal').forEach(button => { button.addEventListener('click', closeAllModals); });
             overlay.addEventListener('click', closeAllModals);
             
-            generateSparkles();
-            renderShop();
-            updateHUD();
-            updateHutProfile();
-            renderInventory();
-            updateAvatarPreview();
-            renderQuests();
-
+            generateSparkles(); renderShop(); updateHUD(); updateHutProfile(); renderInventory(); updateAvatarPreview(); renderQuests();
             if(gameState.quests.dailyClaimed) { document.getElementById('btn-claim-daily').innerText = "CLAIMED ✓"; document.getElementById('btn-claim-daily').style.opacity = "0.5"; }
             if(gameState.quests.contestJoined) { document.getElementById('btn-join-contest').innerText = "REGISTERED ✓"; document.getElementById('btn-join-contest').style.opacity = "0.5"; }
         };
